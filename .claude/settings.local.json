@@ -14,7 +14,27 @@
       "Bash(gh auth *)",
       "Bash(git init *)",
       "Bash(git config *)",
-      "Bash(git add *)"
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(git branch *)",
+      "Bash(gh repo *)",
+      "Bash(git push *)",
+      "Bash(npx playwright *)",
+      "Bash(where python *)",
+      "Bash(where playwright *)",
+      "Bash(node)",
+      "Bash(echo \"exit: $?\")",
+      "Bash(powershell -Command \"Write-Host 'PS works'\")",
+      "Bash(powershell -Command \"Set-Content -Path 'C:\\\\Users\\\\muham\\\\Desktop\\\\Vortway Logo\\\\website\\\\smoke-test.js' -Value 'test' -Encoding UTF8; Write-Host 'ok'\")",
+      "Bash(python -c \"print\\('python works'\\)\")",
+      "Bash(python -c ' *)",
+      "Bash(python -c \"import sys; sys.stdout.write\\('test\\\\n'\\)\")",
+      "Bash(python \"C:\\\\Users\\\\muham\\\\Desktop\\\\Vortway Logo\\\\website\\\\gen-test.py\")",
+      "Bash(node --check \"C:/Users/muham/Desktop/Vortway Logo/website/smoke-test.js\")",
+      "Bash(node smoke-test.js)",
+      "Bash(git reset *)",
+      "Bash(git restore *)",
+      "Bash(git rm *)"
     ]
   }
 }

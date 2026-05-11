@@ -703,43 +703,53 @@
             <h2 class="modal-title" id="quoteModalTitle" data-i18n="quote_title">QUOTE CALCULATOR</h2>
             <p class="modal-subtitle" data-i18n="quote_subtitle">Provide details for an instant logistical assessment.</p>
             
-            <form id="quoteForm">
+            <form id="quoteForm" novalidate>
                 <div class="form-row">
                     <div class="form-group half">
-                        <label data-i18n="quote_origin">Origin City</label>
-                        <input type="text" required>
+                        <label for="quoteOrigin" data-i18n="quote_origin">Origin City</label>
+                        <div class="quote-autocomplete" data-ac="origin">
+                            <input type="text" id="quoteOrigin" autocomplete="off" spellcheck="false"
+                                   role="combobox" aria-autocomplete="list" aria-expanded="false"
+                                   aria-controls="quoteOriginList" aria-haspopup="listbox" required>
+                            <ul class="quote-suggestions" id="quoteOriginList" role="listbox" hidden></ul>
+                        </div>
                     </div>
                     <div class="form-group half">
-                        <label data-i18n="quote_dest">Destination City</label>
-                        <input type="text" required>
-                    </div>
-                </div>
-                
-                <div class="form-row">
-                    <div class="form-group half">
-                        <label data-i18n="quote_weight">Cargo Weight (kg)</label>
-                        <input type="number" min="1" required>
-                    </div>
-                    <div class="form-group half">
-                        <label data-i18n="quote_volume">Cargo Volume (m³)</label>
-                        <input type="number" min="0.1" step="0.1" required>
+                        <label for="quoteDestination" data-i18n="quote_dest">Destination City</label>
+                        <div class="quote-autocomplete" data-ac="destination">
+                            <input type="text" id="quoteDestination" autocomplete="off" spellcheck="false"
+                                   role="combobox" aria-autocomplete="list" aria-expanded="false"
+                                   aria-controls="quoteDestinationList" aria-haspopup="listbox" required>
+                            <ul class="quote-suggestions" id="quoteDestinationList" role="listbox" hidden></ul>
+                        </div>
                     </div>
                 </div>
 
                 <div class="form-row">
                     <div class="form-group half">
-                        <label data-i18n="quote_type">Cargo Type</label>
-                        <select required>
+                        <label for="quoteWeight" data-i18n="quote_weight">Cargo Weight (kg)</label>
+                        <input type="number" id="quoteWeight" min="1" required>
+                    </div>
+                    <div class="form-group half">
+                        <label for="quoteVolume" data-i18n="quote_volume">Cargo Volume (m³)</label>
+                        <input type="number" id="quoteVolume" min="0.1" step="0.1" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group half">
+                        <label for="quoteCargoTypeSelect" data-i18n="quote_type">Cargo Type</label>
+                        <select id="quoteCargoTypeSelect" required>
                             <option value="general">General Cargo</option>
                             <option value="fragile">Fragile</option>
                             <option value="perishable">Perishable</option>
                             <option value="automotive">Automotive</option>
-                            <option value="hazmat">Hazmat</option>
+                            <option value="hazmat">Hazmat (ADR)</option>
                         </select>
                     </div>
                     <div class="form-group half">
-                        <label data-i18n="quote_speed">Delivery Speed</label>
-                        <select required>
+                        <label for="quoteSpeedSelect" data-i18n="quote_speed">Delivery Speed</label>
+                        <select id="quoteSpeedSelect" required>
                             <option value="standard">Standard</option>
                             <option value="express">Express</option>
                             <option value="overnight">Overnight</option>
@@ -747,12 +757,28 @@
                     </div>
                 </div>
 
+                <div class="quote-error" id="quoteError" role="alert" aria-live="polite" hidden></div>
+
                 <button type="submit" class="btn btn-primary btn-block" style="margin-top:20px;" data-i18n="btn_calculate">CALCULATE</button>
             </form>
 
             <div class="quote-result" id="quoteResult" style="display:none;">
                 <h3 data-i18n="quote_result_title">Estimated Assessment</h3>
-                <div class="quote-price">€<span id="quotePriceValue">0.00</span></div>
+                <div class="quote-breakdown">
+                    <div class="quote-line"><span>Route distance</span><span id="quoteKm">0 km</span></div>
+                    <div class="quote-line"><span>Base rate (€2.00/km)</span><span id="quoteBase">€0</span></div>
+                    <div class="quote-line quote-surcharge" id="weightSurchargeLine" hidden>
+                        <span>Weight surcharge</span><span id="quoteWeightExtra">€0</span>
+                    </div>
+                    <div class="quote-line quote-surcharge" id="volumeSurchargeLine" hidden>
+                        <span>Volume surcharge</span><span id="quoteVolumeExtra">€0</span>
+                    </div>
+                    <div class="quote-line"><span>Cargo type</span><span id="quoteCargoType">General (&times;1.0)</span></div>
+                    <div class="quote-line"><span>Delivery speed</span><span id="quoteSpeed">Standard (&times;1.0)</span></div>
+                    <div class="quote-divider"></div>
+                    <div class="quote-line quote-total"><span>Estimated Total</span><span>&euro;<span id="quotePriceValue">0.00</span></span></div>
+                </div>
+                <p class="quote-route" id="quoteRoute" hidden></p>
                 <p class="quote-note" data-i18n="quote_result_note">This is an algorithmic estimate. Final rates may vary.</p>
             </div>
         </div>

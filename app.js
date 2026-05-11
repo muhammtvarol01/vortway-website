@@ -471,6 +471,24 @@ document.addEventListener('DOMContentLoaded', () => {
     const quoteResult = document.getElementById('quoteResult');
     const quotePriceValue = document.getElementById('quotePriceValue');
 
+    function resetQuoteModalState() {
+        quoteResult.style.display = 'none';
+        quoteForm.reset();
+        // clear autocomplete-resolved cities and any stale suggestion list / error
+        if (typeof selectedCity !== 'undefined') {
+            selectedCity.origin = null;
+            selectedCity.destination = null;
+        }
+        const errEl = document.getElementById('quoteError');
+        if (errEl) { errEl.textContent = ''; errEl.hidden = true; }
+        document.querySelectorAll('.quote-suggestions').forEach(ul => {
+            ul.hidden = true;
+            ul.innerHTML = '';
+        });
+        document.querySelectorAll('.quote-autocomplete input[aria-expanded]')
+            .forEach(inp => inp.setAttribute('aria-expanded', 'false'));
+    }
+
     if (btnInitiateQuote && quoteModal && closeQuoteModal) {
         btnInitiateQuote.addEventListener('click', () => {
             quoteModal.classList.add('active');
@@ -478,16 +496,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
         closeQuoteModal.addEventListener('click', () => {
             quoteModal.classList.remove('active');
-            quoteResult.style.display = 'none';
-            quoteForm.reset();
+            resetQuoteModalState();
         });
 
         // Close on overlay click
         quoteModal.addEventListener('click', (e) => {
             if (e.target === quoteModal) {
                 quoteModal.classList.remove('active');
-                quoteResult.style.display = 'none';
-                quoteForm.reset();
+                resetQuoteModalState();
             }
         });
 
@@ -497,8 +513,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (e.key === 'Escape') {
                 quoteModal.classList.remove('active');
-                quoteResult.style.display = 'none';
-                quoteForm.reset();
+                resetQuoteModalState();
                 return;
             }
 
@@ -521,22 +536,311 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // 6b. Quote Calculator — city autocomplete + distance-based pricing
+    const EU_CITIES = [
+        { name: "Kaunas", country: "LT", lat: 54.8985, lng: 23.9036 },
+        { name: "Vilnius", country: "LT", lat: 54.6872, lng: 25.2797 },
+        { name: "Klaipeda", country: "LT", lat: 55.7033, lng: 21.1443 },
+        { name: "Riga", country: "LV", lat: 56.9496, lng: 24.1052 },
+        { name: "Tallinn", country: "EE", lat: 59.4370, lng: 24.7536 },
+        { name: "Helsinki", country: "FI", lat: 60.1699, lng: 24.9384 },
+        { name: "Stockholm", country: "SE", lat: 59.3293, lng: 18.0686 },
+        { name: "Gothenburg", country: "SE", lat: 57.7089, lng: 11.9746 },
+        { name: "Malmo", country: "SE", lat: 55.6050, lng: 13.0038 },
+        { name: "Oslo", country: "NO", lat: 59.9139, lng: 10.7522 },
+        { name: "Copenhagen", country: "DK", lat: 55.6761, lng: 12.5683 },
+        { name: "Berlin", country: "DE", lat: 52.5200, lng: 13.4050 },
+        { name: "Hamburg", country: "DE", lat: 53.5511, lng: 9.9937 },
+        { name: "Munich", country: "DE", lat: 48.1351, lng: 11.5820 },
+        { name: "Frankfurt", country: "DE", lat: 50.1109, lng: 8.6821 },
+        { name: "Cologne", country: "DE", lat: 50.9375, lng: 6.9603 },
+        { name: "Dusseldorf", country: "DE", lat: 51.2277, lng: 6.7735 },
+        { name: "Stuttgart", country: "DE", lat: 48.7758, lng: 9.1829 },
+        { name: "Hannover", country: "DE", lat: 52.3759, lng: 9.7320 },
+        { name: "Amsterdam", country: "NL", lat: 52.3676, lng: 4.9041 },
+        { name: "Rotterdam", country: "NL", lat: 51.9244, lng: 4.4777 },
+        { name: "Brussels", country: "BE", lat: 50.8503, lng: 4.3517 },
+        { name: "Antwerp", country: "BE", lat: 51.2194, lng: 4.4025 },
+        { name: "Paris", country: "FR", lat: 48.8566, lng: 2.3522 },
+        { name: "Lyon", country: "FR", lat: 45.7640, lng: 4.8357 },
+        { name: "Marseille", country: "FR", lat: 43.2965, lng: 5.3698 },
+        { name: "London", country: "UK", lat: 51.5074, lng: -0.1278 },
+        { name: "Dublin", country: "IE", lat: 53.3498, lng: -6.2603 },
+        { name: "Madrid", country: "ES", lat: 40.4168, lng: -3.7038 },
+        { name: "Barcelona", country: "ES", lat: 41.3851, lng: 2.1734 },
+        { name: "Lisbon", country: "PT", lat: 38.7223, lng: -9.1393 },
+        { name: "Rome", country: "IT", lat: 41.9028, lng: 12.4964 },
+        { name: "Milan", country: "IT", lat: 45.4642, lng: 9.1900 },
+        { name: "Genoa", country: "IT", lat: 44.4056, lng: 8.9463 },
+        { name: "Naples", country: "IT", lat: 40.8518, lng: 14.2681 },
+        { name: "Turin", country: "IT", lat: 45.0703, lng: 7.6869 },
+        { name: "Zurich", country: "CH", lat: 47.3769, lng: 8.5417 },
+        { name: "Vienna", country: "AT", lat: 48.2082, lng: 16.3738 },
+        { name: "Prague", country: "CZ", lat: 50.0755, lng: 14.4378 },
+        { name: "Bratislava", country: "SK", lat: 48.1486, lng: 17.1077 },
+        { name: "Budapest", country: "HU", lat: 47.4979, lng: 19.0402 },
+        { name: "Warsaw", country: "PL", lat: 52.2297, lng: 21.0122 },
+        { name: "Krakow", country: "PL", lat: 50.0647, lng: 19.9450 },
+        { name: "Gdansk", country: "PL", lat: 54.3520, lng: 18.6466 },
+        { name: "Ljubljana", country: "SI", lat: 46.0569, lng: 14.5058 },
+        { name: "Zagreb", country: "HR", lat: 45.8150, lng: 15.9819 },
+        { name: "Bucharest", country: "RO", lat: 44.4268, lng: 26.1025 },
+        { name: "Sofia", country: "BG", lat: 42.6977, lng: 23.3219 },
+        { name: "Athens", country: "GR", lat: 37.9838, lng: 23.7275 },
+        { name: "Istanbul", country: "TR", lat: 41.0082, lng: 28.9784 },
+        { name: "Ankara", country: "TR", lat: 39.9334, lng: 32.8597 },
+        { name: "Izmir", country: "TR", lat: 38.4237, lng: 27.1428 },
+        { name: "Minsk", country: "BY", lat: 53.9006, lng: 27.5590 },
+        { name: "Kyiv", country: "UA", lat: 50.4501, lng: 30.5234 }
+    ];
+
+    function haversineKm(lat1, lng1, lat2, lng2) {
+        const R = 6371;
+        const dLat = (lat2 - lat1) * Math.PI / 180;
+        const dLng = (lng2 - lng1) * Math.PI / 180;
+        const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                  Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                  Math.sin(dLng / 2) * Math.sin(dLng / 2);
+        return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    }
+
+    const CARGO_MULTIPLIERS = {
+        general:    { label: 'General',    mult: 1.00 },
+        fragile:    { label: 'Fragile',    mult: 1.15 },
+        perishable: { label: 'Perishable', mult: 1.25 },
+        automotive: { label: 'Automotive', mult: 1.10 },
+        hazmat:     { label: 'Hazmat (ADR)', mult: 1.40 }
+    };
+    const SPEED_MULTIPLIERS = {
+        standard:  { label: 'Standard',  mult: 1.00 },
+        express:   { label: 'Express',   mult: 1.35 },
+        overnight: { label: 'Overnight', mult: 1.60 }
+    };
+
+    const quoteOriginInput = document.getElementById('quoteOrigin');
+    const quoteDestinationInput = document.getElementById('quoteDestination');
+    const selectedCity = { origin: null, destination: null };
+
+    function initQuoteAutocomplete(input, kind) {
+        if (!input) return;
+        const list = document.getElementById(input.getAttribute('aria-controls'));
+        if (!list) return;
+        let activeIdx = -1;
+        let currentMatches = [];
+
+        function renderMatches(query) {
+            const q = query.trim().toLowerCase();
+            list.innerHTML = '';
+            if (!q) {
+                list.hidden = true;
+                input.setAttribute('aria-expanded', 'false');
+                currentMatches = [];
+                activeIdx = -1;
+                return;
+            }
+            currentMatches = EU_CITIES.filter(c =>
+                c.name.toLowerCase().includes(q) || c.country.toLowerCase().includes(q)
+            ).slice(0, 6);
+
+            if (!currentMatches.length) {
+                list.hidden = true;
+                input.setAttribute('aria-expanded', 'false');
+                activeIdx = -1;
+                return;
+            }
+
+            currentMatches.forEach((c, i) => {
+                const li = document.createElement('li');
+                li.className = 'quote-suggestion';
+                li.setAttribute('role', 'option');
+                li.setAttribute('data-index', String(i));
+                li.id = `${list.id}-opt-${i}`;
+                li.innerHTML = `<span class="qs-name">${c.name}</span><span class="qs-cc">${c.country}</span>`;
+                li.addEventListener('mousedown', (ev) => {
+                    ev.preventDefault();
+                    selectCity(i);
+                });
+                li.addEventListener('mouseenter', () => setActive(i));
+                list.appendChild(li);
+            });
+            list.hidden = false;
+            input.setAttribute('aria-expanded', 'true');
+            activeIdx = -1;
+        }
+
+        function setActive(i) {
+            const items = list.querySelectorAll('.quote-suggestion');
+            items.forEach(el => el.classList.remove('is-active'));
+            if (i >= 0 && i < items.length) {
+                items[i].classList.add('is-active');
+                input.setAttribute('aria-activedescendant', items[i].id);
+                activeIdx = i;
+            } else {
+                input.removeAttribute('aria-activedescendant');
+                activeIdx = -1;
+            }
+        }
+
+        function selectCity(i) {
+            const c = currentMatches[i];
+            if (!c) return;
+            input.value = `${c.name} (${c.country})`;
+            selectedCity[kind] = c;
+            list.hidden = true;
+            input.setAttribute('aria-expanded', 'false');
+            input.removeAttribute('aria-activedescendant');
+            activeIdx = -1;
+        }
+
+        input.addEventListener('input', () => {
+            // typing invalidates a previously-selected city
+            selectedCity[kind] = null;
+            renderMatches(input.value);
+        });
+
+        input.addEventListener('keydown', (e) => {
+            if (list.hidden) {
+                if (e.key === 'ArrowDown' && input.value.trim()) {
+                    renderMatches(input.value);
+                    setActive(0);
+                    e.preventDefault();
+                }
+                return;
+            }
+            const max = currentMatches.length - 1;
+            if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                setActive(activeIdx >= max ? 0 : activeIdx + 1);
+            } else if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                setActive(activeIdx <= 0 ? max : activeIdx - 1);
+            } else if (e.key === 'Enter') {
+                if (activeIdx >= 0) {
+                    e.preventDefault();
+                    selectCity(activeIdx);
+                }
+            } else if (e.key === 'Escape') {
+                list.hidden = true;
+                input.setAttribute('aria-expanded', 'false');
+                setActive(-1);
+            }
+        });
+
+        input.addEventListener('blur', () => {
+            // delay so mousedown can fire first
+            setTimeout(() => {
+                list.hidden = true;
+                input.setAttribute('aria-expanded', 'false');
+            }, 120);
+        });
+    }
+
+    initQuoteAutocomplete(quoteOriginInput, 'origin');
+    initQuoteAutocomplete(quoteDestinationInput, 'destination');
+
+    const quoteError = document.getElementById('quoteError');
+    const quoteWeightInput = document.getElementById('quoteWeight');
+    const quoteVolumeInput = document.getElementById('quoteVolume');
+    const quoteCargoTypeSelect = document.getElementById('quoteCargoTypeSelect');
+    const quoteSpeedSelect = document.getElementById('quoteSpeedSelect');
+    const quoteKm = document.getElementById('quoteKm');
+    const quoteBase = document.getElementById('quoteBase');
+    const weightSurchargeLine = document.getElementById('weightSurchargeLine');
+    const volumeSurchargeLine = document.getElementById('volumeSurchargeLine');
+    const quoteWeightExtra = document.getElementById('quoteWeightExtra');
+    const quoteVolumeExtra = document.getElementById('quoteVolumeExtra');
+    const quoteCargoTypeOut = document.getElementById('quoteCargoType');
+    const quoteSpeedOut = document.getElementById('quoteSpeed');
+    const quoteRoute = document.getElementById('quoteRoute');
+
+    function showQuoteError(msg) {
+        if (!quoteError) return;
+        quoteError.textContent = msg;
+        quoteError.hidden = false;
+    }
+    function clearQuoteError() {
+        if (!quoteError) return;
+        quoteError.textContent = '';
+        quoteError.hidden = true;
+    }
+    function fmtEUR(n) {
+        return '€' + n.toLocaleString('en-US', { maximumFractionDigits: 0 });
+    }
+
     if (quoteForm) {
         quoteForm.addEventListener('submit', (e) => {
             e.preventDefault();
-            // Algorithmic Fake Calculation
-            const weightInput = quoteForm.querySelector('input[type="number"][min="1"]');
-            const volumeInput = quoteForm.querySelector('input[type="number"][min="0.1"]');
-            
-            let weight = parseFloat(weightInput?.value) || 100;
-            let volume = parseFloat(volumeInput?.value) || 1;
-            
-            // Base calculation
-            let price = (weight * 2.5) + (volume * 50) + 300;
-            
-            quotePriceValue.textContent = price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            clearQuoteError();
+
+            const origin = selectedCity.origin;
+            const destination = selectedCity.destination;
+            if (!origin || !destination) {
+                showQuoteError('Please select a city from the suggestions.');
+                return;
+            }
+            if (origin.name === destination.name && origin.country === destination.country) {
+                showQuoteError('Origin and destination must be different.');
+                return;
+            }
+            const weight = parseFloat(quoteWeightInput?.value);
+            const volume = parseFloat(quoteVolumeInput?.value);
+            if (!Number.isFinite(weight) || weight <= 0) {
+                showQuoteError('Cargo weight must be greater than 0.');
+                return;
+            }
+            if (!Number.isFinite(volume) || volume <= 0) {
+                showQuoteError('Cargo volume must be greater than 0.');
+                return;
+            }
+
+            const cargoKey = quoteCargoTypeSelect?.value || 'general';
+            const speedKey = quoteSpeedSelect?.value || 'standard';
+            const cargo = CARGO_MULTIPLIERS[cargoKey] || CARGO_MULTIPLIERS.general;
+            const speed = SPEED_MULTIPLIERS[speedKey] || SPEED_MULTIPLIERS.standard;
+
+            const straightKm = haversineKm(origin.lat, origin.lng, destination.lat, destination.lng);
+            const roadKm = straightKm * 1.35;
+            const basePrice = Math.max(roadKm * 2.00, 350);
+            const weightSurcharge = Math.max(0, (weight - 5000) / 1000) * 50;
+            const volumeSurcharge = Math.max(0, volume - 33) * 30;
+            const subtotal = basePrice + weightSurcharge + volumeSurcharge;
+            const finalPrice = subtotal * cargo.mult * speed.mult;
+
+            const roundedKm = Math.round(roadKm);
+            quoteKm.textContent = roundedKm.toLocaleString('en-US') + ' km';
+            quoteBase.textContent = fmtEUR(basePrice);
+
+            if (weightSurcharge > 0) {
+                quoteWeightExtra.textContent = fmtEUR(weightSurcharge);
+                weightSurchargeLine.hidden = false;
+            } else {
+                weightSurchargeLine.hidden = true;
+            }
+            if (volumeSurcharge > 0) {
+                quoteVolumeExtra.textContent = fmtEUR(volumeSurcharge);
+                volumeSurchargeLine.hidden = false;
+            } else {
+                volumeSurchargeLine.hidden = true;
+            }
+
+            quoteCargoTypeOut.textContent = `${cargo.label} (×${cargo.mult.toFixed(2)})`;
+            quoteSpeedOut.textContent = `${speed.label} (×${speed.mult.toFixed(2)})`;
+
+            quotePriceValue.textContent = finalPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+            if (quoteRoute) {
+                quoteRoute.textContent = `${origin.name} → ${destination.name}: ~${roundedKm.toLocaleString('en-US')} km (road estimate)`;
+                quoteRoute.hidden = false;
+            }
+
             quoteResult.style.display = 'block';
+            quoteResult.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         });
+
+        // clear errors when user changes inputs after a failed submit
+        [quoteOriginInput, quoteDestinationInput, quoteWeightInput, quoteVolumeInput, quoteCargoTypeSelect, quoteSpeedSelect]
+            .filter(Boolean)
+            .forEach(el => el.addEventListener('input', clearQuoteError));
     }
 
     // 7. Contact Form & Toast

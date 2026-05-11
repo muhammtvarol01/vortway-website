@@ -1598,6 +1598,150 @@ a {
 .quote-note {
     font-size: 10px;
     color: var(--text-muted);
+    margin-top: 12px;
+}
+
+/* === QUOTE CALCULATOR: BREAKDOWN === */
+.quote-breakdown {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    text-align: left;
+    font-family: var(--font-body);
+    font-size: 13px;
+}
+
+.quote-line {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 12px;
+    color: var(--text-main);
+    line-height: 1.4;
+}
+
+.quote-line > span:first-child {
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    font-size: 11px;
+}
+
+.quote-line > span:last-child {
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+    text-align: right;
+}
+
+.quote-surcharge {
+    padding-left: 14px;
+    border-left: 2px solid rgba(var(--gold-rgb), 0.25);
+}
+
+.quote-surcharge > span:first-child {
+    color: var(--gold-dim);
+}
+
+.quote-divider {
+    height: 1px;
+    background: linear-gradient(90deg,
+        transparent 0%,
+        rgba(var(--gold-rgb), 0.5) 50%,
+        transparent 100%);
+    margin: 6px 0 4px;
+}
+
+.quote-total {
+    padding-top: 6px;
+}
+
+.quote-total > span:first-child {
+    color: var(--gold-primary);
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.quote-total > span:last-child {
+    font-family: var(--font-heading);
+    font-size: 28px;
+    color: var(--gold-primary);
+    font-weight: 600;
+    letter-spacing: 0.02em;
+}
+
+.quote-route {
+    margin-top: 14px;
+    font-size: 11px;
+    color: var(--text-muted);
+    font-family: var(--font-body);
+    letter-spacing: 0.04em;
+    text-align: center;
+}
+
+.quote-error {
+    margin-top: 14px;
+    padding: 10px 14px;
+    background: rgba(220, 80, 60, 0.10);
+    border: 1px solid rgba(220, 80, 60, 0.35);
+    border-radius: 4px;
+    color: #ff8a76;
+    font-size: 12px;
+    line-height: 1.4;
+    font-family: var(--font-body);
+}
+
+/* === QUOTE CALCULATOR: CITY AUTOCOMPLETE === */
+.quote-autocomplete {
+    position: relative;
+}
+
+.quote-suggestions {
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    right: 0;
+    z-index: 50;
+    margin: 0;
+    padding: 4px;
+    list-style: none;
+    background: var(--bg-card);
+    border: 1px solid rgba(var(--gold-rgb), 0.3);
+    border-radius: 4px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45),
+                0 0 0 1px rgba(var(--gold-rgb), 0.08);
+    max-height: 260px;
+    overflow-y: auto;
+}
+
+.quote-suggestion {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px;
+    cursor: pointer;
+    border-radius: 3px;
+    font-family: var(--font-body);
+    font-size: 13px;
+    color: var(--text-main);
+    transition: background 0.12s ease, color 0.12s ease;
+}
+
+.quote-suggestion .qs-cc {
+    font-size: 11px;
+    color: var(--text-muted);
+    letter-spacing: 0.08em;
+    font-weight: 500;
+}
+
+.quote-suggestion:hover,
+.quote-suggestion.is-active {
+    background: rgba(var(--gold-rgb), 0.14);
+    color: var(--gold-primary);
+}
+
+.quote-suggestion:hover .qs-cc,
+.quote-suggestion.is-active .qs-cc {
+    color: var(--gold-primary);
 }
 
 /* TOAST */
@@ -2242,6 +2386,51 @@ a {
 [data-theme="light"] .quote-price,
 [data-theme="light"] .back-to-top {
     color: #7A5400;
+}
+
+/* === QUOTE CALCULATOR — LIGHT MODE === */
+[data-theme="light"] .quote-total > span:first-child,
+[data-theme="light"] .quote-total > span:last-child {
+    color: #7A5400;
+}
+
+[data-theme="light"] .quote-suggestions {
+    background: #ffffff;
+    border: 1px solid rgba(178, 115, 0, 0.35);
+    box-shadow: 0 10px 30px rgba(180, 150, 80, 0.18),
+                0 0 0 1px rgba(178, 115, 0, 0.08);
+}
+
+[data-theme="light"] .quote-suggestion {
+    color: #1a1a1a;
+}
+
+[data-theme="light"] .quote-suggestion .qs-cc {
+    color: #555;
+}
+
+[data-theme="light"] .quote-suggestion:hover,
+[data-theme="light"] .quote-suggestion.is-active {
+    background: rgba(178, 115, 0, 0.12);
+    color: #7A5400;
+}
+
+[data-theme="light"] .quote-suggestion:hover .qs-cc,
+[data-theme="light"] .quote-suggestion.is-active .qs-cc {
+    color: #7A5400;
+}
+
+[data-theme="light"] .quote-divider {
+    background: linear-gradient(90deg,
+        transparent 0%,
+        rgba(178, 115, 0, 0.45) 50%,
+        transparent 100%);
+}
+
+[data-theme="light"] .quote-error {
+    background: rgba(180, 40, 30, 0.08);
+    border-color: rgba(180, 40, 30, 0.35);
+    color: #a8281e;
 }
 
 [data-theme="light"] .footer-link:hover,
