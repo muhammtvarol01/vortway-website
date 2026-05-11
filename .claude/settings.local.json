@@ -71,7 +71,13 @@
       "Bash(npm init *)",
       "Bash(npm install *)",
       "Bash(node modal_test.mjs)",
-      "Bash(npx --yes playwright --version)"
+      "Bash(npx --yes playwright --version)",
+      "Bash(Invoke-WebRequest -Uri \"http://localhost:8765/\" -UseBasicParsing -TimeoutSec 5)",
+      "Bash(Select-Object -ExpandProperty StatusCode)",
+      "Bash(cp /tmp/logistics-dark.png \"C:\\\\Users\\\\muham\\\\Desktop\\\\Vortway Logo\\\\website\\\\logistics-dark.png\")",
+      "Bash(cp /tmp/logistics-light.png \"C:\\\\Users\\\\muham\\\\Desktop\\\\Vortway Logo\\\\website\\\\logistics-light.png\")",
+      "Bash(cp /tmp/logistics-dark-roundtrip.png \"C:\\\\Users\\\\muham\\\\Desktop\\\\Vortway Logo\\\\website\\\\logistics-dark-roundtrip.png\")",
+      "Bash(node smoke_test2.js)"
     ]
   }
 }

@@ -1163,13 +1163,119 @@ function initLogisticsScene() {
     const isMobile = window.matchMedia('(max-width: 767px)').matches;
 
     let booted = false;
-    let renderer, scene, camera, ambient, hemi, spot, underGlow;
+    let renderer, scene, camera, ambient, hemi, spot, fill, underGlow;
     let containers = [], truck = null, particleSystem = null, gridHelper = null;
     let routeCurve = null;
+    let tubeMaterial = null, particleMaterial = null;
     let isVisible = false;
     let rafId = null;
     let width = visionEl.clientWidth;
     let height = visionEl.clientHeight;
+
+    // Shared theme-aware materials. Module-scope so a theme toggle can mutate
+    // them in place and every mesh that references them updates instantly.
+    const mats = {
+        body: null,        // container body (MeshPhysicalMaterial — clearcoat for chrome)
+        dim: null,         // ribs + door ridges
+        corner: null,      // corner castings
+        truckGold: null,   // truck cab + trailer (MeshPhysicalMaterial)
+        truckDark: null,   // windshield, trailer bed
+        tire: null
+    };
+
+    // Theme-specific colour + roughness tables. Reads on boot AND on toggle.
+    const THEME = {
+        dark: {
+            body:      { color: 0xD4AF37, metalness: 0.95, roughness: 0.15, clearcoat: 1.0, clearcoatRoughness: 0.10, envMapIntensity: 1.0 },
+            dim:       { color: 0x4A2F00, metalness: 0.60, roughness: 0.40 },
+            corner:    { color: 0xB27300, metalness: 0.80, roughness: 0.35 },
+            truckGold: { color: 0xD4AF37, metalness: 0.90, roughness: 0.18, clearcoat: 0.85, clearcoatRoughness: 0.12 },
+            truckDark: { color: 0x141a17, metalness: 0.50, roughness: 0.60 },
+            tire:      { color: 0x0F0900, metalness: 0.30, roughness: 0.85 },
+            hemiSky: 0xFFC300, hemiGround: 0x080a09, hemiInt: 0.55,
+            ambient: 0.12,
+            spotColor: 0xFFFDF0, spotInt: 1.2,
+            fillColor: 0xFFC300, fillInt: 0.35,
+            underGlow: 0xD4AF37,
+            gridColor1: 0xD4AF37, gridColor2: 0x4A2F00, gridOpacity: 0.35,
+            tubeColor: 0xFFC300, particleColor: 0xFFFDF0,
+            exposure: 1.0
+        },
+        light: {
+            // Slightly darker gold reads better on cream bg; less envMap so reflections
+            // don't blow out against the warm light background.
+            body:      { color: 0xB27300, metalness: 0.92, roughness: 0.22, clearcoat: 1.0, clearcoatRoughness: 0.12, envMapIntensity: 0.7 },
+            dim:       { color: 0x4A2F00, metalness: 0.55, roughness: 0.45 },
+            corner:    { color: 0x7A5400, metalness: 0.75, roughness: 0.40 },
+            truckGold: { color: 0xB27300, metalness: 0.88, roughness: 0.22, clearcoat: 0.80, clearcoatRoughness: 0.14 },
+            truckDark: { color: 0x1a1a1a, metalness: 0.40, roughness: 0.65 },
+            tire:      { color: 0x222222, metalness: 0.20, roughness: 0.90 },
+            hemiSky: 0xfff8e0, hemiGround: 0xe0d8b8, hemiInt: 0.95,
+            ambient: 0.45,
+            spotColor: 0xfff5d8, spotInt: 1.0,
+            fillColor: 0xfff5d8, fillInt: 0.55,
+            underGlow: 0xB27300,
+            gridColor1: 0xB27300, gridColor2: 0xC9B57E, gridOpacity: 0.22,
+            tubeColor: 0xB27300, particleColor: 0x7A5400,
+            exposure: 1.15
+        }
+    };
+
+    function currentTheme() {
+        return document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+    }
+
+    function buildMaterials() {
+        const cfg = THEME[currentTheme()];
+        mats.body      = new THREE.MeshPhysicalMaterial(cfg.body);
+        mats.dim       = new THREE.MeshStandardMaterial(cfg.dim);
+        mats.corner    = new THREE.MeshStandardMaterial(cfg.corner);
+        mats.truckGold = new THREE.MeshPhysicalMaterial(cfg.truckGold);
+        mats.truckDark = new THREE.MeshStandardMaterial(cfg.truckDark);
+        mats.tire      = new THREE.MeshStandardMaterial(cfg.tire);
+    }
+
+    function applyTheme(themeMode) {
+        if (!booted) return;
+        const cfg = THEME[themeMode === 'light' ? 'light' : 'dark'];
+
+        // Materials — Three.js Material.setValues() handles color hex values
+        // correctly by calling Color.set(hex) on the existing Color instance.
+        mats.body.setValues(cfg.body);
+        mats.dim.setValues(cfg.dim);
+        mats.corner.setValues(cfg.corner);
+        mats.truckGold.setValues(cfg.truckGold);
+        mats.truckDark.setValues(cfg.truckDark);
+        mats.tire.setValues(cfg.tire);
+        mats.body.needsUpdate = true;
+        mats.truckGold.needsUpdate = true;
+
+        // Lights
+        if (hemi)      { hemi.color.setHex(cfg.hemiSky); hemi.groundColor.setHex(cfg.hemiGround); hemi.intensity = cfg.hemiInt; }
+        if (ambient)   { ambient.intensity = cfg.ambient; }
+        if (spot)      { spot.color.setHex(cfg.spotColor); spot.intensity = cfg.spotInt; }
+        if (fill)      { fill.color.setHex(cfg.fillColor); fill.intensity = cfg.fillInt; }
+        if (underGlow) { underGlow.color.setHex(cfg.underGlow); }
+
+        // Tube + particles
+        if (tubeMaterial)     { tubeMaterial.color.setHex(cfg.tubeColor); }
+        if (particleMaterial) { particleMaterial.color.setHex(cfg.particleColor); }
+
+        // Grid — GridHelper bakes colours into vertex colors, so recreate it.
+        if (gridHelper) {
+            scene.remove(gridHelper);
+            gridHelper.geometry.dispose();
+            gridHelper.material.dispose();
+            gridHelper = new THREE.GridHelper(40, 40, cfg.gridColor1, cfg.gridColor2);
+            gridHelper.material.opacity = cfg.gridOpacity;
+            gridHelper.material.transparent = true;
+            gridHelper.position.y = -0.05;
+            scene.add(gridHelper);
+        }
+
+        // Tone-mapping exposure (subtle but reads premium in light mode)
+        if (renderer) renderer.toneMappingExposure = cfg.exposure;
+    }
 
     const ensureSize = () => {
         width = visionEl.clientWidth;
@@ -1183,49 +1289,33 @@ function initLogisticsScene() {
 
     function buildContainer() {
         const group = new THREE.Group();
-        const bodyMat = new THREE.MeshStandardMaterial({
-            color: 0xD4AF37,
-            metalness: 0.85,
-            roughness: 0.25,
-            envMapIntensity: 1.0
-        });
-        const dimMat = new THREE.MeshStandardMaterial({
-            color: 0x4A2F00,
-            metalness: 0.6,
-            roughness: 0.4
-        });
 
         // Body — 20ft container ~ 6×2.5×2.5 (scaled down for scene)
-        const body = new THREE.Mesh(new THREE.BoxGeometry(3, 1.4, 1.4), bodyMat);
+        const body = new THREE.Mesh(new THREE.BoxGeometry(3, 1.4, 1.4), mats.body);
         body.castShadow = true;
         body.receiveShadow = true;
         group.add(body);
 
-        // Door ridges on one face (back of container)
+        // Door ridges on the back face
         for (let i = -1; i <= 1; i++) {
-            const r = new THREE.Mesh(new THREE.BoxGeometry(0.04, 1.25, 0.04), dimMat);
+            const r = new THREE.Mesh(new THREE.BoxGeometry(0.04, 1.25, 0.04), mats.dim);
             r.position.set(1.51, 0, i * 0.35);
             group.add(r);
         }
 
-        // Top + bottom ribs (corrugated effect, simplified)
+        // Top corrugation ribs (running along width)
         for (let i = -1.3; i <= 1.3; i += 0.32) {
-            const rib = new THREE.Mesh(new THREE.BoxGeometry(0.04, 0.04, 1.4), dimMat);
+            const rib = new THREE.Mesh(new THREE.BoxGeometry(0.04, 0.04, 1.4), mats.dim);
             rib.position.set(i, 0.72, 0);
             group.add(rib);
         }
 
-        // Corner castings — 8 small cubes at each corner
+        // Corner castings — 8 cubes at each corner
         const cornerGeo = new THREE.BoxGeometry(0.18, 0.18, 0.18);
-        const cornerMat = new THREE.MeshStandardMaterial({
-            color: 0xB27300,
-            metalness: 0.8,
-            roughness: 0.35
-        });
         for (let x of [-1.5, 1.5]) {
             for (let y of [-0.7, 0.7]) {
                 for (let z of [-0.7, 0.7]) {
-                    const c = new THREE.Mesh(cornerGeo, cornerMat);
+                    const c = new THREE.Mesh(cornerGeo, mats.corner);
                     c.position.set(x, y, z);
                     group.add(c);
                 }
@@ -1237,21 +1327,9 @@ function initLogisticsScene() {
 
     function buildTruck() {
         const group = new THREE.Group();
-        const goldMat = new THREE.MeshStandardMaterial({
-            color: 0xD4AF37,
-            metalness: 0.9,
-            roughness: 0.2
-        });
-        const darkMat = new THREE.MeshStandardMaterial({
-            color: 0x141a17,
-            metalness: 0.5,
-            roughness: 0.6
-        });
-        const tireMat = new THREE.MeshStandardMaterial({
-            color: 0x0F0900,
-            metalness: 0.3,
-            roughness: 0.85
-        });
+        const goldMat = mats.truckGold;
+        const darkMat = mats.truckDark;
+        const tireMat = mats.tire;
 
         // Cab
         const cab = new THREE.Mesh(new THREE.BoxGeometry(1.1, 1.1, 1.4), goldMat);
@@ -1353,28 +1431,46 @@ function initLogisticsScene() {
         camera.position.set(0, 6.5, 14);
         camera.lookAt(0, 1, 0);
 
-        // Lighting
-        hemi = new THREE.HemisphereLight(0xFFC300, 0x080a09, 0.55);
+        // Build the shared theme-aware material palette. Must happen before any
+        // mesh construction so buildContainer/buildTruck can reference mats.*.
+        buildMaterials();
+
+        const cfg = THEME[currentTheme()];
+        renderer.toneMappingExposure = cfg.exposure;
+
+        // === Lighting ===
+        // Hemisphere — sky-to-ground colour gradient
+        hemi = new THREE.HemisphereLight(cfg.hemiSky, cfg.hemiGround, cfg.hemiInt);
         scene.add(hemi);
 
-        ambient = new THREE.AmbientLight(0xffffff, 0.12);
+        // Ambient — base illumination so deep shadows don't crush detail
+        ambient = new THREE.AmbientLight(0xffffff, cfg.ambient);
         scene.add(ambient);
 
-        spot = new THREE.SpotLight(0xFFFDF0, 1.2, 50, Math.PI * 0.18, 0.4, 1.5);
+        // Key light — dramatic spot from above-left, gold-tinted, casts shadows
+        spot = new THREE.SpotLight(cfg.spotColor, cfg.spotInt, 50, Math.PI * 0.18, 0.4, 1.5);
         spot.position.set(8, 14, 8);
         spot.castShadow = !isMobile;
         if (!isMobile) {
             spot.shadow.mapSize.set(1024, 1024);
             spot.shadow.camera.near = 1;
             spot.shadow.camera.far = 40;
+            spot.shadow.bias = -0.0005;       // reduce shadow acne on flat boxes
         }
         scene.add(spot);
 
-        underGlow = new THREE.PointLight(0xD4AF37, 0.7, 18);
+        // Fill — soft directional from opposite side. Substitutes for a
+        // RectAreaLight (which would need RectAreaLightUniformsLib from three's
+        // /examples folder, not present in the CDN bundle we load).
+        fill = new THREE.DirectionalLight(cfg.fillColor, cfg.fillInt);
+        fill.position.set(-9, 6, -5);
+        scene.add(fill);
+
+        underGlow = new THREE.PointLight(cfg.underGlow, 0.7, 18);
         underGlow.position.set(0, -1.5, 0);
         scene.add(underGlow);
 
-        // Environment for metallic reflections
+        // Environment for metallic reflections — drives clearcoat highlights
         try {
             scene.environment = buildEnvironment();
         } catch (e) {
@@ -1382,8 +1478,8 @@ function initLogisticsScene() {
         }
 
         // Gold ground grid
-        gridHelper = new THREE.GridHelper(40, 40, 0xD4AF37, 0x4A2F00);
-        gridHelper.material.opacity = 0.35;
+        gridHelper = new THREE.GridHelper(40, 40, cfg.gridColor1, cfg.gridColor2);
+        gridHelper.material.opacity = cfg.gridOpacity;
         gridHelper.material.transparent = true;
         gridHelper.position.y = -0.05;
         scene.add(gridHelper);
@@ -1398,24 +1494,35 @@ function initLogisticsScene() {
             scene.add(ground);
         }
 
-        // Route curve — gentle S-shape across the floor
-        const curvePoints = [
-            new THREE.Vector3(-8, 0.4, 3),
-            new THREE.Vector3(-3, 0.4, -1),
-            new THREE.Vector3( 2, 0.4, 2),
-            new THREE.Vector3( 7, 0.4, -1.5),
-            new THREE.Vector3( 9, 0.4,  1)
+        // Container positions — defined first so the route curve can weave
+        // through them (particles then look like flight-paths connecting cargo).
+        const containerLayout = [
+            { pos: [-5, 1.8,  -2], rotY: 0.30 },
+            { pos: [ 0, 2.2,   2], rotY: -0.50 },
+            { pos: [ 5, 1.6,  -1], rotY: 0.15 },
+            { pos: [-2, 3.0,   3], rotY: -0.20 }
         ];
-        routeCurve = new THREE.CatmullRomCurve3(curvePoints, false, 'catmullrom', 0.5);
+
+        // Route curve — start off-scene west, weave through each container's
+        // ground-projection, end off-scene east. Particles flow between them.
+        const curvePoints = [
+            new THREE.Vector3(-9, 0.4,  1),
+            new THREE.Vector3(containerLayout[0].pos[0], 0.4, containerLayout[0].pos[2]),
+            new THREE.Vector3(containerLayout[3].pos[0], 0.4, containerLayout[3].pos[2]),
+            new THREE.Vector3(containerLayout[1].pos[0], 0.4, containerLayout[1].pos[2]),
+            new THREE.Vector3(containerLayout[2].pos[0], 0.4, containerLayout[2].pos[2]),
+            new THREE.Vector3( 9, 0.4, -1)
+        ];
+        routeCurve = new THREE.CatmullRomCurve3(curvePoints, false, 'catmullrom', 0.4);
 
         // Route line — tube along the curve
-        const tubeGeo = new THREE.TubeGeometry(routeCurve, 80, 0.05, 8, false);
-        const tubeMat = new THREE.MeshBasicMaterial({
-            color: 0xFFC300,
+        const tubeGeo = new THREE.TubeGeometry(routeCurve, 100, 0.05, 8, false);
+        tubeMaterial = new THREE.MeshBasicMaterial({
+            color: cfg.tubeColor,
             transparent: true,
             opacity: 0.55
         });
-        const tube = new THREE.Mesh(tubeGeo, tubeMat);
+        const tube = new THREE.Mesh(tubeGeo, tubeMaterial);
         scene.add(tube);
 
         // Particle trail along route
@@ -1432,8 +1539,8 @@ function initLogisticsScene() {
         }
         const pGeo = new THREE.BufferGeometry();
         pGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-        const pMat = new THREE.PointsMaterial({
-            color: 0xFFFDF0,
+        particleMaterial = new THREE.PointsMaterial({
+            color: cfg.particleColor,
             size: 0.09,
             transparent: true,
             opacity: 0.9,
@@ -1441,26 +1548,19 @@ function initLogisticsScene() {
             blending: THREE.AdditiveBlending,
             depthWrite: false
         });
-        particleSystem = new THREE.Points(pGeo, pMat);
+        particleSystem = new THREE.Points(pGeo, particleMaterial);
         particleSystem.userData = { offsets, count: particleCount };
         scene.add(particleSystem);
 
         // Containers — skip on mobile (heavy)
         if (!isMobile) {
-            const positionsRaw = [
-                { pos: [-5, 1.8,  -2], rotY: 0.3 },
-                { pos: [ 0, 2.2,   2], rotY: -0.5 },
-                { pos: [ 5, 1.6,  -1], rotY: 0.15 },
-                { pos: [-2, 3.0,   3], rotY: -0.2 }
-            ];
-            for (const { pos, rotY } of positionsRaw) {
+            for (const { pos, rotY } of containerLayout) {
                 const c = buildContainer();
                 c.position.set(pos[0], pos[1], pos[2]);
                 c.rotation.y = rotY;
                 c.userData = {
                     baseY: pos[1],
-                    phase: Math.random() * Math.PI * 2,
-                    rotSpeed: 0.002 + Math.random() * 0.003
+                    phase: Math.random() * Math.PI * 2
                 };
                 scene.add(c);
                 containers.push(c);
@@ -1487,10 +1587,14 @@ function initLogisticsScene() {
 
         const t = performance.now() * 0.001;
 
-        // Containers: float + slow rotate
+        // Containers: gentle float (amp 0.3, ~3s period) + uniform slow Y-rotation.
+        // omega = 2π / 3 ≈ 2.094 rad/s gives a 3-second period.
+        const FLOAT_AMP = 0.3;
+        const FLOAT_OMEGA = (Math.PI * 2) / 3;
+        const ROT_SPEED = 0.002;
         for (const c of containers) {
-            c.position.y = c.userData.baseY + Math.sin(t + c.userData.phase) * 0.18;
-            c.rotation.y += c.userData.rotSpeed;
+            c.position.y = c.userData.baseY + Math.sin(t * FLOAT_OMEGA + c.userData.phase) * FLOAT_AMP;
+            c.rotation.y += ROT_SPEED;
         }
 
         // Truck: drive along curve
@@ -1547,6 +1651,13 @@ function initLogisticsScene() {
         ensureSize();
         boot();
         isVisible = true;
+    }
+
+    // Theme reactivity — watch <html data-theme> and recolour materials/lights
+    // in place. Self-contained: doesn't depend on initThemeToggle exposing a hook.
+    if (typeof MutationObserver !== 'undefined') {
+        const mo = new MutationObserver(() => applyTheme(currentTheme()));
+        mo.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
     }
 }
 
