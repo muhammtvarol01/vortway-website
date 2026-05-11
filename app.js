@@ -899,7 +899,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             } catch {
                 toastMsg.textContent = translations[currentLang]?.toast_error
-                    || "Transmission failed. Email us directly: mvarol@vortway.lt";
+                    || "Transmission failed. Email us directly: info@vortway.lt";
                 toast.classList.add('show', 'toast-error');
             } finally {
                 submitBtn.disabled = false;

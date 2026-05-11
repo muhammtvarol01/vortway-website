@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 # VORTWAY — Marketing Website
 
-Static marketing site for **Vortway Logistics & Solutions** — premium European freight forwarding HQ in Vilnius, Lithuania. Public landing page at `vortway.lt`. This folder is its **own git repository** (pushed to `github.com/muhammtvarol01/vortway-website`), separate from the brand-engineering workspace at `..` and the Next.js operational app at `../vortway-app/`. None of those parents travel with this repo.
+Static marketing site for **Vortway Logistics & Solutions** — premium European freight forwarding HQ in Kaunas, Lithuania. Public landing page at `vortway.lt`. This folder is its **own git repository** (pushed to `github.com/muhammtvarol01/vortway-website`), separate from the brand-engineering workspace at `..` and the Next.js operational app at `../vortway-app/`. None of those parents travel with this repo.
 
 ## Stack
 
