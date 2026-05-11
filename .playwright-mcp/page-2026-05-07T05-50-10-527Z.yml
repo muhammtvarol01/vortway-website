@@ -1,0 +1,242 @@
+- generic [active] [ref=e1]:
+  - link "Skip to main content" [ref=e2] [cursor=pointer]:
+    - /url: "#main-content"
+  - generic [ref=e3]:
+    - img [ref=e4]
+    - generic [ref=e11]: VORTWAY
+  - img
+  - navigation "Main navigation" [ref=e12]:
+    - generic [ref=e13]:
+      - generic [ref=e14]:
+        - img [ref=e15]
+        - generic [ref=e20]: VORTWAY
+      - generic [ref=e21]:
+        - link "Services" [ref=e22] [cursor=pointer]:
+          - /url: "#services"
+        - link "Vision" [ref=e23] [cursor=pointer]:
+          - /url: "#vision"
+        - link "Contact" [ref=e24] [cursor=pointer]:
+          - /url: "#contact"
+        - link "About" [ref=e25] [cursor=pointer]:
+          - /url: about.html
+        - button "TRACK" [ref=e27] [cursor=pointer]:
+          - img [ref=e28]
+          - generic [ref=e31]: TRACK
+        - button "Select language" [ref=e33] [cursor=pointer]:
+          - text: EN
+          - img [ref=e34]
+  - main [ref=e36]:
+    - generic [ref=e37]:
+      - generic [ref=e38]:
+        - heading "V O R T W A Y" [level=1] [ref=e39]:
+          - generic [ref=e40]: V
+          - generic [ref=e41]: O
+          - generic [ref=e42]: R
+          - generic [ref=e43]: T
+          - generic [ref=e44]: W
+          - generic [ref=e45]: A
+          - generic [ref=e46]: "Y"
+        - heading "LIMITLESS LOGISTICS" [level=2] [ref=e47]
+        - paragraph [ref=e48]:
+          - text: Where precision meets planetary scale.
+          - text: We do not merely move freight;
+          - text: we architect the flow of global commerce.
+        - generic [ref=e49]:
+          - button "INITIATE QUOTE" [ref=e50] [cursor=pointer]
+          - button "CONNECT" [ref=e51] [cursor=pointer]
+      - generic [ref=e53]: SCROLL TO EXPLORE
+    - generic [ref=e57]:
+      - generic [ref=e58]: VILNIUS • BERLIN • PARIS • LONDON • ISTANBUL • AMSTERDAM • VIENNA • MADRID • BRUSSELS • PRAGUE • ROME • RIGA • HELSINKI • STOCKHOLM • DUBLIN •
+      - generic [ref=e59]: VILNIUS • BERLIN • PARIS • LONDON • ISTANBUL • AMSTERDAM • VIENNA • MADRID • BRUSSELS • PRAGUE • ROME • RIGA • HELSINKI • STOCKHOLM • DUBLIN •
+    - generic [ref=e60]:
+      - generic [ref=e61]:
+        - heading "WHAT WE MOVE, AND HOW" [level=2] [ref=e62]
+        - paragraph [ref=e63]: Four disciplines. Zero guesswork.
+      - generic [ref=e64]:
+        - generic [ref=e65]:
+          - img [ref=e67]
+          - heading "Full Truckload (FTL)" [level=3] [ref=e72]
+          - paragraph [ref=e73]: One shipment. One truck. One route.
+          - list [ref=e74]:
+            - listitem [ref=e75]: — Dedicated 13.6m trailer — your load never shares space
+            - listitem [ref=e76]: — Direct door-to-door across all EU corridors
+            - listitem [ref=e77]: — Named driver, single point of contact throughout
+        - generic [ref=e78]:
+          - img [ref=e80]
+          - heading "Groupage / LTL" [level=3] [ref=e84]
+          - paragraph [ref=e85]: You shouldn't pay for space you don't need.
+          - list [ref=e86]:
+            - listitem [ref=e87]: — Fixed weekly departures on Baltic → Central EU lanes
+            - listitem [ref=e88]: — Transparent per-pallet pricing, no hidden terminal fees
+            - listitem [ref=e89]: — From one pallet to half a truck — your choice, your cost
+        - generic [ref=e90]:
+          - img [ref=e92]
+          - heading "Customs Clearance" [level=3] [ref=e96]
+          - paragraph [ref=e97]: The border is where most problems start. Ours end there.
+          - list [ref=e98]:
+            - listitem [ref=e99]: — EU import, export, and T1 transit declarations handled in-house
+            - listitem [ref=e100]: — Medininkai, Terespol, and Schengen entry points covered
+            - listitem [ref=e101]: — Documentation prepared before the truck arrives — no waiting
+        - generic [ref=e102]:
+          - img [ref=e104]
+          - heading "Intermodal" [level=3] [ref=e111]
+          - paragraph [ref=e112]: Sometimes the most direct road has rails in it.
+          - list [ref=e113]:
+            - listitem [ref=e114]: — Road + rail combinations on long-haul EU corridors
+            - listitem [ref=e115]: — Lower cost per km beyond 1,000 km, without sacrificing schedule
+            - listitem [ref=e116]: — Containerized and palletized cargo both accepted
+    - generic [ref=e117]:
+      - generic [ref=e118]:
+        - heading "THE VORTWAY STANDARD" [level=2] [ref=e119]
+        - paragraph [ref=e120]: Three convictions that guide every shipment we touch.
+      - generic [ref=e121]:
+        - generic [ref=e122]:
+          - img [ref=e124]
+          - heading "Seasoned Expertise, Dynamic Perspective" [level=3] [ref=e134]
+          - paragraph [ref=e135]: Our new presence in the sector means our energy is fresh, while decades of collective experience prove our steps are solid. We navigate the complex world of logistics with a dynamic vision and mature expertise, free from cumbersome bureaucracy.
+        - generic [ref=e136]:
+          - img [ref=e138]
+          - heading "Trust-Driven Strategic Partnerships" [level=3] [ref=e141]
+          - paragraph [ref=e142]: We view our clients not as mere business files, but as long-term strategic partners. The trust we build through transparent communication and integrity always takes precedence over short-term gains. We grow alongside you.
+        - generic [ref=e143]:
+          - img [ref=e145]
+          - heading "Unwavering Service Dedication" [level=3] [ref=e148]
+          - paragraph [ref=e149]: We understand the commercial value behind every cargo and the critical importance of time. Delivering a flawless operation and seamless service is not just our business model; it is our fundamental promise to you.
+    - generic [ref=e151]:
+      - generic [ref=e152]:
+        - generic [ref=e153]: "0"
+        - generic [ref=e154]: European Corridors
+      - generic [ref=e155]:
+        - generic [ref=e156]: "0"
+        - generic [ref=e157]: Operational Support
+      - generic [ref=e158]:
+        - generic [ref=e159]: "0"
+        - generic [ref=e160]: Years Collective Experience
+      - generic [ref=e161]:
+        - generic [ref=e162]: "0"
+        - generic [ref=e163]: On-Time Delivery Rate
+    - generic [ref=e164]:
+      - generic [ref=e165]:
+        - heading "TRUSTED PARTNERSHIPS" [level=2] [ref=e166]
+        - paragraph [ref=e167]: What our partners say about working with Vortway.
+      - generic [ref=e169]:
+        - paragraph [ref=e170]: "\"Vortway's responsiveness and dedication transformed our European supply chain. A partner that truly understands urgency.\""
+        - generic [ref=e171]:
+          - generic [ref=e172]: Marcus Weber
+          - generic [ref=e173]: Supply Chain Director
+      - generic [ref=e174]:
+        - button "Testimonial 1" [ref=e175] [cursor=pointer]
+        - button "Testimonial 2" [ref=e176] [cursor=pointer]
+        - button "Testimonial 3" [ref=e177] [cursor=pointer]
+        - button "Testimonial 4" [ref=e178] [cursor=pointer]
+        - button "Testimonial 5" [ref=e179] [cursor=pointer]
+    - generic [ref=e180]:
+      - generic [ref=e181]:
+        - heading "FREQUENTLY ASKED QUESTIONS" [level=2] [ref=e182]
+        - paragraph [ref=e183]: Common questions from our logistics partners.
+      - generic [ref=e184]:
+        - generic [ref=e185]:
+          - button "What documents are required for cross-border shipment?" [ref=e186] [cursor=pointer]:
+            - generic [ref=e187]: What documents are required for cross-border shipment?
+            - img [ref=e188]
+          - paragraph [ref=e190]: "For EU cross-border shipments: CMR consignment note, commercial invoice, and packing list. For cargo entering or leaving the EU, you also need an export/import declaration, EUR.1 certificate of origin (if applicable), and any product-specific permits."
+        - generic [ref=e191]:
+          - button "What are typical transit times from Vilnius to major EU cities?" [ref=e192] [cursor=pointer]:
+            - generic [ref=e193]: What are typical transit times from Vilnius to major EU cities?
+            - img [ref=e194]
+          - paragraph [ref=e196]: "Road transit from Vilnius: Warsaw 1 day · Berlin 2–3 days · Vienna 2–3 days · Amsterdam 3–4 days · Paris 3–4 days · Istanbul 4–5 days · Madrid 5–6 days. Times vary by service level and customs clearance requirements."
+        - generic [ref=e197]:
+          - button "Do you handle customs clearance in-house?" [ref=e198] [cursor=pointer]:
+            - generic [ref=e199]: Do you handle customs clearance in-house?
+            - img [ref=e200]
+          - paragraph [ref=e202]: Yes. Our team handles EU import and export declarations, tariff classification, and duty calculation in-house, liaising with Lithuanian customs authorities. We coordinate customs in other countries through our partner network.
+        - generic [ref=e203]:
+          - button "What cargo types do you accept?" [ref=e204] [cursor=pointer]:
+            - generic [ref=e205]: What cargo types do you accept?
+            - img [ref=e206]
+          - paragraph [ref=e208]: We accept standard dry cargo, temperature-controlled goods, ADR-classified hazardous materials, oversized and heavy loads (with permits), and project cargo. We do not transport narcotics, weapons, or goods prohibited by international sanctions.
+        - generic [ref=e209]:
+          - button "Is cargo insurance included in your service?" [ref=e210] [cursor=pointer]:
+            - generic [ref=e211]: Is cargo insurance included in your service?
+            - img [ref=e212]
+          - paragraph [ref=e214]: Standard freight rates do not include cargo insurance. We strongly recommend all-risk coverage for every shipment and can arrange it on your behalf. Contact your logistics coordinator for a tailored quote.
+    - generic [ref=e216]:
+      - generic [ref=e217]:
+        - heading "INITIATE PARTNERSHIP" [level=2] [ref=e218]
+        - paragraph [ref=e219]: Connect with our logistics coordination team.
+      - generic [ref=e220]:
+        - generic [ref=e222]:
+          - generic [ref=e223]:
+            - generic [ref=e224]: Company Name *
+            - textbox "Company Name *" [ref=e225]:
+              - /placeholder: ...
+          - generic [ref=e226]:
+            - generic [ref=e227]: Email Address *
+            - textbox "Email Address *" [ref=e228]:
+              - /placeholder: ...
+          - generic [ref=e229]:
+            - generic [ref=e230]: Inquiry Details *
+            - textbox "Inquiry Details *" [ref=e231]:
+              - /placeholder: ...
+          - button "TRANSMIT" [ref=e232] [cursor=pointer]
+        - generic [ref=e233]:
+          - generic [ref=e234]:
+            - img [ref=e235]
+            - generic [ref=e237]:
+              - generic [ref=e238]: Phone
+              - generic [ref=e239]: +370 601 73 708
+              - generic [ref=e240]: +370 685 46 399 (WP)
+          - generic [ref=e241]:
+            - img [ref=e242]
+            - generic [ref=e245]:
+              - generic [ref=e246]: Email
+              - generic [ref=e247]: mvarol@vortway.lt
+          - generic [ref=e248]:
+            - img [ref=e249]
+            - generic [ref=e252]:
+              - generic [ref=e253]: Headquarters
+              - generic [ref=e254]: Vilnius, Lithuania
+  - contentinfo [ref=e255]:
+    - generic [ref=e256]:
+      - generic [ref=e257]:
+        - heading "NAVIGATION" [level=4] [ref=e258]
+        - link "Services" [ref=e259] [cursor=pointer]:
+          - /url: "#services"
+        - link "Services Detail" [ref=e260] [cursor=pointer]:
+          - /url: services.html
+        - link "Vision" [ref=e261] [cursor=pointer]:
+          - /url: "#vision"
+        - link "Contact" [ref=e262] [cursor=pointer]:
+          - /url: "#contact"
+        - link "About" [ref=e263] [cursor=pointer]:
+          - /url: about.html
+      - generic [ref=e264]:
+        - heading "LEGAL" [level=4] [ref=e265]
+        - link "Privacy Policy" [ref=e266] [cursor=pointer]:
+          - /url: privacy.html
+        - link "Terms of Service" [ref=e267] [cursor=pointer]:
+          - /url: terms.html
+    - generic [ref=e268]:
+      - generic [ref=e269]: Copyright © 2026 Vortway Logistics & Solutions
+      - generic [ref=e270]: ALL SYSTEMS OPERATIONAL
+  - option "General Cargo" [selected]
+  - option "Fragile"
+  - option "Perishable"
+  - option "Automotive"
+  - option "Hazmat"
+  - option "Standard" [selected]
+  - option "Express"
+  - option "Overnight"
+  - generic [ref=e272]:
+    - img [ref=e273]
+    - generic [ref=e276]: Your inquiry has been transmitted.
+  - button "Back to top":
+    - img
+  - dialog "Cookie consent" [ref=e277]:
+    - generic [ref=e278]:
+      - paragraph [ref=e279]: We use third-party services (Google Fonts, unpkg.com) which may process your IP address. By clicking Accept you consent to this.
+      - generic [ref=e280]:
+        - link "Privacy Policy" [ref=e281] [cursor=pointer]:
+          - /url: privacy.html
+        - button "REJECT" [ref=e282] [cursor=pointer]
+        - button "ACCEPT" [ref=e283] [cursor=pointer]

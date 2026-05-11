@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="418" viewBox="-10 -10 220 230">
+  <g>
+    <path d="M 10 90 L 50 150 L 100 60 L 150 150 L 190 90"
+          fill="none"
+          stroke="#D4AF37"
+          stroke-width="20"
+          stroke-linejoin="round"
+          stroke-linecap="round"/>
+  </g>
+  <g>
+    <path d="M 20 40 L 100 180 L 180 40"
+          fill="none"
+          stroke="#D4AF37"
+          stroke-width="28"
+          stroke-linejoin="miter"
+          stroke-miterlimit="4"
+          stroke-linecap="round"/>
+  </g>
+</svg>

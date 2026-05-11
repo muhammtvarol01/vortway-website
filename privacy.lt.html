@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="lt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privatumo politika | VORTWAY</title>
+
+    <link rel="alternate" hreflang="en" href="privacy.html">
+    <link rel="alternate" hreflang="lt" href="privacy.lt.html">
+    <link rel="alternate" hreflang="x-default" href="privacy.html">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800;900&family=Montserrat:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        .legal-page {
+            padding: 140px var(--padding-desktop) 80px;
+            max-width: 860px;
+            margin: 0 auto;
+        }
+
+        .legal-back {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--gold-dim);
+            font-size: 11px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 40px;
+            transition: color 0.3s;
+        }
+
+        .legal-back:hover {
+            color: var(--gold-primary);
+        }
+
+        .legal-header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 12px;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .legal-title {
+            font-family: var(--font-heading);
+            font-size: 36px;
+            letter-spacing: 4px;
+            background: linear-gradient(to bottom, #ffffff 40%, #C59E5B 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .lang-toggle {
+            display: inline-flex;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            overflow: hidden;
+            font-family: var(--font-body);
+            font-size: 11px;
+            letter-spacing: 2px;
+            font-weight: 600;
+        }
+
+        .lang-toggle a {
+            padding: 8px 14px;
+            color: var(--text-muted);
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+
+        .lang-toggle a + a {
+            border-left: 1px solid var(--border-color);
+        }
+
+        .lang-toggle a:hover {
+            color: var(--gold-primary);
+        }
+
+        .lang-toggle a.active {
+            background: rgba(212, 175, 55, 0.1);
+            color: var(--gold-primary);
+        }
+
+        .legal-meta {
+            font-size: 11px;
+            letter-spacing: 2px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            margin-bottom: 50px;
+            padding-bottom: 30px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .legal-section {
+            margin-bottom: 40px;
+        }
+
+        .legal-section h2 {
+            font-family: var(--font-heading);
+            font-size: 18px;
+            letter-spacing: 2px;
+            color: var(--gold-primary);
+            margin-bottom: 16px;
+        }
+
+        .legal-section h3 {
+            font-family: var(--font-body);
+            font-size: 13px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--gold-dim);
+            font-weight: 600;
+            margin-top: 24px;
+            margin-bottom: 12px;
+        }
+
+        .legal-section p,
+        .legal-section li {
+            font-family: var(--font-body);
+            font-size: 14px;
+            line-height: 1.85;
+            color: var(--text-muted);
+            font-weight: 300;
+            margin-bottom: 14px;
+        }
+
+        .legal-section ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .legal-section li {
+            position: relative;
+            padding-left: 20px;
+            margin-bottom: 10px;
+        }
+
+        .legal-section li::before {
+            content: '◆';
+            position: absolute;
+            left: 0;
+            color: var(--gold-primary);
+            font-size: 8px;
+            top: 8px;
+        }
+
+        .legal-section strong {
+            color: var(--text-main);
+            font-weight: 500;
+        }
+
+        .legal-section a {
+            color: var(--gold-primary);
+            border-bottom: 1px solid transparent;
+            transition: border-color 0.3s;
+        }
+
+        .legal-section a:hover {
+            border-bottom-color: var(--gold-primary);
+        }
+
+        .legal-callout {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-left: 2px solid var(--gold-primary);
+            padding: 24px 28px;
+            border-radius: 4px;
+            margin: 24px 0;
+        }
+
+        .legal-callout p {
+            margin-bottom: 0;
+        }
+
+        @media (max-width: 640px) {
+            .legal-page { padding: 120px 20px 60px; }
+            .legal-title { font-size: 26px; letter-spacing: 2px; }
+            .legal-section h2 { font-size: 16px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- SVG Definitions from Logo (for reuse) -->
+    <svg width="0" height="0" style="position:absolute;">
+        <defs>
+            <linearGradient id="globalGold" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#FFFDF0"/>
+                <stop offset="20%" stop-color="#FFC300"/>
+                <stop offset="50%" stop-color="#B27300"/>
+                <stop offset="80%" stop-color="#4A2F00"/>
+                <stop offset="100%" stop-color="#0F0900"/>
+            </linearGradient>
+            <filter id="shield3D">
+                <feDropShadow dx="0" dy="20" stdDeviation="16" flood-color="#000000" flood-opacity="1" result="shadow"/>
+                <feGaussianBlur in="SourceAlpha" stdDeviation="2.5" result="blur"/>
+                <feSpecularLighting in="blur" surfaceScale="5" specularConstant="1.8" specularExponent="40" lighting-color="#ffffff" result="specOut">
+                    <fePointLight x="0" y="-50" z="200"/>
+                </feSpecularLighting>
+                <feComposite in="specOut" in2="SourceAlpha" operator="in" result="specOut"/>
+                <feComposite in="SourceGraphic" in2="specOut" operator="arithmetic" k1="0" k2="1" k3="1" k4="0" result="litPaint"/>
+                <feMerge><feMergeNode in="shadow"/><feMergeNode in="litPaint"/></feMerge>
+            </filter>
+            <filter id="highway3D">
+                <feDropShadow dx="0" dy="8" stdDeviation="8" flood-color="#000000" flood-opacity="0.9" result="shadow"/>
+                <feGaussianBlur in="SourceAlpha" stdDeviation="2" result="blur"/>
+                <feSpecularLighting in="blur" surfaceScale="4" specularConstant="1.4" specularExponent="25" lighting-color="#ffffff" result="specOut">
+                    <fePointLight x="0" y="-50" z="200"/>
+                </feSpecularLighting>
+                <feComposite in="specOut" in2="SourceAlpha" operator="in" result="specOut"/>
+                <feComposite in="SourceGraphic" in2="specOut" operator="arithmetic" k1="0" k2="1" k3="1" k4="0" result="litPaint"/>
+                <feMerge><feMergeNode in="shadow"/><feMergeNode in="litPaint"/></feMerge>
+            </filter>
+        </defs>
+    </svg>
+
+    <!-- NAVIGATION (simplified) -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo" style="text-decoration:none;">
+                <svg width="40" height="40" viewBox="0 0 200 200">
+                    <g filter="url(#highway3D)">
+                        <path d="M 10 90 L 50 150 L 100 60 L 150 150 L 190 90" fill="none" stroke="url(#globalGold)" stroke-width="20" stroke-linejoin="round" stroke-linecap="round"/>
+                    </g>
+                    <g filter="url(#shield3D)">
+                        <path d="M 20 40 L 100 180 L 180 40" fill="none" stroke="url(#globalGold)" stroke-width="28" stroke-linejoin="miter" stroke-miterlimit="4" stroke-linecap="round"/>
+                    </g>
+                </svg>
+                <span class="nav-brand">VORTWAY</span>
+            </a>
+
+            <div class="nav-links">
+                <a href="index.html#services" class="nav-link">Paslaugos</a>
+                <a href="index.html#vision" class="nav-link">Vizija</a>
+                <a href="index.html#contact" class="nav-link">Kontaktai</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="legal-page">
+        <a href="index.html" class="legal-back">
+            <i data-lucide="arrow-left" style="width:14px; height:14px;"></i>
+            Grįžti į pradžią
+        </a>
+
+        <div class="legal-header-row">
+            <h1 class="legal-title">PRIVATUMO POLITIKA</h1>
+            <div class="lang-toggle" role="group" aria-label="Language">
+                <a href="privacy.html" hreflang="en">EN</a>
+                <a href="privacy.lt.html" hreflang="lt" class="active" aria-current="page">LT</a>
+            </div>
+        </div>
+        <div class="legal-meta">Atnaujinta: 2026 m. gegužės 4 d.</div>
+
+        <div class="legal-section">
+            <p>
+                VORTWAY Logistics &amp; Solutions („VORTWAY", „mes", „mūsų") gerbia jūsų privatumą
+                ir įsipareigoja saugoti jūsų asmens duomenis. Ši privatumo politika paaiškina, kaip
+                renkame, naudojame, saugome ir apsaugome informaciją, kurią pateikiate per mūsų svetainę
+                <strong>vortway.lt</strong> ir susijusius bendravimo kanalus.
+            </p>
+            <p>
+                Ši politika parengta vadovaujantis Reglamentu (ES) 2016/679 (<strong>Bendruoju duomenų
+                apsaugos reglamentu</strong>, „BDAR") ir Lietuvos Respublikos asmens duomenų teisinės
+                apsaugos įstatymu.
+            </p>
+        </div>
+
+        <div class="legal-section">
+            <h2>1. Duomenų valdytojas</h2>
+            <p>Asmens duomenų valdytojas, atsakingas už jūsų asmeninę informaciją:</p>
+            <div class="legal-callout">
+                <p>
+                    <strong>VORTWAY Logistics &amp; Solutions</strong><br>
+                    Buveinė: Vilnius, Lietuva<br>
+                    El. paštas: <a href="mailto:mvarol@vortway.lt">mvarol@vortway.lt</a><br>
+                    Telefonas: +370 601 73 708
+                </p>
+            </div>
+        </div>
+
+        <div class="legal-section">
+            <h2>2. Kokius duomenis renkame</h2>
+            <p>Renkame tik tuos asmens duomenis, kuriuos pateikiate savanoriškai. Konkrečiai:</p>
+
+            <h3>Užklausų ir kontaktų formos</h3>
+            <ul>
+                <li><strong>Įmonės pavadinimas</strong> — užklausą teikiančiam verslui identifikuoti</li>
+                <li><strong>El. pašto adresas</strong> — atsakyti į jūsų užklausą</li>
+                <li><strong>Užklausos detalės</strong> — žinutė, kurią pateikiate per kontaktų formą</li>
+            </ul>
+
+            <h3>Pasiūlymo skaičiuoklė</h3>
+            <ul>
+                <li>Kilmės miestas, paskirties miestas, krovinio svoris, tūris, tipas ir pristatymo greitis. Šie duomenys yra apdorojami lokaliai jūsų naršyklėje ir <strong>nėra perduodami ar saugomi</strong> mūsų serveriuose.</li>
+            </ul>
+
+            <h3>Techniniai duomenys</h3>
+            <ul>
+                <li>Standartiniai serverio žurnalai gali laikinai užfiksuoti jūsų IP adresą ir naršyklės tipą saugumo tikslais. Šioje svetainėje nenaudojame slapukų ar trečiųjų šalių analitikos.</li>
+            </ul>
+        </div>
+
+        <div class="legal-section">
+            <h2>3. Kodėl tvarkome jūsų duomenis</h2>
+            <p>Asmens duomenis tvarkome šiais teisiniais pagrindais (BDAR 6 straipsnis):</p>
+            <ul>
+                <li><strong>Teisėtas interesas</strong> — atsakyti į verslo užklausas ir pateikti pasiūlymus</li>
+                <li><strong>Ikisutartinės priemonės</strong> — aptarti galimas logistikos paslaugas jūsų prašymu</li>
+                <li><strong>Sutikimas</strong> — kai savanoriškai pateikiate informaciją per mūsų formas</li>
+            </ul>
+        </div>
+
+        <div class="legal-section">
+            <h2>4. Kiek laiko saugome jūsų duomenis</h2>
+            <p>
+                Užklausų duomenys saugomi iki <strong>24 mėnesių</strong> nuo paskutinio kontakto su mumis,
+                nebent būtų užmegztas komercinis santykis — tokiu atveju duomenys saugomi sutartinių
+                santykių laikotarpį pridėjus teisės aktais nustatytą saugojimo laikotarpį pagal Lietuvos
+                komercinę ir mokesčių teisę (paprastai 10 metų apskaitos dokumentams).
+            </p>
+            <p>
+                Bet kuriuo metu galite paprašyti ankstesnio ištrynimo (žr. 6 skyrių).
+            </p>
+        </div>
+
+        <div class="legal-section">
+            <h2>5. Duomenų dalijimasis ir tretieji asmenys</h2>
+            <p>
+                Mes <strong>neparduodame</strong>, nenuomojame ir neperduodame jūsų asmens duomenų.
+                Riboti trečiųjų šalių paslaugų teikėjai, kurie gali atsitiktinai apdoroti techninius
+                duomenis jums lankantis svetainėje:
+            </p>
+            <ul>
+                <li><strong>Google Fonts</strong> — šriftams atvaizduoti (CDN užklausos metu gali gauti jūsų IP adresą)</li>
+                <li><strong>unpkg.com / cdnjs.cloudflare.com</strong> — turinio pristatymo tinklai piktogramoms ir animacijos bibliotekoms</li>
+            </ul>
+            <p>
+                Jūsų asmens duomenų neperduodame už Europos ekonominės erdvės (EEE) ribų.
+            </p>
+        </div>
+
+        <div class="legal-section">
+            <h2>6. Jūsų teisės pagal BDAR</h2>
+            <p>Dėl savo asmens duomenų turite šias teises:</p>
+            <ul>
+                <li><strong>Teisė susipažinti</strong> — gauti apie jus turimų asmens duomenų kopiją</li>
+                <li><strong>Teisė ištaisyti</strong> — pataisyti netikslius ar nepilnus duomenis</li>
+                <li><strong>Teisė ištrinti („teisė būti pamirštam")</strong> — prašyti ištrinti jūsų duomenis</li>
+                <li><strong>Teisė apriboti tvarkymą</strong> — apriboti, kaip tvarkome jūsų duomenis</li>
+                <li><strong>Teisė į duomenų perkeliamumą</strong> — gauti savo duomenis struktūrizuotu, kompiuterio skaitomu formatu</li>
+                <li><strong>Teisė nesutikti</strong> — nesutikti su tvarkymu, grindžiamu teisėtu interesu</li>
+                <li><strong>Teisė atšaukti sutikimą</strong> — bet kuriuo metu, kai tvarkymas grindžiamas sutikimu</li>
+            </ul>
+            <p>
+                Norėdami pasinaudoti bet kuria iš šių teisių, susisiekite su mumis adresu
+                <a href="mailto:mvarol@vortway.lt?subject=BDAR%20Duomen%C5%B3%20U%C5%BEklausa">mvarol@vortway.lt</a>.
+                Atsakysime per 30 dienų.
+            </p>
+        </div>
+
+        <div class="legal-section">
+            <h2>7. Duomenų saugumas ir pranešimas apie pažeidimus</h2>
+            <p>
+                Įgyvendiname tinkamas technines ir organizacines priemones, kad apsaugotume jūsų asmens
+                duomenis nuo neteisėtos prieigos, pakeitimo, atskleidimo ar sunaikinimo. Bendravimas su
+                mūsų svetaine yra apsaugotas HTTPS šifravimu.
+            </p>
+            <h3>Pranešimas apie pažeidimus (BDAR 33 straipsnis)</h3>
+            <p>
+                Įvykus asmens duomenų saugumo pažeidimui, kuris gali kelti grėsmę jūsų teisėms ir
+                laisvėms, mes:
+            </p>
+            <ul>
+                <li>Pranešime <strong>Valstybinei duomenų apsaugos inspekcijai (VDAI)</strong> nepagrįstai nedelsiant ir, jei įmanoma, per <strong>72 valandas</strong> nuo tada, kai sužinojome apie pažeidimą (BDAR 33 str.)</li>
+                <li>Pranešime paveiktiems duomenų subjektams nepagrįstai nedelsiant, kai pažeidimas gali sukelti <strong>didelę riziką</strong> jų teisėms ir laisvėms (BDAR 34 str.)</li>
+                <li>Dokumentuosime visus pažeidimus viduje, įskaitant tuos, apie kuriuos nepranešta priežiūros institucijai</li>
+            </ul>
+            <p>
+                Jei manote, kad jūsų asmens duomenys buvo pažeisti, nedelsiant susisiekite su mumis:
+                <a href="mailto:mvarol@vortway.lt?subject=Duomen%C5%B3%20pažeidimo%20pranešimas">mvarol@vortway.lt</a>.
+            </p>
+        </div>
+
+        <div class="legal-section">
+            <h2>8. Slapukai</h2>
+            <p>
+                Ši svetainė <strong>nenaudoja</strong> slapukų, pikselių žymų ar panašių sekimo
+                technologijų. Mes nevykdome reklamos ar analitikos scenarijų.
+            </p>
+        </div>
+
+        <div class="legal-section">
+            <h2>9. Šios politikos pakeitimai</h2>
+            <p>
+                Šią privatumo politiką galime kartkartėmis atnaujinti. Šios politikos viršuje esanti
+                data „Atnaujinta" rodo, kada buvo padaryta paskutinė redakcija. Apie esminius pakeitimus
+                pranešime savo pradiniame puslapyje.
+            </p>
+        </div>
+
+        <div class="legal-section">
+            <h2>10. Priežiūros institucija</h2>
+            <p>
+                Jei manote, kad jūsų duomenų apsaugos teisės buvo pažeistos, turite teisę pateikti
+                skundą Lietuvos duomenų apsaugos institucijai:
+            </p>
+            <div class="legal-callout">
+                <p>
+                    <strong>Valstybinė duomenų apsaugos inspekcija (VDAI)</strong><br>
+                    L. Sapiegos g. 17, LT-10312 Vilnius, Lietuva<br>
+                    El. paštas: <a href="mailto:ada@ada.lt">ada@ada.lt</a><br>
+                    Svetainė: <a href="https://vdai.lrv.lt" target="_blank" rel="noopener">vdai.lrv.lt</a>
+                </p>
+            </div>
+        </div>
+
+        <div class="legal-section">
+            <h2>11. Kontaktai</h2>
+            <p>
+                Visais klausimais dėl šios privatumo politikos arba dėl to, kaip tvarkome jūsų asmens
+                duomenis, prašome susisiekti:
+            </p>
+            <div class="legal-callout">
+                <p>
+                    <strong>VORTWAY Logistics &amp; Solutions</strong><br>
+                    El. paštas: <a href="mailto:mvarol@vortway.lt?subject=Privatumo%20U%C5%BEklausa">mvarol@vortway.lt</a><br>
+                    Telefonas: +370 601 73 708
+                </p>
+            </div>
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-grid">
+            <div class="footer-col">
+                <h4 class="footer-heading">NAVIGACIJA</h4>
+                <a href="index.html#services" class="footer-link">Paslaugos</a>
+                <a href="index.html#vision" class="footer-link">Vizija</a>
+                <a href="index.html#contact" class="footer-link">Kontaktai</a>
+            </div>
+            <div class="footer-col">
+                <h4 class="footer-heading">TEISINĖ INFORMACIJA</h4>
+                <a href="privacy.lt.html" class="footer-link">Privatumo politika</a>
+                <a href="terms.html" class="footer-link">Paslaugų teikimo sąlygos</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="copyright">Autorių teisės © 2026 Vortway Logistics &amp; Solutions</div>
+            <div class="system-status"><span class="status-dot"></span> VISOS SISTEMOS VEIKIA</div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            if (window.lucide) lucide.createIcons();
+
+            const navbar = document.getElementById('navbar');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    navbar.classList.add('scrolled');
+                } else {
+                    navbar.classList.remove('scrolled');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

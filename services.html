@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Services | VORTWAY Logistics & Solutions</title>
+    <meta name="description" content="Vortway logistics services — FTL, LTL, intermodal transport, and customs brokerage across 50+ European corridors from Vilnius, Lithuania.">
+    <link rel="canonical" href="https://vortway.lt/services.html">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800;900&family=Montserrat:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        .services-page {
+            padding: 140px var(--padding-desktop) 100px;
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        .services-hero {
+            margin-bottom: 80px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 60px;
+        }
+
+        .services-eyebrow {
+            font-family: var(--font-body);
+            font-size: 11px;
+            letter-spacing: 4px;
+            color: var(--gold-primary);
+            text-transform: uppercase;
+            margin-bottom: 20px;
+        }
+
+        .services-title {
+            font-family: var(--font-heading);
+            font-size: clamp(32px, 5vw, 54px);
+            letter-spacing: 4px;
+            background: linear-gradient(to bottom, #ffffff 30%, #C59E5B 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 24px;
+            line-height: 1.15;
+        }
+
+        .services-intro {
+            font-family: var(--font-body);
+            font-size: 15px;
+            line-height: 1.8;
+            color: var(--text-muted);
+            font-weight: 300;
+            max-width: 680px;
+        }
+
+        /* Service section */
+        .service-block {
+            margin-bottom: 80px;
+            padding-bottom: 80px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .service-block:last-of-type {
+            border-bottom: none;
+        }
+
+        .service-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+            margin-bottom: 28px;
+        }
+
+        .service-icon-wrap {
+            width: 52px;
+            height: 52px;
+            background: rgba(212, 175, 55, 0.08);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            color: var(--gold-primary);
+        }
+
+        .service-block h2 {
+            font-family: var(--font-heading);
+            font-size: 22px;
+            letter-spacing: 3px;
+            color: var(--text-main);
+            margin-bottom: 6px;
+        }
+
+        .service-tag {
+            font-family: var(--font-body);
+            font-size: 10px;
+            letter-spacing: 3px;
+            color: var(--gold-dim);
+            text-transform: uppercase;
+        }
+
+        .service-desc {
+            font-family: var(--font-body);
+            font-size: 14px;
+            line-height: 1.9;
+            color: var(--text-muted);
+            font-weight: 300;
+            margin-bottom: 32px;
+            max-width: 720px;
+        }
+
+        .service-cols {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+        }
+
+        .service-col h3 {
+            font-family: var(--font-body);
+            font-size: 10px;
+            letter-spacing: 3px;
+            color: var(--gold-primary);
+            text-transform: uppercase;
+            margin-bottom: 14px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .service-col ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .service-col li {
+            font-family: var(--font-body);
+            font-size: 13px;
+            line-height: 1.7;
+            color: var(--text-muted);
+            font-weight: 300;
+            padding: 6px 0 6px 18px;
+            position: relative;
+            border-bottom: 1px solid rgba(20, 26, 23, 0.6);
+        }
+
+        .service-col li:last-child { border-bottom: none; }
+
+        .service-col li::before {
+            content: '◆';
+            position: absolute;
+            left: 0;
+            color: var(--gold-primary);
+            font-size: 6px;
+            top: 12px;
+        }
+
+        /* Transit times table */
+        .transit-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 8px;
+            font-family: var(--font-body);
+            font-size: 12px;
+        }
+
+        .transit-table th {
+            text-align: left;
+            padding: 8px 12px;
+            font-size: 9px;
+            letter-spacing: 2px;
+            color: var(--gold-dim);
+            text-transform: uppercase;
+            font-weight: 600;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .transit-table td {
+            padding: 9px 12px;
+            color: var(--text-muted);
+            font-weight: 300;
+            border-bottom: 1px solid rgba(20, 26, 23, 0.6);
+        }
+
+        .transit-table tr:last-child td { border-bottom: none; }
+
+        .transit-table td:last-child {
+            color: var(--gold-dim);
+            font-weight: 500;
+            text-align: right;
+        }
+
+        .cta-strip {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-left: 2px solid var(--gold-primary);
+            padding: 32px 36px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 24px;
+            flex-wrap: wrap;
+            margin-top: 60px;
+        }
+
+        .cta-strip p {
+            font-family: var(--font-body);
+            font-size: 14px;
+            color: var(--text-muted);
+            margin: 0;
+        }
+
+        @media (max-width: 768px) {
+            .services-page { padding: 120px 20px 60px; }
+            .service-cols { grid-template-columns: 1fr; gap: 24px; }
+            .cta-strip { flex-direction: column; align-items: flex-start; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- SVG Definitions -->
+    <svg width="0" height="0" style="position:absolute;">
+        <defs>
+            <linearGradient id="globalGold" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#FFFDF0"/>
+                <stop offset="20%" stop-color="#FFC300"/>
+                <stop offset="50%" stop-color="#B27300"/>
+                <stop offset="80%" stop-color="#4A2F00"/>
+                <stop offset="100%" stop-color="#0F0900"/>
+            </linearGradient>
+            <filter id="shield3D">
+                <feDropShadow dx="0" dy="20" stdDeviation="16" flood-color="#000000" flood-opacity="1" result="shadow"/>
+                <feGaussianBlur in="SourceAlpha" stdDeviation="2.5" result="blur"/>
+                <feSpecularLighting in="blur" surfaceScale="5" specularConstant="1.8" specularExponent="40" lighting-color="#ffffff" result="specOut">
+                    <fePointLight x="0" y="-50" z="200"/>
+                </feSpecularLighting>
+                <feComposite in="specOut" in2="SourceAlpha" operator="in" result="specOut"/>
+                <feComposite in="SourceGraphic" in2="specOut" operator="arithmetic" k1="0" k2="1" k3="1" k4="0" result="litPaint"/>
+                <feMerge><feMergeNode in="shadow"/><feMergeNode in="litPaint"/></feMerge>
+            </filter>
+            <filter id="highway3D">
+                <feDropShadow dx="0" dy="8" stdDeviation="8" flood-color="#000000" flood-opacity="0.9" result="shadow"/>
+                <feGaussianBlur in="SourceAlpha" stdDeviation="2" result="blur"/>
+                <feSpecularLighting in="blur" surfaceScale="4" specularConstant="1.4" specularExponent="25" lighting-color="#ffffff" result="specOut">
+                    <fePointLight x="0" y="-50" z="200"/>
+                </feSpecularLighting>
+                <feComposite in="specOut" in2="SourceAlpha" operator="in" result="specOut"/>
+                <feComposite in="SourceGraphic" in2="specOut" operator="arithmetic" k1="0" k2="1" k3="1" k4="0" result="litPaint"/>
+                <feMerge><feMergeNode in="shadow"/><feMergeNode in="litPaint"/></feMerge>
+            </filter>
+        </defs>
+    </svg>
+
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo" style="text-decoration:none;">
+                <svg width="40" height="40" viewBox="0 0 200 200">
+                    <g filter="url(#highway3D)">
+                        <path d="M 10 90 L 50 150 L 100 60 L 150 150 L 190 90" fill="none" stroke="url(#globalGold)" stroke-width="20" stroke-linejoin="round" stroke-linecap="round"/>
+                    </g>
+                    <g filter="url(#shield3D)">
+                        <path d="M 20 40 L 100 180 L 180 40" fill="none" stroke="url(#globalGold)" stroke-width="28" stroke-linejoin="miter" stroke-miterlimit="4" stroke-linecap="round"/>
+                    </g>
+                </svg>
+                <span class="nav-brand">VORTWAY</span>
+            </a>
+            <div class="nav-links">
+                <a href="index.html#services" class="nav-link" style="color: var(--gold-primary);">Services</a>
+                <a href="index.html#vision" class="nav-link">Vision</a>
+                <a href="index.html#contact" class="nav-link">Contact</a>
+                <a href="about.html" class="nav-link">About</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="services-page">
+
+        <!-- HERO -->
+        <div class="services-hero">
+            <p class="services-eyebrow">Operational Excellence · 50+ European Corridors</p>
+            <h1 class="services-title">FREIGHT FORWARDING.<br>WITHOUT COMPROMISE.</h1>
+            <p class="services-intro">
+                From full truckload moves to complex customs brokerage, every Vortway service is built around
+                one principle: your cargo arrives on time, fully documented, and without surprises.
+                Below is a detailed breakdown of what we do and how.
+            </p>
+        </div>
+
+        <!-- SERVICE 1: FTL -->
+        <div class="service-block">
+            <div class="service-header">
+                <div class="service-icon-wrap">
+                    <i data-lucide="truck" style="width:26px;height:26px;"></i>
+                </div>
+                <div>
+                    <h2>FULL TRUCKLOAD</h2>
+                    <span class="service-tag">FTL · Dedicated Capacity</span>
+                </div>
+            </div>
+            <p class="service-desc">
+                Dedicated truck capacity for full loads — your cargo occupies the entire vehicle from origin
+                to destination with no intermediate stops or co-loading. Ideal for time-sensitive, high-value,
+                or large-volume shipments where speed and security are non-negotiable.
+            </p>
+            <div class="service-cols">
+                <div class="service-col">
+                    <h3>Key Benefits</h3>
+                    <ul>
+                        <li>Direct routing — no transhipment</li>
+                        <li>Faster transit vs. LTL on same corridors</li>
+                        <li>Full cargo security and accountability</li>
+                        <li>Temperature-controlled options (ATP)</li>
+                        <li>ADR-certified vehicles available</li>
+                        <li>GPS tracking on all vehicles</li>
+                    </ul>
+                </div>
+                <div class="service-col">
+                    <h3>Required Documents</h3>
+                    <ul>
+                        <li>CMR consignment note</li>
+                        <li>Commercial invoice</li>
+                        <li>Packing list</li>
+                        <li>EUR.1 / T1 transit declaration (if applicable)</li>
+                        <li>ADR transport document (hazmat only)</li>
+                        <li>ATP certificate (temperature cargo)</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="service-cols" style="margin-top: 28px;">
+                <div class="service-col">
+                    <h3>Typical Transit Times from Vilnius</h3>
+                    <table class="transit-table">
+                        <thead>
+                            <tr><th>Destination</th><th>Transit</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Warsaw, Poland</td><td>1 day</td></tr>
+                            <tr><td>Berlin, Germany</td><td>2–3 days</td></tr>
+                            <tr><td>Amsterdam, Netherlands</td><td>3–4 days</td></tr>
+                            <tr><td>Paris, France</td><td>3–4 days</td></tr>
+                            <tr><td>Madrid, Spain</td><td>5–6 days</td></tr>
+                            <tr><td>Istanbul, Turkey</td><td>4–5 days</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- SERVICE 2: LTL -->
+        <div class="service-block">
+            <div class="service-header">
+                <div class="service-icon-wrap">
+                    <i data-lucide="package" style="width:26px;height:26px;"></i>
+                </div>
+                <div>
+                    <h2>LESS THAN TRUCKLOAD</h2>
+                    <span class="service-tag">LTL · Consolidated Freight</span>
+                </div>
+            </div>
+            <p class="service-desc">
+                Cost-effective consolidated freight for partial loads. Your shipment shares vehicle capacity
+                with other non-competing cargo, allowing you to pay only for the space you need while
+                maintaining reliable transit times across our European network.
+            </p>
+            <div class="service-cols">
+                <div class="service-col">
+                    <h3>Key Benefits</h3>
+                    <ul>
+                        <li>Lower cost per unit vs. FTL for partial loads</li>
+                        <li>Regular scheduled departures on key corridors</li>
+                        <li>Suitable for 100kg – 6,000kg shipments</li>
+                        <li>Pallet and non-palletised options</li>
+                        <li>Cross-dock consolidation in Vilnius hub</li>
+                        <li>Digital proof of delivery (ePOD)</li>
+                    </ul>
+                </div>
+                <div class="service-col">
+                    <h3>Required Documents</h3>
+                    <ul>
+                        <li>CMR consignment note</li>
+                        <li>Commercial invoice + packing list</li>
+                        <li>Cargo dimensions and weight declaration</li>
+                        <li>EUR.1 certificate (third-country goods)</li>
+                        <li>Dangerous goods declaration (if applicable)</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="service-cols" style="margin-top: 28px;">
+                <div class="service-col">
+                    <h3>Typical Transit Times (LTL, includes consolidation)</h3>
+                    <table class="transit-table">
+                        <thead>
+                            <tr><th>Corridor</th><th>Transit</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Vilnius – Warsaw</td><td>2–3 days</td></tr>
+                            <tr><td>Vilnius – Berlin</td><td>3–4 days</td></tr>
+                            <tr><td>Vilnius – Amsterdam</td><td>4–5 days</td></tr>
+                            <tr><td>Vilnius – Vienna</td><td>3–4 days</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- SERVICE 3: INTERMODAL -->
+        <div class="service-block">
+            <div class="service-header">
+                <div class="service-icon-wrap">
+                    <i data-lucide="train-front" style="width:26px;height:26px;"></i>
+                </div>
+                <div>
+                    <h2>INTERMODAL TRANSPORT</h2>
+                    <span class="service-tag">Road · Rail · Sea · Combined</span>
+                </div>
+            </div>
+            <p class="service-desc">
+                Combined transport solutions that leverage road, rail, and sea to optimise cost, transit time,
+                and carbon footprint simultaneously. Particularly suited for high-volume, long-distance, or
+                environmentally-focused logistics programmes where rail or sea legs offer material advantages.
+            </p>
+            <div class="service-cols">
+                <div class="service-col">
+                    <h3>Key Benefits</h3>
+                    <ul>
+                        <li>Up to 30% cost reduction on long-haul routes</li>
+                        <li>Lower CO₂ vs. full road transport</li>
+                        <li>Scalable for high-volume programmes</li>
+                        <li>Rail hub access: Vilnius, Minsk, Warsaw</li>
+                        <li>Port connections: Klaipėda, Gdańsk, Hamburg</li>
+                        <li>Single point of contact for all modes</li>
+                    </ul>
+                </div>
+                <div class="service-col">
+                    <h3>Required Documents</h3>
+                    <ul>
+                        <li>CMR (road leg) + CIM waybill (rail leg)</li>
+                        <li>Bill of Lading (sea leg, if applicable)</li>
+                        <li>Commercial invoice and packing list</li>
+                        <li>Customs declarations for each border crossing</li>
+                        <li>Intermodal transport unit (ITU) declaration</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="service-cols" style="margin-top: 28px;">
+                <div class="service-col">
+                    <h3>Example Intermodal Corridors</h3>
+                    <table class="transit-table">
+                        <thead>
+                            <tr><th>Corridor</th><th>Mode</th><th>Transit</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Vilnius – Hamburg</td><td>Road + Rail</td><td>3–4 days</td></tr>
+                            <tr><td>Vilnius – Rotterdam</td><td>Road + Rail</td><td>4–5 days</td></tr>
+                            <tr><td>Klaipėda – Hamburg</td><td>Sea (RoRo)</td><td>2–3 days</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- SERVICE 4: CUSTOMS -->
+        <div class="service-block">
+            <div class="service-header">
+                <div class="service-icon-wrap">
+                    <i data-lucide="file-badge" style="width:26px;height:26px;"></i>
+                </div>
+                <div>
+                    <h2>CUSTOMS BROKERAGE</h2>
+                    <span class="service-tag">EU Declarations · Compliance · Documentation</span>
+                </div>
+            </div>
+            <p class="service-desc">
+                In-house customs expertise covering EU import and export declarations, tariff classification,
+                duty optimisation, and full documentation management. We liaise directly with Lithuanian
+                customs authorities and coordinate third-country procedures through our vetted partner network.
+            </p>
+            <div class="service-cols">
+                <div class="service-col">
+                    <h3>Key Benefits</h3>
+                    <ul>
+                        <li>Authorised Economic Operator (AEO) partnerships</li>
+                        <li>HS tariff classification expertise</li>
+                        <li>Duty drawback and preference scheme advice</li>
+                        <li>T1 transit declaration management</li>
+                        <li>ICS2 Entry Summary Declaration filing</li>
+                        <li>Customs bond and guarantee arrangements</li>
+                    </ul>
+                </div>
+                <div class="service-col">
+                    <h3>Required Documents</h3>
+                    <ul>
+                        <li>Commercial invoice with HS codes</li>
+                        <li>Packing list with net/gross weights</li>
+                        <li>Certificate of origin (EUR.1, Form A, or GSP)</li>
+                        <li>Phytosanitary / veterinary certificates (if applicable)</li>
+                        <li>EORI number of importer/exporter</li>
+                        <li>Power of attorney for customs representation</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- CTA -->
+        <div class="cta-strip">
+            <p>Ready to discuss a specific shipment or service requirement? We respond within 24 hours.</p>
+            <a href="index.html#contact" class="btn btn-primary">GET IN TOUCH</a>
+        </div>
+
+    </main>
+
+    <footer class="footer">
+        <div class="footer-grid">
+            <div class="footer-col">
+                <h4 class="footer-heading">NAVIGATION</h4>
+                <a href="index.html#services" class="footer-link">Services Overview</a>
+                <a href="services.html" class="footer-link">Services Detail</a>
+                <a href="index.html#vision" class="footer-link">Vision</a>
+                <a href="index.html#contact" class="footer-link">Contact</a>
+                <a href="about.html" class="footer-link">About</a>
+            </div>
+            <div class="footer-col">
+                <h4 class="footer-heading">LEGAL</h4>
+                <a href="privacy.html" class="footer-link">Privacy Policy</a>
+                <a href="terms.html" class="footer-link">Terms of Service</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="copyright">Copyright © 2026 Vortway Logistics &amp; Solutions</div>
+            <div class="system-status"><span class="status-dot"></span> ALL SYSTEMS OPERATIONAL</div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            if (window.lucide) lucide.createIcons();
+            const navbar = document.getElementById('navbar');
+            window.addEventListener('scroll', () => {
+                navbar.classList.toggle('scrolled', window.scrollY > 50);
+            });
+        });
+    </script>
+</body>
+</html>

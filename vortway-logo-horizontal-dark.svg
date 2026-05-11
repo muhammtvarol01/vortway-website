@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="700" height="200" viewBox="0 0 700 200">
+  <defs>
+    <linearGradient id="globalGold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFDF0"/>
+      <stop offset="20%" stop-color="#FFC300"/>
+      <stop offset="50%" stop-color="#B27300"/>
+      <stop offset="80%" stop-color="#4A2F00"/>
+      <stop offset="100%" stop-color="#0F0900"/>
+    </linearGradient>
+
+    <linearGradient id="textGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="40%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#D4AF37"/>
+    </linearGradient>
+
+    <filter id="shield3D" x="-50%" y="-30%" width="200%" height="200%">
+      <feDropShadow dx="0" dy="20" stdDeviation="16" flood-color="#000000" flood-opacity="1" result="shadow"/>
+      <feGaussianBlur in="SourceAlpha" stdDeviation="2.5" result="blur"/>
+      <feSpecularLighting in="blur" surfaceScale="5" specularConstant="1.8" specularExponent="40" lighting-color="#ffffff" result="specOut">
+        <fePointLight x="0" y="-50" z="200"/>
+      </feSpecularLighting>
+      <feComposite in="specOut" in2="SourceAlpha" operator="in" result="specOut"/>
+      <feComposite in="SourceGraphic" in2="specOut" operator="arithmetic" k1="0" k2="1" k3="1" k4="0" result="litPaint"/>
+      <feMerge>
+        <feMergeNode in="shadow"/>
+        <feMergeNode in="litPaint"/>
+      </feMerge>
+    </filter>
+
+    <filter id="highway3D" x="-50%" y="-30%" width="200%" height="200%">
+      <feDropShadow dx="0" dy="8" stdDeviation="8" flood-color="#000000" flood-opacity="0.9" result="shadow"/>
+      <feGaussianBlur in="SourceAlpha" stdDeviation="2" result="blur"/>
+      <feSpecularLighting in="blur" surfaceScale="4" specularConstant="1.4" specularExponent="25" lighting-color="#ffffff" result="specOut">
+        <fePointLight x="0" y="-50" z="200"/>
+      </feSpecularLighting>
+      <feComposite in="specOut" in2="SourceAlpha" operator="in" result="specOut"/>
+      <feComposite in="SourceGraphic" in2="specOut" operator="arithmetic" k1="0" k2="1" k3="1" k4="0" result="litPaint"/>
+      <feMerge>
+        <feMergeNode in="shadow"/>
+        <feMergeNode in="litPaint"/>
+      </feMerge>
+    </filter>
+
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@800&amp;family=Montserrat:wght@300&amp;display=swap');
+    </style>
+  </defs>
+
+  <!-- Dark Background -->
+  <rect width="700" height="200" fill="#030504"/>
+
+  <!-- Logo Mark (left side, scaled to fit) -->
+  <g transform="translate(40, 15) scale(0.85)">
+    <g filter="url(#highway3D)">
+      <path d="M 10 90 L 50 150 L 100 60 L 150 150 L 190 90"
+            fill="none" stroke="url(#globalGold)" stroke-width="20"
+            stroke-linejoin="round" stroke-linecap="round"/>
+      <path d="M 10 90 L 50 150 L 100 60 L 150 150 L 190 90"
+            fill="none" stroke="#ffffff" stroke-width="2"
+            stroke-dasharray="6 6" stroke-linejoin="round"
+            stroke-linecap="round" opacity="0.5"/>
+    </g>
+    <g filter="url(#shield3D)">
+      <path d="M 20 40 L 100 180 L 180 40"
+            fill="none" stroke="url(#globalGold)" stroke-width="28"
+            stroke-linejoin="miter" stroke-miterlimit="4"
+            stroke-linecap="round"/>
+    </g>
+  </g>
+
+  <!-- Gold Divider -->
+  <line x1="280" y1="50" x2="280" y2="150"
+        stroke="url(#globalGold)" stroke-width="1" opacity="0.3"/>
+
+  <!-- Text Group (right side) -->
+  <text x="320" y="105" text-anchor="start"
+        font-family="Cinzel, serif"
+        font-weight="800"
+        font-size="42"
+        letter-spacing="16"
+        fill="url(#textGradient)">VORTWAY</text>
+
+  <text x="320" y="135" text-anchor="start"
+        font-family="Montserrat, sans-serif"
+        font-weight="300"
+        font-size="10"
+        letter-spacing="12"
+        fill="#D4AF37">LOGISTICS &amp; SOLUTIONS</text>
+</svg>

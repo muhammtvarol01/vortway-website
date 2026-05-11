@@ -1,0 +1,179 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - img [ref=e3]
+    - generic [ref=e10]: VORTWAY
+  - img
+  - navigation "Main navigation" [ref=e11]:
+    - generic [ref=e12]:
+      - generic [ref=e13]:
+        - img [ref=e14]
+        - generic [ref=e19]: VORTWAY
+      - generic [ref=e20]:
+        - link "Services" [ref=e21] [cursor=pointer]:
+          - /url: "#services"
+        - link "Vision" [ref=e22] [cursor=pointer]:
+          - /url: "#vision"
+        - link "Contact" [ref=e23] [cursor=pointer]:
+          - /url: "#contact"
+        - button "TRACK" [ref=e25] [cursor=pointer]:
+          - img [ref=e26]
+          - generic [ref=e29]: TRACK
+        - button "EN" [ref=e31] [cursor=pointer]:
+          - text: EN
+          - img [ref=e32]
+  - main [ref=e34]:
+    - generic [ref=e35]:
+      - generic [ref=e36]:
+        - heading "V O R T W A Y" [level=1] [ref=e37]:
+          - generic [ref=e38]: V
+          - generic [ref=e39]: O
+          - generic [ref=e40]: R
+          - generic [ref=e41]: T
+          - generic [ref=e42]: W
+          - generic [ref=e43]: A
+          - generic [ref=e44]: "Y"
+        - heading "LIMITLESS LOGISTICS" [level=2] [ref=e45]
+        - paragraph [ref=e46]:
+          - text: Where precision meets planetary scale.
+          - text: We do not merely move freight;
+          - text: we architect the flow of global commerce.
+        - generic [ref=e47]:
+          - button "INITIATE QUOTE" [ref=e48] [cursor=pointer]
+          - button "CONNECT" [ref=e49] [cursor=pointer]
+      - generic [ref=e51]: SCROLL TO EXPLORE
+    - generic [ref=e55]:
+      - generic [ref=e56]: VILNIUS • BERLIN • PARIS • LONDON • ISTANBUL • AMSTERDAM • VIENNA • MADRID • BRUSSELS • PRAGUE • ROME • RIGA • HELSINKI • STOCKHOLM • DUBLIN •
+      - generic [ref=e57]: VILNIUS • BERLIN • PARIS • LONDON • ISTANBUL • AMSTERDAM • VIENNA • MADRID • BRUSSELS • PRAGUE • ROME • RIGA • HELSINKI • STOCKHOLM • DUBLIN •
+    - generic [ref=e58]:
+      - generic [ref=e59]:
+        - heading "OPERATIONAL EXCELLENCE" [level=2] [ref=e60]
+        - paragraph [ref=e61]: Three pillars of uncompromised logistics mastery.
+      - generic [ref=e62]:
+        - generic [ref=e63]:
+          - img [ref=e65]
+          - heading "Seasoned Expertise, Dynamic Perspective" [level=3] [ref=e75]
+          - paragraph [ref=e76]: Our new presence in the sector means our energy is fresh, while decades of collective experience prove our steps are solid. We navigate the complex world of logistics with a dynamic vision and mature expertise, free from cumbersome bureaucracy.
+        - generic [ref=e77]:
+          - img [ref=e79]
+          - heading "Trust-Driven Strategic Partnerships" [level=3] [ref=e82]
+          - paragraph [ref=e83]: We view our clients not as mere business files, but as long-term strategic partners. The trust we build through transparent communication and integrity always takes precedence over short-term gains. We grow alongside you.
+        - generic [ref=e84]:
+          - img [ref=e86]
+          - heading "Unwavering Service Dedication" [level=3] [ref=e89]
+          - paragraph [ref=e90]: We understand the commercial value behind every cargo and the critical importance of time. Delivering a flawless operation and seamless service is not just our business model; it is our fundamental promise to you.
+      - generic [ref=e91]:
+        - generic [ref=e92]:
+          - img [ref=e93]
+          - generic [ref=e98]: Full Truckload (FTL)
+        - generic [ref=e99]:
+          - img [ref=e100]
+          - generic [ref=e104]: Less Than Truckload (LTL)
+        - generic [ref=e105]:
+          - img [ref=e106]
+          - generic [ref=e113]: Intermodal Solutions
+        - generic [ref=e114]:
+          - img [ref=e115]
+          - generic [ref=e120]: Customs Brokerage
+    - generic [ref=e122]:
+      - generic [ref=e123]:
+        - generic [ref=e124]: "0"
+        - generic [ref=e125]: European Corridors
+      - generic [ref=e126]:
+        - generic [ref=e127]: "0"
+        - generic [ref=e128]: Operational Support
+      - generic [ref=e129]:
+        - generic [ref=e130]: "0"
+        - generic [ref=e131]: Years Collective Experience
+      - generic [ref=e132]:
+        - generic [ref=e133]: "0"
+        - generic [ref=e134]: On-Time Delivery Rate
+    - generic [ref=e137]:
+      - heading "GLOBAL CORRIDORS" [level=2] [ref=e138]
+      - heading "INFINITE PARTNERSHIPS" [level=3] [ref=e139]
+      - paragraph [ref=e140]: Anchored in European excellence, we are scaling toward strategic global connectivity. Premium partnerships, emerging markets, and visionary infrastructure investments drive our expansion.
+      - paragraph [ref=e141]:
+        - text: Operations across 50+ European freight corridors.
+        - text: Accepting strategic global logistics inquiries.
+    - generic [ref=e148]:
+      - generic [ref=e149]:
+        - heading "TRUSTED PARTNERSHIPS" [level=2] [ref=e150]
+        - paragraph [ref=e151]: What our partners say about working with Vortway.
+      - generic [ref=e153]:
+        - paragraph [ref=e154]: "\"Vortway's responsiveness and dedication transformed our European supply chain. A partner that truly understands urgency.\""
+        - generic [ref=e155]:
+          - generic [ref=e156]: Marcus Weber
+          - generic [ref=e157]: Supply Chain Director
+      - generic [ref=e158]:
+        - button "Testimonial 1" [ref=e159] [cursor=pointer]
+        - button "Testimonial 2" [ref=e160] [cursor=pointer]
+        - button "Testimonial 3" [ref=e161] [cursor=pointer]
+    - generic [ref=e163]:
+      - generic [ref=e164]:
+        - heading "INITIATE PARTNERSHIP" [level=2] [ref=e165]
+        - paragraph [ref=e166]: Connect with our logistics coordination team.
+      - generic [ref=e167]:
+        - generic [ref=e169]:
+          - generic [ref=e170]:
+            - generic [ref=e171]: Company Name *
+            - textbox "Company Name *" [ref=e172]:
+              - /placeholder: ...
+          - generic [ref=e173]:
+            - generic [ref=e174]: Email Address *
+            - textbox "Email Address *" [ref=e175]:
+              - /placeholder: ...
+          - generic [ref=e176]:
+            - generic [ref=e177]: Inquiry Details *
+            - textbox "Inquiry Details *" [ref=e178]:
+              - /placeholder: ...
+          - button "TRANSMIT" [ref=e179] [cursor=pointer]
+        - generic [ref=e180]:
+          - generic [ref=e181]:
+            - img [ref=e182]
+            - generic [ref=e184]:
+              - generic [ref=e185]: Phone
+              - generic [ref=e186]: +370 601 73 708
+              - generic [ref=e187]: +370 685 46 399 (WP)
+          - generic [ref=e188]:
+            - img [ref=e189]
+            - generic [ref=e192]:
+              - generic [ref=e193]: Email
+              - generic [ref=e194]: mvarol@vortway.lt
+          - generic [ref=e195]:
+            - img [ref=e196]
+            - generic [ref=e199]:
+              - generic [ref=e200]: Headquarters
+              - generic [ref=e201]: Vilnius, Lithuania
+  - contentinfo [ref=e202]:
+    - generic [ref=e203]:
+      - generic [ref=e204]:
+        - heading "NAVIGATION" [level=4] [ref=e205]
+        - link "Services" [ref=e206] [cursor=pointer]:
+          - /url: "#services"
+        - link "Vision" [ref=e207] [cursor=pointer]:
+          - /url: "#vision"
+        - link "Contact" [ref=e208] [cursor=pointer]:
+          - /url: "#contact"
+      - generic [ref=e209]:
+        - heading "LEGAL" [level=4] [ref=e210]
+        - link "Privacy Policy" [ref=e211] [cursor=pointer]:
+          - /url: privacy.html
+        - link "Terms of Service" [ref=e212] [cursor=pointer]:
+          - /url: mailto:mvarol@vortway.lt?subject=Terms%20of%20Service%20Inquiry
+        - link "Compliance" [ref=e213] [cursor=pointer]:
+          - /url: mailto:mvarol@vortway.lt?subject=Compliance%20Inquiry
+    - generic [ref=e214]:
+      - generic [ref=e215]: Copyright © 2026 Vortway Logistics & Solutions
+      - generic [ref=e216]: ALL SYSTEMS OPERATIONAL
+  - option "General Cargo" [selected]
+  - option "Fragile"
+  - option "Perishable"
+  - option "Automotive"
+  - option "Hazmat"
+  - option "Standard" [selected]
+  - option "Express"
+  - option "Overnight"
+  - generic [ref=e218]:
+    - img [ref=e219]
+    - generic [ref=e222]: Your inquiry has been transmitted.
+  - button "Back to top":
+    - img

@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terms of Service | VORTWAY</title>
+
+    <link rel="canonical" href="https://vortway.lt/terms.html">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800;900&family=Montserrat:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        .legal-page {
+            padding: 140px var(--padding-desktop) 80px;
+            max-width: 860px;
+            margin: 0 auto;
+        }
+
+        .legal-back {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--gold-dim);
+            font-size: 11px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 40px;
+            transition: color 0.3s;
+        }
+
+        .legal-back:hover { color: var(--gold-primary); }
+
+        .legal-title {
+            font-family: var(--font-heading);
+            font-size: 36px;
+            letter-spacing: 4px;
+            background: linear-gradient(to bottom, #ffffff 40%, #C59E5B 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .legal-meta {
+            font-size: 11px;
+            letter-spacing: 2px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            margin-bottom: 50px;
+            padding-bottom: 30px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .legal-section {
+            margin-bottom: 40px;
+        }
+
+        .legal-section h2 {
+            font-family: var(--font-heading);
+            font-size: 18px;
+            letter-spacing: 2px;
+            color: var(--gold-primary);
+            margin-bottom: 16px;
+        }
+
+        .legal-section h3 {
+            font-family: var(--font-body);
+            font-size: 13px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--gold-dim);
+            font-weight: 600;
+            margin-top: 24px;
+            margin-bottom: 12px;
+        }
+
+        .legal-section p,
+        .legal-section li {
+            font-family: var(--font-body);
+            font-size: 14px;
+            line-height: 1.85;
+            color: var(--text-muted);
+            font-weight: 300;
+            margin-bottom: 14px;
+        }
+
+        .legal-section ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .legal-section li {
+            position: relative;
+            padding-left: 20px;
+            margin-bottom: 10px;
+        }
+
+        .legal-section li::before {
+            content: '◆';
+            position: absolute;
+            left: 0;
+            color: var(--gold-primary);
+            font-size: 8px;
+            top: 8px;
+        }
+
+        .legal-section strong { color: var(--text-main); font-weight: 500; }
+
+        .legal-section a {
+            color: var(--gold-primary);
+            border-bottom: 1px solid transparent;
+            transition: border-color 0.3s;
+        }
+
+        .legal-section a:hover { border-bottom-color: var(--gold-primary); }
+
+        .legal-callout {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-left: 2px solid var(--gold-primary);
+            padding: 24px 28px;
+            border-radius: 4px;
+            margin: 24px 0;
+        }
+
+        .legal-callout p { margin-bottom: 0; }
+
+        @media (max-width: 640px) {
+            .legal-page { padding: 120px 20px 60px; }
+            .legal-title { font-size: 26px; letter-spacing: 2px; }
+            .legal-section h2 { font-size: 16px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- SVG Definitions -->
+    <svg width="0" height="0" style="position:absolute;">
+        <defs>
+            <linearGradient id="globalGold" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#FFFDF0"/>
+                <stop offset="20%" stop-color="#FFC300"/>
+                <stop offset="50%" stop-color="#B27300"/>
+                <stop offset="80%" stop-color="#4A2F00"/>
+                <stop offset="100%" stop-color="#0F0900"/>
+            </linearGradient>
+            <filter id="shield3D">
+                <feDropShadow dx="0" dy="20" stdDeviation="16" flood-color="#000000" flood-opacity="1" result="shadow"/>
+                <feGaussianBlur in="SourceAlpha" stdDeviation="2.5" result="blur"/>
+                <feSpecularLighting in="blur" surfaceScale="5" specularConstant="1.8" specularExponent="40" lighting-color="#ffffff" result="specOut">
+                    <fePointLight x="0" y="-50" z="200"/>
+                </feSpecularLighting>
+                <feComposite in="specOut" in2="SourceAlpha" operator="in" result="specOut"/>
+                <feComposite in="SourceGraphic" in2="specOut" operator="arithmetic" k1="0" k2="1" k3="1" k4="0" result="litPaint"/>
+                <feMerge><feMergeNode in="shadow"/><feMergeNode in="litPaint"/></feMerge>
+            </filter>
+            <filter id="highway3D">
+                <feDropShadow dx="0" dy="8" stdDeviation="8" flood-color="#000000" flood-opacity="0.9" result="shadow"/>
+                <feGaussianBlur in="SourceAlpha" stdDeviation="2" result="blur"/>
+                <feSpecularLighting in="blur" surfaceScale="4" specularConstant="1.4" specularExponent="25" lighting-color="#ffffff" result="specOut">
+                    <fePointLight x="0" y="-50" z="200"/>
+                </feSpecularLighting>
+                <feComposite in="specOut" in2="SourceAlpha" operator="in" result="specOut"/>
+                <feComposite in="SourceGraphic" in2="specOut" operator="arithmetic" k1="0" k2="1" k3="1" k4="0" result="litPaint"/>
+                <feMerge><feMergeNode in="shadow"/><feMergeNode in="litPaint"/></feMerge>
+            </filter>
+        </defs>
+    </svg>
+
+    <!-- NAVIGATION (simplified) -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo" style="text-decoration:none;">
+                <svg width="40" height="40" viewBox="0 0 200 200">
+                    <g filter="url(#highway3D)">
+                        <path d="M 10 90 L 50 150 L 100 60 L 150 150 L 190 90" fill="none" stroke="url(#globalGold)" stroke-width="20" stroke-linejoin="round" stroke-linecap="round"/>
+                    </g>
+                    <g filter="url(#shield3D)">
+                        <path d="M 20 40 L 100 180 L 180 40" fill="none" stroke="url(#globalGold)" stroke-width="28" stroke-linejoin="miter" stroke-miterlimit="4" stroke-linecap="round"/>
+                    </g>
+                </svg>
+                <span class="nav-brand">VORTWAY</span>
+            </a>
+
+            <div class="nav-links">
+                <a href="index.html#services" class="nav-link">Services</a>
+                <a href="index.html#vision" class="nav-link">Vision</a>
+                <a href="index.html#contact" class="nav-link">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="legal-page">
+        <a href="index.html" class="legal-back">
+            <i data-lucide="arrow-left" style="width:14px; height:14px;"></i>
+            Back to Home
+        </a>
+
+        <h1 class="legal-title">TERMS OF SERVICE</h1>
+        <div class="legal-meta">Last Updated: 5 May 2026</div>
+
+        <div class="legal-section">
+            <p>
+                These Terms of Service ("Terms") govern your use of the VORTWAY Logistics &amp; Solutions
+                website (<strong>vortway.lt</strong>) and any logistics services provided by VORTWAY
+                Logistics &amp; Solutions ("VORTWAY", "we", "our", or "us"), a company headquartered in
+                Vilnius, Lithuania. By accessing our website or engaging our services, you agree to these Terms.
+            </p>
+        </div>
+
+        <div class="legal-section">
+            <h2>1. Scope of Services</h2>
+            <p>VORTWAY provides premium freight forwarding and logistics coordination services, including:</p>
+            <ul>
+                <li><strong>Full Truckload (FTL)</strong> — dedicated truck capacity for full loads across European corridors</li>
+                <li><strong>Less Than Truckload (LTL)</strong> — consolidated freight solutions for partial loads</li>
+                <li><strong>Intermodal Transport</strong> — combined road, rail, and sea transport solutions</li>
+                <li><strong>Customs Brokerage</strong> — EU customs clearance, documentation, and compliance support</li>
+            </ul>
+            <p>
+                Specific service terms, including routes, timelines, cargo requirements, and pricing,
+                are defined per individual contract or service agreement between VORTWAY and the client.
+            </p>
+        </div>
+
+        <div class="legal-section">
+            <h2>2. Quote Calculator</h2>
+            <p>
+                The automated quote calculator on our website provides <strong>algorithmic estimates only</strong>.
+                These estimates do not constitute a binding offer or contractual commitment. Final rates
+                are confirmed in writing following a formal inquiry and review by our logistics team.
+            </p>
+        </div>
+
+        <div class="legal-section">
+            <h2>3. Client Obligations</h2>
+            <p>When engaging VORTWAY's services, clients agree to:</p>
+            <ul>
+                <li>Provide accurate, complete, and timely documentation for all shipments (commercial invoices, packing lists, CMR consignment notes, certificates of origin, etc.)</li>
+                <li>Declare all cargo contents truthfully, including any hazardous, restricted, or regulated goods</li>
+                <li>Comply with all applicable export/import laws, sanctions regulations, and customs requirements in origin and destination countries</li>
+                <li>Pay agreed fees within the payment terms specified in the service agreement</li>
+            </ul>
+        </div>
+
+        <div class="legal-section">
+            <h2>4. Payment Terms</h2>
+            <p>
+                Unless otherwise agreed in writing, payment is due within <strong>30 days</strong> of
+                invoice date. Late payments may be subject to statutory interest under the Republic of
+                Lithuania Law on the Prevention of Late Payment in Commercial Transactions. VORTWAY
+                reserves the right to suspend services for accounts with outstanding overdue balances.
+            </p>
+        </div>
+
+        <div class="legal-section">
+            <h2>5. Liability</h2>
+            <h3>Limitation of Liability</h3>
+            <p>
+                VORTWAY's liability for loss of or damage to cargo is limited in accordance with the
+                applicable international conventions and national legislation governing the mode of transport:
+            </p>
+            <ul>
+                <li><strong>Road transport</strong> — CMR Convention (Geneva, 1956): liability capped at 8.33 SDR per kilogram of gross weight of goods lost or damaged</li>
+                <li><strong>Rail transport</strong> — CIM / COTIF rules as applicable</li>
+                <li><strong>Multimodal</strong> — the convention applicable to the stage of transport where loss or damage occurred</li>
+            </ul>
+            <h3>Exclusions</h3>
+            <p>VORTWAY is not liable for:</p>
+            <ul>
+                <li>Delays, losses, or damages resulting from force majeure events (natural disasters, war, strikes, government actions, pandemic restrictions)</li>
+                <li>Losses arising from client's failure to provide accurate documentation or declarations</li>
+                <li>Consequential, indirect, or punitive damages of any nature</li>
+                <li>Losses resulting from inherent vice, insufficient packaging, or latent defects in cargo</li>
+            </ul>
+        </div>
+
+        <div class="legal-section">
+            <h2>6. Cargo Insurance</h2>
+            <p>
+                Standard freight forwarding fees do <strong>not</strong> include cargo insurance.
+                Clients are responsible for arranging their own all-risk cargo insurance or requesting
+                VORTWAY to arrange insurance on their behalf at additional cost. VORTWAY strongly
+                recommends cargo insurance for all high-value, fragile, or time-sensitive shipments.
+            </p>
+        </div>
+
+        <div class="legal-section">
+            <h2>7. Prohibited Cargo</h2>
+            <p>VORTWAY does not accept and will not transport:</p>
+            <ul>
+                <li>Goods subject to international sanctions or embargo</li>
+                <li>Weapons, ammunition, or military equipment without applicable licenses</li>
+                <li>Narcotics, controlled substances, or counterfeit goods</li>
+                <li>Live animals (unless specifically agreed and licensed)</li>
+                <li>Any cargo that violates the laws of the origin, transit, or destination country</li>
+            </ul>
+        </div>
+
+        <div class="legal-section">
+            <h2>8. Intellectual Property</h2>
+            <p>
+                All content on <strong>vortway.lt</strong> — including text, graphics, logos, and software —
+                is the property of VORTWAY Logistics &amp; Solutions and is protected by applicable
+                intellectual property laws. Unauthorised reproduction or redistribution is prohibited.
+            </p>
+        </div>
+
+        <div class="legal-section">
+            <h2>9. Governing Law &amp; Dispute Resolution</h2>
+            <p>
+                These Terms and any disputes arising from them are governed exclusively by the laws of
+                the <strong>Republic of Lithuania</strong>, without regard to conflict-of-law principles.
+            </p>
+            <p>
+                Any dispute that cannot be resolved amicably shall be subject to the exclusive jurisdiction
+                of the competent courts of <strong>Vilnius, Lithuania</strong>.
+            </p>
+            <div class="legal-callout">
+                <p>
+                    Before initiating formal proceedings, both parties agree to attempt good-faith
+                    negotiation for a minimum of <strong>30 days</strong> following written notice of the dispute.
+                </p>
+            </div>
+        </div>
+
+        <div class="legal-section">
+            <h2>10. Changes to These Terms</h2>
+            <p>
+                We may update these Terms of Service from time to time. The "Last Updated" date at the
+                top of this page indicates when the latest revision was made. Continued use of our
+                services after changes take effect constitutes acceptance of the revised Terms.
+            </p>
+        </div>
+
+        <div class="legal-section">
+            <h2>11. Contact</h2>
+            <p>For questions regarding these Terms of Service, please contact:</p>
+            <div class="legal-callout">
+                <p>
+                    <strong>VORTWAY Logistics &amp; Solutions</strong><br>
+                    Headquarters: Vilnius, Lithuania<br>
+                    Email: <a href="mailto:mvarol@vortway.lt?subject=Terms%20of%20Service%20Inquiry">mvarol@vortway.lt</a><br>
+                    Phone: +370 601 73 708
+                </p>
+            </div>
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-grid">
+            <div class="footer-col">
+                <h4 class="footer-heading">NAVIGATION</h4>
+                <a href="index.html#services" class="footer-link">Services</a>
+                <a href="index.html#vision" class="footer-link">Vision</a>
+                <a href="index.html#contact" class="footer-link">Contact</a>
+            </div>
+            <div class="footer-col">
+                <h4 class="footer-heading">LEGAL</h4>
+                <a href="privacy.html" class="footer-link">Privacy Policy</a>
+                <a href="terms.html" class="footer-link">Terms of Service</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="copyright">Copyright © 2026 Vortway Logistics &amp; Solutions</div>
+            <div class="system-status"><span class="status-dot"></span> ALL SYSTEMS OPERATIONAL</div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            if (window.lucide) lucide.createIcons();
+
+            const navbar = document.getElementById('navbar');
+            window.addEventListener('scroll', () => {
+                navbar.classList.toggle('scrolled', window.scrollY > 50);
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__playwright__browser_navigate",
+      "mcp__playwright__browser_take_screenshot",
+      "mcp__playwright__browser_evaluate",
+      "PowerShell(Get-NetTCPConnection -LocalPort 8765 -State Listen -ErrorAction SilentlyContinue | ForEach-Object { $pid_to_kill = $_.OwningProcess; Write-Host \"Killing PID $pid_to_kill\"; Stop-Process -Id $pid_to_kill -Force -ErrorAction SilentlyContinue }; Start-Sleep -Seconds 2; Get-NetTCPConnection -LocalPort 8765 -State Listen -ErrorAction SilentlyContinue | ForEach-Object { Write-Host \"Still alive: $\\($_.OwningProcess\\)\" }; \"----\"; $p = Start-Process python -ArgumentList '-m','http.server','8765' -WorkingDirectory 'C:\\\\Users\\\\muham\\\\Desktop\\\\Vortway Logo' -WindowStyle Hidden -PassThru; \"Started PID $\\($p.Id\\)\"; Start-Sleep -Seconds 2; try { $r = Invoke-WebRequest -Uri 'http://localhost:8765/' -UseBasicParsing -TimeoutSec 5; \"ROOT 200 — first 400 chars:`n$\\($r.Content.Substring\\(0, [Math]::Min\\(400, $r.Content.Length\\)\\)\\)\" } catch { \"ROOT err: $_\" })",
+      "Bash(netstat -ano)",
+      "PowerShell($content = Get-Content \"c:\\\\Users\\\\muham\\\\Desktop\\\\Vortway Logo\\\\website\\\\app.js\" -Raw; try { node --check \"c:\\\\Users\\\\muham\\\\Desktop\\\\Vortway Logo\\\\website\\\\app.js\" 2>&1 | Out-String; \"JS_SYNTAX_OK\" } catch { \"JS_SYNTAX_FAIL: $_\" })",
+      "PowerShell($pid_to_kill = \\(Get-NetTCPConnection -LocalPort 8765 -ErrorAction SilentlyContinue\\).OwningProcess; if \\($pid_to_kill\\) { Stop-Process -Id $pid_to_kill -Force -ErrorAction SilentlyContinue; \"Stopped python server PID $pid_to_kill\" } else { \"No server running\" })",
+      "PowerShell($existing = \\(Get-NetTCPConnection -LocalPort 8765 -ErrorAction SilentlyContinue\\).OwningProcess | Select-Object -Unique; if \\($existing\\) { foreach \\($p in $existing\\) { if \\($p -gt 0\\) { Stop-Process -Id $p -Force -ErrorAction SilentlyContinue } } }; Start-Process -FilePath \"python\" -ArgumentList \"-m\",\"http.server\",\"8765\" -WorkingDirectory \"c:\\\\Users\\\\muham\\\\Desktop\\\\Vortway Logo\\\\website\" -WindowStyle Hidden; Start-Sleep -Seconds 2; try { $r = \\(Invoke-WebRequest -Uri \"http://localhost:8765/index.html\" -UseBasicParsing\\).StatusCode; \"Server up on http://localhost:8765 \\(HTTP $r\\)\" } catch { \"Server start failed: $_\" })",
+      "PowerShell($existing = \\(Get-NetTCPConnection -LocalPort 8765 -ErrorAction SilentlyContinue\\).OwningProcess | Select-Object -Unique; if \\($existing\\) { foreach \\($p in $existing\\) { if \\($p -gt 0\\) { Stop-Process -Id $p -Force -ErrorAction SilentlyContinue } } }; Start-Process -FilePath \"python\" -ArgumentList \"-m\",\"http.server\",\"8765\" -WorkingDirectory \"c:\\\\Users\\\\muham\\\\Desktop\\\\Vortway Logo\\\\website\" -WindowStyle Hidden; Start-Sleep -Seconds 2; $a = \\(Invoke-WebRequest -Uri \"http://localhost:8765/index.html\" -UseBasicParsing\\).StatusCode; $b = \\(Invoke-WebRequest -Uri \"http://localhost:8765/style.css\" -UseBasicParsing\\).StatusCode; $c = \\(Invoke-WebRequest -Uri \"http://localhost:8765/app.js\" -UseBasicParsing\\).StatusCode; \"index:$a style:$b app:$c\")",
+      "PowerShell(node --check \"c:\\\\Users\\\\muham\\\\Desktop\\\\Vortway Logo\\\\website\\\\app.js\" 2>&1; \\(Invoke-WebRequest -Uri \"http://localhost:8765/index.html\" -UseBasicParsing\\).StatusCode; \\(Invoke-WebRequest -Uri \"http://localhost:8765/app.js\" -UseBasicParsing\\).StatusCode; \\(Invoke-WebRequest -Uri \"http://localhost:8765/style.css\" -UseBasicParsing\\).StatusCode)",
+      "Bash(gh auth *)",
+      "Bash(git init *)",
+      "Bash(git config *)",
+      "Bash(git add *)"
+    ]
+  }
+}
