@@ -70,7 +70,8 @@
       "Bash(mkdir -p \"C:\\\\Users\\\\muham\\\\AppData\\\\Local\\\\Temp\\\\pw_test\")",
       "Bash(npm init *)",
       "Bash(npm install *)",
-      "Bash(node modal_test.mjs)"
+      "Bash(node modal_test.mjs)",
+      "Bash(npx --yes playwright --version)"
     ]
   }
 }

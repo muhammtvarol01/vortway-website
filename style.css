@@ -2393,6 +2393,40 @@ a {
     border-color: #1a1a1a;
 }
 
+/* === LIGHT MODE — HERO TEXT LEGIBILITY OVER VANTA GOLDEN FOG === */
+/* Vanta fog renders pale-gold pixels behind the hero text; without these
+   overrides the subtitle/desc/scroll cue lose contrast and become invisible. */
+[data-theme="light"] .hero-subtitle {
+    color: #1a1a1a;
+    text-shadow: 0 1px 3px rgba(255, 255, 255, 0.8);
+}
+
+[data-theme="light"] .hero-desc {
+    color: #333333;
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.6);
+}
+
+[data-theme="light"] .scroll-indicator {
+    opacity: 0.95;             /* dark mode used 0.6 over deep bg — needs more presence here */
+}
+
+[data-theme="light"] .scroll-indicator span {
+    color: #555555;
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.7);
+}
+
+[data-theme="light"] .hero-title,
+[data-theme="light"] .hero-title-char {
+    filter: drop-shadow(0 1px 2px rgba(255, 255, 255, 0.55));
+}
+
+/* Service-card tagline is hard-coded #ffffff for the dark theme. In light
+   mode the card background is near-white, so the tagline disappears. */
+[data-theme="light"] .service-tagline {
+    color: #1a1a1a;
+    opacity: 0.92;
+}
+
 /* Pillar / service titles: in light mode swap gold-primary text to gold-dim for AA */
 [data-theme="light"] .pillar-title,
 [data-theme="light"] .service-name,
