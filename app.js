@@ -490,20 +490,34 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (btnInitiateQuote && quoteModal && closeQuoteModal) {
-        btnInitiateQuote.addEventListener('click', () => {
+        function openQuoteModal() {
             quoteModal.classList.add('active');
-        });
+            // lock background scroll so scrollIntoView / page wheel can't drift the body
+            document.documentElement.style.overflow = 'hidden';
+            document.body.style.overflow = 'hidden';
+        }
 
-        closeQuoteModal.addEventListener('click', () => {
+        function dismissQuoteModal() {
             quoteModal.classList.remove('active');
+            document.documentElement.style.overflow = '';
+            document.body.style.overflow = '';
             resetQuoteModalState();
-        });
+        }
 
-        // Close on overlay click
+        btnInitiateQuote.addEventListener('click', openQuoteModal);
+
+        closeQuoteModal.addEventListener('click', dismissQuoteModal);
+
+        // CLOSE button inside the result block
+        const quoteCloseResult = document.getElementById('quoteCloseResult');
+        if (quoteCloseResult) {
+            quoteCloseResult.addEventListener('click', dismissQuoteModal);
+        }
+
+        // Close on overlay click (scrim, not modal body)
         quoteModal.addEventListener('click', (e) => {
             if (e.target === quoteModal) {
-                quoteModal.classList.remove('active');
-                resetQuoteModalState();
+                dismissQuoteModal();
             }
         });
 
@@ -512,8 +526,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!quoteModal.classList.contains('active')) return;
 
             if (e.key === 'Escape') {
-                quoteModal.classList.remove('active');
-                resetQuoteModalState();
+                dismissQuoteModal();
                 return;
             }
 
@@ -834,7 +847,14 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             quoteResult.style.display = 'block';
-            quoteResult.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            // Scroll the modal's inner body — X button stays anchored to .modal.
+            const modalBody = quoteModal.querySelector('.modal-body');
+            if (modalBody) {
+                modalBody.scrollTo({
+                    top: quoteResult.offsetTop - 20,
+                    behavior: 'smooth'
+                });
+            }
         });
 
         // clear errors when user changes inputs after a failed submit
