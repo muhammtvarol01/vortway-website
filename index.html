@@ -626,19 +626,32 @@
 
             <div class="contact-wrapper">
                 <div class="contact-form-area">
-                    <form id="contactForm" class="form-grid">
+                    <!--
+                      TO ACTIVATE EMAIL DELIVERY:
+                      1) Create a free Formspree form at https://formspree.io/forms
+                      2) Replace FORMSPREE_ID below with your form ID (looks like "abcdwxyz")
+                      Until then, the form falls back to the user's mail client (mailto:).
+                    -->
+                    <form id="contactForm" class="form-grid"
+                          action="https://formspree.io/f/FORMSPREE_ID"
+                          method="POST" novalidate>
                         <div class="form-group">
                             <label for="c_company" data-i18n="form_company">Company Name *</label>
-                            <input type="text" id="c_company" required placeholder="...">
+                            <input type="text" id="c_company" name="company" required placeholder="...">
                         </div>
                         <div class="form-group">
                             <label for="c_email" data-i18n="form_email">Email Address *</label>
-                            <input type="email" id="c_email" required placeholder="...">
+                            <input type="email" id="c_email" name="email" required placeholder="...">
                         </div>
                         <div class="form-group">
                             <label for="c_details" data-i18n="form_inquiry">Inquiry Details *</label>
-                            <textarea id="c_details" rows="5" required placeholder="..."></textarea>
+                            <textarea id="c_details" name="message" rows="5" required placeholder="..."></textarea>
                         </div>
+                        <!-- Formspree metadata -->
+                        <input type="hidden" name="_subject" value="New inquiry from Vortway website">
+                        <input type="hidden" name="_replyto" id="c_replyto">
+                        <!-- Honeypot — bots fill it, humans don't (display:none) -->
+                        <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0;">
                         <button type="submit" class="btn btn-primary btn-block" data-i18n="btn_transmit">TRANSMIT</button>
                     </form>
                 </div>

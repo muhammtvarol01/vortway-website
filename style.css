@@ -796,14 +796,14 @@ a {
     letter-spacing: 28px;
     margin-right: -28px; /* offset letter-spacing on last char */
     margin-bottom: 10px;
-    background: linear-gradient(to bottom, #ffffff 40%, #C59E5B 100%);
+    background: linear-gradient(to bottom, #ffffff 40%, #A88645 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
 .hero-title-char {
     display: inline-block;
-    background: linear-gradient(to bottom, #ffffff 40%, #C59E5B 100%);
+    background: linear-gradient(to bottom, #ffffff 40%, #A88645 100%);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;

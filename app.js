@@ -869,42 +869,95 @@ document.addEventListener('DOMContentLoaded', () => {
     const toastMsg = document.getElementById('toastMsg');
 
     if (contactForm && toast) {
+        // Detect placeholder Formspree URL. If still unconfigured we skip the
+        // network call entirely and route the user's email client (mailto:).
+        const formspreeAction = contactForm.getAttribute('action') || '';
+        const formspreeConfigured = formspreeAction.includes('formspree.io/f/')
+            && !formspreeAction.endsWith('FORMSPREE_ID');
+
+        const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        const COMPANY_INPUT  = document.getElementById('c_company');
+        const EMAIL_INPUT    = document.getElementById('c_email');
+        const DETAILS_INPUT  = document.getElementById('c_details');
+        const REPLYTO_INPUT  = document.getElementById('c_replyto');
+
+        function showToast(msg, isError) {
+            toastMsg.textContent = msg;
+            toast.classList.toggle('toast-error', !!isError);
+            toast.classList.add('show');
+            clearTimeout(showToast._t);
+            showToast._t = setTimeout(() => toast.classList.remove('show', 'toast-error'), 5000);
+        }
+
+        function validateForm() {
+            const company = (COMPANY_INPUT?.value || '').trim();
+            const email   = (EMAIL_INPUT?.value || '').trim();
+            const message = (DETAILS_INPUT?.value || '').trim();
+            if (!company || !email || !message) {
+                showToast(translations[currentLang]?.toast_validation || 'Please fill in all required fields.', true);
+                return null;
+            }
+            if (!EMAIL_RE.test(email)) {
+                showToast(translations[currentLang]?.toast_email_invalid || 'Please enter a valid email address.', true);
+                EMAIL_INPUT?.focus();
+                return null;
+            }
+            return { company, email, message };
+        }
+
+        function openMailto(data) {
+            const subject = encodeURIComponent(`Inquiry from ${data.company}`);
+            const body = encodeURIComponent(
+                `Company: ${data.company}\nFrom: ${data.email}\n\n${data.message}`
+            );
+            // Opens the user's default mail client with everything pre-filled.
+            window.location.href = `mailto:info@vortway.lt?subject=${subject}&body=${body}`;
+        }
+
         contactForm.addEventListener('submit', async (e) => {
             e.preventDefault();
+            const data = validateForm();
+            if (!data) return;
 
+            // Mirror email into the Formspree _replyto field so replies route correctly.
+            if (REPLYTO_INPUT) REPLYTO_INPUT.value = data.email;
+
+            // Path A — Formspree not configured yet: open user's mail client.
+            if (!formspreeConfigured) {
+                showToast(translations[currentLang]?.toast_mailto_opening
+                    || 'Opening your email client to send to info@vortway.lt…', false);
+                openMailto(data);
+                return;
+            }
+
+            // Path B — Formspree is wired. Submit asynchronously.
             const submitBtn = contactForm.querySelector('[type="submit"]');
             const originalText = submitBtn.textContent;
             submitBtn.disabled = true;
             submitBtn.textContent = 'TRANSMITTING…';
 
-            const hideToast = () => {
-                toast.classList.remove('show', 'toast-error');
-            };
-
             try {
-                const response = await fetch('https://formspree.io/f/FORMSPREE_ID', {
+                const response = await fetch(formspreeAction, {
                     method: 'POST',
                     body: new FormData(contactForm),
                     headers: { Accept: 'application/json' }
                 });
 
                 if (response.ok) {
-                    toastMsg.textContent = translations[currentLang]?.toast_success
-                        || "Your inquiry has been transmitted. Our team will respond within 24 hours.";
-                    toast.classList.remove('toast-error');
-                    toast.classList.add('show');
+                    showToast(translations[currentLang]?.toast_success
+                        || 'Your inquiry has been transmitted. Our team will respond within 24 hours.', false);
                     contactForm.reset();
                 } else {
                     throw new Error('non-ok');
                 }
             } catch {
-                toastMsg.textContent = translations[currentLang]?.toast_error
-                    || "Transmission failed. Email us directly: info@vortway.lt";
-                toast.classList.add('show', 'toast-error');
+                // Formspree failed (offline, rate-limit, etc) — fall back to mailto.
+                showToast(translations[currentLang]?.toast_error
+                    || 'Transmission failed. Opening your email client as a fallback…', true);
+                setTimeout(() => openMailto(data), 1200);
             } finally {
                 submitBtn.disabled = false;
                 submitBtn.textContent = originalText;
-                setTimeout(hideToast, 5000);
             }
         });
     }
