@@ -1105,12 +1105,15 @@ function initVantaFog() {
         gyroControls: false,
         minHeight: 200,
         minWidth: 200,
-        highlightColor: 0xD4AF37,
-        midtoneColor: 0xB27300,
-        lowlightColor: 0xf0ede5,
-        baseColor: 0xe8e4d8,
-        blurFactor: 0.55,
-        speed: 1.2,
+        // Warmer, more visible fog so the hero feels alive in light mode rather
+        // than washed-out. Deeper amber mid + warmer highlight; cream base keeps
+        // the rest of the page in palette.
+        highlightColor: 0xC9A030,   // warm honey gold
+        midtoneColor:   0x8B6914,   // deep amber
+        lowlightColor:  0xeae1c8,   // soft cream
+        baseColor:      0xe8dec1,   // slightly deeper cream so fog reads against it
+        blurFactor: 0.50,
+        speed: 2.0,
         zoom: 0.85
     };
 

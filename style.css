@@ -834,17 +834,24 @@ a {
 }
 
 [data-theme="light"] .hero-mark-bg {
-    filter: drop-shadow(0 0 36px rgba(178, 115, 0, 0.30))
-            drop-shadow(0 0 12px rgba(178, 115, 0, 0.15));
+    /* Warm deep-gold drop-shadow + soft halo so the mark feels lit-from-behind
+       against the cream fog rather than pasted on. */
+    filter: drop-shadow(0 0 44px rgba(178, 115, 0, 0.40))
+            drop-shadow(0 0 16px rgba(212, 175, 55, 0.28))
+            drop-shadow(0 4px 12px rgba(74, 47, 0, 0.12));
 }
 
 [data-theme="light"] .hero-mark-bg::before {
+    /* Larger, warmer bloom — gold core fading through amber to transparent */
+    inset: -60px;
     background: radial-gradient(
         circle at center,
-        rgba(178, 115, 0, 0.24) 0%,
-        rgba(178, 115, 0, 0.08) 30%,
-        transparent 70%
+        rgba(212, 175, 55, 0.32) 0%,
+        rgba(178, 115, 0, 0.16) 30%,
+        rgba(178, 115, 0, 0.06) 55%,
+        transparent 75%
     );
+    filter: blur(26px);
 }
 
 /* The wordmark sits in front of the mark */
@@ -858,14 +865,20 @@ a {
     letter-spacing: 28px;
     margin-right: -28px; /* offset letter-spacing on last char */
     margin-bottom: 10px;
-    background: linear-gradient(to bottom, #ffffff 40%, #A88645 100%);
+    color: #FFFFFF; /* fallback for environments that lose the gradient */
+    background: linear-gradient(to bottom, #ffffff 40%, #D4AF37 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+    /* Drop-shadow on the element gives the gradient-clipped glyphs a halo
+       (text-shadow only paints solid color, drop-shadow follows alpha). */
+    filter: drop-shadow(0 2px 20px rgba(0, 0, 0, 0.85))
+            drop-shadow(0 0 40px rgba(212, 175, 55, 0.32));
 }
 
 .hero-title-char {
     display: inline-block;
-    background: linear-gradient(to bottom, #ffffff 40%, #A88645 100%);
+    color: #FFFFFF;
+    background: linear-gradient(to bottom, #ffffff 40%, #D4AF37 100%);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -873,15 +886,17 @@ a {
 }
 
 .hero-subtitle {
-    color: var(--gold-dim);
+    color: #D4AF37;  /* pure gold for max contrast on the fog */
     font-family: var(--font-body);
     font-size: 14px;
     letter-spacing: 16px;
     margin-right: -16px;
-    font-weight: 400;
+    font-weight: 500;  /* +100 for legibility on busy fog */
     margin-bottom: 40px;
     position: relative;
     display: inline-block;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.90),
+                 0 0 24px rgba(0, 0, 0, 0.45);
 }
 
 .hero-subtitle::after {
@@ -898,10 +913,12 @@ a {
 
 .hero-desc {
     font-size: 16px;
-    color: var(--text-muted);
-    font-weight: 300;
+    color: #e0e0e0;  /* brighter than --text-muted (#888) so it reads on fog */
+    font-weight: 400;
     letter-spacing: 1px;
     margin-bottom: 50px;
+    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.90),
+                 0 0 16px rgba(0, 0, 0, 0.55);
 }
 
 .hero-actions {
@@ -917,7 +934,7 @@ a {
     flex-direction: column;
     align-items: center;
     gap: 12px;
-    opacity: 0.6;
+    opacity: 0.85;
     z-index: 2;
 }
 
@@ -925,6 +942,8 @@ a {
     font-size: 9px;
     letter-spacing: 4px;
     text-transform: uppercase;
+    color: #b8b8b8;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.85);
 }
 
 .mouse {
@@ -988,14 +1007,15 @@ a {
 }
 
 .section-title {
-    color: var(--gold-dim);
+    color: var(--gold-primary);  /* was --gold-dim — too low contrast on dark */
     font-size: 12px;
     letter-spacing: 12px;
     text-transform: uppercase;
     margin-bottom: 16px;
     font-family: var(--font-body);
-    font-weight: 500;
+    font-weight: 600;
     margin-right: -12px;
+    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.4);
 }
 
 .section-subtitle {
@@ -1413,6 +1433,44 @@ a {
     .vision-orb { filter: blur(60px); opacity: 0.35; }
 }
 
+/* Blueprint freight truck — decorative SVG behind the vision pillars.
+   Stroke color is currentColor (set on the element), so it inherits a theme-
+   appropriate tint. Slow drift loop sells the "always moving" feel. */
+.vision-truck {
+    position: absolute;
+    right: -60px;
+    bottom: 8%;
+    width: 480px;
+    height: auto;
+    pointer-events: none;
+    z-index: 1;
+    color: rgba(212, 175, 55, 0.08);  /* the ink — feels like a blueprint pencil line */
+    filter: drop-shadow(0 0 12px rgba(212, 175, 55, 0.10));
+    animation: visionTruckDrift 18s ease-in-out infinite alternate;
+    will-change: transform;
+}
+
+[data-theme="light"] .vision-truck {
+    color: rgba(178, 115, 0, 0.10);
+    filter: drop-shadow(0 0 8px rgba(178, 115, 0, 0.08));
+}
+
+@keyframes visionTruckDrift {
+    0%   { transform: translateX(-20px); }
+    100% { transform: translateX(20px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .vision-truck { animation: none; transform: none; }
+}
+
+@media (max-width: 1024px) {
+    .vision-truck { width: 360px; opacity: 0.7; right: -80px; }
+}
+@media (max-width: 640px) {
+    .vision-truck { display: none; }
+}
+
 .vision .section-header,
 .vision .pillars-grid {
     position: relative;
@@ -1610,20 +1668,20 @@ a {
 .footer::after {
     content: '';
     position: absolute;
-    right: -60px;
-    bottom: -80px;
-    width: 420px;
-    height: 440px;
+    right: -40px;
+    bottom: -56px;
+    width: 294px;   /* -30% from 420px */
+    height: 308px;  /* -30% from 440px */
     background: url('vortway-mark-flat-gold.svg') no-repeat center;
     background-size: contain;
-    opacity: 0.05;
+    opacity: 0.05;  /* whisper of branding */
     pointer-events: none;
     z-index: -1;
     transform: rotate(8deg);
 }
 
 [data-theme="light"] .footer::after {
-    opacity: 0.08;
+    opacity: 0.03;
 }
 
 .footer-grid {
@@ -1632,6 +1690,37 @@ a {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 80px;
+}
+
+.footer-grid.footer-grid-3col {
+    max-width: 1100px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 60px;
+}
+
+.footer-address {
+    font-style: normal;  /* override <address> default italic */
+    font-family: var(--font-body);
+    font-size: 12px;
+    line-height: 1.85;
+    color: var(--text-muted);
+    letter-spacing: 0.3px;
+}
+
+.footer-link-inline {
+    display: inline;
+    margin-bottom: 0;
+    color: var(--gold-primary);
+    transition: color 0.3s ease;
+}
+.footer-link-inline:hover {
+    color: var(--gold-secondary);
+}
+[data-theme="light"] .footer-link-inline {
+    color: #7A5400;
+}
+[data-theme="light"] .footer-address {
+    color: #555555;
 }
 
 .footer-heading {
@@ -2135,6 +2224,7 @@ a {
     .vision-globe { height: 480px; padding: 20px; }
     
     .footer-grid { grid-template-columns: repeat(2, 1fr); gap: 40px; }
+    .footer-grid.footer-grid-3col { grid-template-columns: repeat(2, 1fr); gap: 40px; }
     .stats-grid { grid-template-columns: repeat(2, 1fr); }
 }
 
@@ -2174,6 +2264,7 @@ a {
     .form-row { flex-direction: column; gap: 0; }
     
     .footer-grid { grid-template-columns: 1fr; }
+    .footer-grid.footer-grid-3col { grid-template-columns: 1fr; gap: 30px; }
     .footer-bottom { flex-direction: column; gap: 20px; text-align: center; }
 }
 
@@ -2567,38 +2658,50 @@ a {
     border-color: #1a1a1a;
 }
 
-/* === LIGHT MODE — HERO TEXT LEGIBILITY OVER VANTA GOLDEN FOG === */
-/* Vanta fog renders pale-gold pixels behind the hero text; without these
-   overrides the subtitle/desc/scroll cue lose contrast and become invisible. */
+/* === LIGHT MODE — HERO TEXT LEGIBILITY OVER VANTA GOLDEN FOG ===
+   White-shadow stack cuts the dark glyphs out of the warm honey-gold fog. */
+[data-theme="light"] .hero-title,
+[data-theme="light"] .hero-title-char {
+    filter: drop-shadow(0 1px 10px rgba(255, 255, 255, 0.85))
+            drop-shadow(0 2px 18px rgba(255, 248, 224, 0.55));
+}
+
 [data-theme="light"] .hero-subtitle {
-    color: #1a1a1a;
-    text-shadow: 0 1px 3px rgba(255, 255, 255, 0.8);
+    color: #7A5400;  /* deep gold — WCAG-passing on cream */
+    text-shadow: 0 1px 6px rgba(255, 255, 255, 0.92),
+                 0 0 14px rgba(255, 248, 224, 0.65);
 }
 
 [data-theme="light"] .hero-desc {
     color: #333333;
-    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.6);
+    text-shadow: 0 1px 4px rgba(255, 255, 255, 0.80),
+                 0 0 10px rgba(255, 248, 224, 0.55);
 }
 
 [data-theme="light"] .scroll-indicator {
-    opacity: 0.95;             /* dark mode used 0.6 over deep bg — needs more presence here */
+    opacity: 0.95;
 }
 
 [data-theme="light"] .scroll-indicator span {
-    color: #555555;
-    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.7);
+    color: #666666;
+    text-shadow: 0 1px 4px rgba(255, 255, 255, 0.85);
 }
 
-[data-theme="light"] .hero-title,
-[data-theme="light"] .hero-title-char {
-    filter: drop-shadow(0 1px 2px rgba(255, 255, 255, 0.55));
-}
-
-/* Service-card tagline is hard-coded #ffffff for the dark theme. In light
-   mode the card background is near-white, so the tagline disappears. */
+/* Service-card text in light mode — explicit greys for guaranteed contrast on
+   near-white card surfaces. */
 [data-theme="light"] .service-tagline {
-    color: #1a1a1a;
-    opacity: 0.92;
+    color: #555555;
+    opacity: 1;
+    font-style: italic;
+}
+
+[data-theme="light"] .service-bullets li {
+    color: #444444;
+}
+
+[data-theme="light"] .service-bullets li::before {
+    color: #7A5400;
+    opacity: 1;
 }
 
 /* Pillar / service titles: in light mode swap gold-primary text to gold-dim for AA */
@@ -2662,9 +2765,36 @@ a {
     color: #7A5400;
 }
 
-/* Preloader on light: invert glow tint */
+/* Preloader on light — warm cream radial so the mark feels integrated, not pasted.
+   The radial centers the warmest tone behind the V+W and feathers to the page bg. */
+[data-theme="light"] .preloader {
+    background:
+        radial-gradient(ellipse at center, #f5f0e0 0%, #f8f6f0 40%, #f0ede5 100%);
+}
+
 [data-theme="light"] .preloader-mark {
-    filter: drop-shadow(0 0 30px rgba(74, 47, 0, 0.18));
+    position: relative;
+    filter: drop-shadow(0 0 30px rgba(178, 115, 0, 0.20))
+            drop-shadow(0 4px 12px rgba(74, 47, 0, 0.10));
+}
+
+/* Soft gold radial halo behind the preloader mark — the mark should glow from
+   within its surface, not float on a flat plane. */
+[data-theme="light"] .preloader-mark::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 220px;
+    height: 220px;
+    background: radial-gradient(circle,
+        rgba(212, 175, 55, 0.18) 0%,
+        rgba(212, 175, 55, 0.06) 40%,
+        transparent 70%);
+    transform: translate(-50%, -50%);
+    z-index: -1;
+    border-radius: 50%;
+    pointer-events: none;
 }
 
 /* Hero canvas / glow: in light mode soften everything */
