@@ -39,9 +39,9 @@ document.addEventListener('DOMContentLoaded', () => {
             .join('');
     }
 
-    // 1.4 GSAP Hero Staggered Reveal
+    // 1.4 GSAP Hero Staggered Reveal — cinematic top-down cascade
     if (typeof gsap !== 'undefined') {
-        gsap.set('.hero-subtitle, .hero-desc, .hero-actions, .scroll-indicator', { opacity: 0, y: 30 });
+        gsap.set('.hero-subtitle, .hero-desc, .hero-actions, .hero-route, .scroll-indicator', { opacity: 0, y: 30 });
         gsap.set('.hero-title-char', { opacity: 0, y: 50, scale: 0.7 });
 
         const heroTL = gsap.timeline({ defaults: { ease: 'power3.out' } });
@@ -55,9 +55,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 ease: 'back.out(1.4)'
             })
             .to('.hero-subtitle', { opacity: 1, y: 0, duration: 0.6 }, '-=0.3')
-            .to('.hero-desc', { opacity: 1, y: 0, duration: 0.6 }, '-=0.4')
-            .to('.hero-actions', { opacity: 1, y: 0, duration: 0.5 }, '-=0.4')
-            .to('.scroll-indicator', { opacity: 0.6, y: 0, duration: 0.4 }, '-=0.3');
+            .to('.hero-desc',     { opacity: 1, y: 0, duration: 0.6 }, '-=0.4')
+            .to('.hero-actions',  { opacity: 1, y: 0, duration: 0.5 }, '-=0.4')
+            .to('.hero-route',    { opacity: 0.85, y: 0, duration: 0.5 }, '-=0.35')
+            .to('.scroll-indicator', { opacity: 0.85, y: 0, duration: 0.4 }, '-=0.3');
 
         // Animate the gold underline via CSS custom property (pseudo-elements can't be targeted by GSAP directly)
         const subtitleEl = document.querySelector('.hero-subtitle');

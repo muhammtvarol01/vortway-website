@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="430" viewBox="-10 -10 220 230">
+  <defs>
+    <linearGradient id="globalGoldLight" x1="100%" y1="100%" x2="0%" y2="0%">
+      <stop offset="0%" stop-color="#4A2F00"/>
+      <stop offset="25%" stop-color="#B27300"/>
+      <stop offset="50%" stop-color="#D4AF37"/>
+      <stop offset="75%" stop-color="#B27300"/>
+      <stop offset="100%" stop-color="#4A2F00"/>
+    </linearGradient>
+
+    <filter id="shield3DLight" x="-50%" y="-30%" width="200%" height="200%">
+      <feDropShadow dx="0" dy="10" stdDeviation="12" flood-color="#4A2F00" flood-opacity="0.3" result="shadow"/>
+      <feGaussianBlur in="SourceAlpha" stdDeviation="2" result="blur"/>
+      <feSpecularLighting in="blur" surfaceScale="4" specularConstant="1.2" specularExponent="30" lighting-color="#FFC300" result="specOut">
+        <fePointLight x="0" y="-50" z="200"/>
+      </feSpecularLighting>
+      <feComposite in="specOut" in2="SourceAlpha" operator="in" result="specOut"/>
+      <feComposite in="SourceGraphic" in2="specOut" operator="arithmetic" k1="0" k2="1" k3="0.5" k4="0" result="litPaint"/>
+      <feMerge>
+        <feMergeNode in="shadow"/>
+        <feMergeNode in="litPaint"/>
+      </feMerge>
+    </filter>
+
+    <filter id="highway3DLight" x="-50%" y="-30%" width="200%" height="200%">
+      <feDropShadow dx="0" dy="5" stdDeviation="6" flood-color="#4A2F00" flood-opacity="0.2" result="shadow"/>
+      <feGaussianBlur in="SourceAlpha" stdDeviation="1.5" result="blur"/>
+      <feSpecularLighting in="blur" surfaceScale="3" specularConstant="1" specularExponent="20" lighting-color="#FFC300" result="specOut">
+        <fePointLight x="0" y="-50" z="200"/>
+      </feSpecularLighting>
+      <feComposite in="specOut" in2="SourceAlpha" operator="in" result="specOut"/>
+      <feComposite in="SourceGraphic" in2="specOut" operator="arithmetic" k1="0" k2="1" k3="0.4" k4="0" result="litPaint"/>
+      <feMerge>
+        <feMergeNode in="shadow"/>
+        <feMergeNode in="litPaint"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- W Highway -->
+  <g filter="url(#highway3DLight)">
+    <path d="M 10 90 L 50 150 L 100 60 L 150 150 L 190 90"
+          fill="none"
+          stroke="url(#globalGoldLight)"
+          stroke-width="20"
+          stroke-linejoin="round"
+          stroke-linecap="round"/>
+    <path d="M 10 90 L 50 150 L 100 60 L 150 150 L 190 90"
+          fill="none"
+          stroke="#4A2F00"
+          stroke-width="2"
+          stroke-dasharray="6 6"
+          stroke-linejoin="round"
+          stroke-linecap="round"
+          opacity="0.35"/>
+  </g>
+
+  <!-- V Shield -->
+  <g filter="url(#shield3DLight)">
+    <path d="M 20 40 L 100 180 L 180 40"
+          fill="none"
+          stroke="url(#globalGoldLight)"
+          stroke-width="28"
+          stroke-linejoin="miter"
+          stroke-miterlimit="4"
+          stroke-linecap="round"/>
+  </g>
+</svg>

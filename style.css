@@ -173,8 +173,21 @@ body {
 }
 
 .preloader-mark {
+    position: relative;
     filter: drop-shadow(0 0 30px rgba(212, 175, 55, 0.25));
 }
+
+/* Theme-swapped brand marks — dark-mode SVG has 3D filters and SMIL draw-in,
+   light-mode image is the flat-gold variant designed for cream backgrounds. */
+.preloader-mark-img { display: none; }
+.preloader-mark-svg { display: block; }
+.hero-mark-img { display: none; }
+.hero-mark-svg { display: block; width: 100%; height: 100%; }
+
+[data-theme="light"] .preloader-mark-img { display: block; }
+[data-theme="light"] .preloader-mark-svg { display: none; }
+[data-theme="light"] .hero-mark-img { display: block; width: 100%; height: 100%; object-fit: contain; }
+[data-theme="light"] .hero-mark-svg { display: none; }
 
 .preloader-bar {
     position: relative;
@@ -927,6 +940,29 @@ a {
     justify-content: center;
 }
 
+/* Hero route — three gold dots travel an S-curve between CTAs and scroll indicator.
+   Subtle "freight in motion" cue. SMIL-animated, no JS. */
+.hero-route {
+    display: block;
+    width: 300px;
+    height: 60px;
+    margin: 32px auto 0;
+    opacity: 0.85;
+    pointer-events: none;
+}
+[data-theme="light"] .hero-route use {
+    stroke: rgba(178, 115, 0, 0.30);
+}
+[data-theme="light"] .hero-route circle {
+    fill: #7A5400;
+}
+@media (prefers-reduced-motion: reduce) {
+    .hero-route circle { animation: none; }
+}
+@media (max-width: 640px) {
+    .hero-route { width: 220px; margin-top: 24px; }
+}
+
 .scroll-indicator {
     position: absolute;
     bottom: 40px;
@@ -1434,38 +1470,50 @@ a {
 }
 
 /* Blueprint freight truck — decorative SVG behind the vision pillars.
-   Stroke color is currentColor (set on the element), so it inherits a theme-
-   appropriate tint. Slow drift loop sells the "always moving" feel. */
+   Slowly drives across the section bottom (right → left → reset). Strokes
+   inherit currentColor for theme-appropriate ink. */
 .vision-truck {
     position: absolute;
-    right: -60px;
-    bottom: 8%;
-    width: 480px;
+    right: -80px;
+    bottom: 5%;
+    width: 600px;
     height: auto;
     pointer-events: none;
     z-index: 1;
-    color: rgba(212, 175, 55, 0.08);  /* the ink — feels like a blueprint pencil line */
-    filter: drop-shadow(0 0 12px rgba(212, 175, 55, 0.10));
-    animation: visionTruckDrift 18s ease-in-out infinite alternate;
+    color: rgba(212, 175, 55, 0.10);   /* dark-mode blueprint ink */
+    filter: drop-shadow(0 0 14px rgba(212, 175, 55, 0.10));
+    animation: visionTruckDrive 24s linear infinite;
     will-change: transform;
 }
 
-[data-theme="light"] .vision-truck {
-    color: rgba(178, 115, 0, 0.10);
-    filter: drop-shadow(0 0 8px rgba(178, 115, 0, 0.08));
+/* The route trail under the truck. Stroke-dashoffset animation makes it look
+   like the cargo is paying out a thread of route as it moves. */
+.vision-truck-route {
+    animation: visionTruckRoute 4s linear infinite;
 }
 
-@keyframes visionTruckDrift {
-    0%   { transform: translateX(-20px); }
-    100% { transform: translateX(20px); }
+[data-theme="light"] .vision-truck {
+    color: rgba(178, 115, 0, 0.08);
+    filter: drop-shadow(0 0 8px rgba(178, 115, 0, 0.06));
+}
+
+@keyframes visionTruckDrive {
+    0%   { transform: translateX(60px); }   /* just off the right edge */
+    100% { transform: translateX(-1200px); } /* fully past the left, wraps via loop */
+}
+
+@keyframes visionTruckRoute {
+    0%   { stroke-dashoffset: 0; }
+    100% { stroke-dashoffset: -75; }   /* -(5 * dash period 15) — smooth loop */
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .vision-truck { animation: none; transform: none; }
+    .vision-truck { animation: none; transform: translateX(0); }
+    .vision-truck-route { animation: none; }
 }
 
 @media (max-width: 1024px) {
-    .vision-truck { width: 360px; opacity: 0.7; right: -80px; }
+    .vision-truck { width: 460px; opacity: 0.85; right: -120px; }
 }
 @media (max-width: 640px) {
     .vision-truck { display: none; }
@@ -1674,7 +1722,7 @@ a {
     height: 308px;  /* -30% from 440px */
     background: url('vortway-mark-flat-gold.svg') no-repeat center;
     background-size: contain;
-    opacity: 0.05;  /* whisper of branding */
+    opacity: 0.04;  /* whisper of branding */
     pointer-events: none;
     z-index: -1;
     transform: rotate(8deg);
@@ -1682,6 +1730,43 @@ a {
 
 [data-theme="light"] .footer::after {
     opacity: 0.03;
+}
+
+/* European route map — sits behind the footer-grid as a barely-visible network */
+.footer-route-map {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    color: rgba(212, 175, 55, 0.06);
+    opacity: 0.9;
+}
+
+[data-theme="light"] .footer-route-map {
+    color: rgba(178, 115, 0, 0.07);
+}
+
+/* Kaunas hub pulse — gentle expand+fade ring */
+.footer-route-pulse {
+    transform-origin: 720px 80px;
+    animation: footerHubPulse 3.2s ease-out infinite;
+}
+@keyframes footerHubPulse {
+    0%   { transform: scale(1);   opacity: 0.9; }
+    100% { transform: scale(3.2); opacity: 0;   }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .footer-route-pulse { animation: none; }
+}
+
+/* Make sure footer content sits above the route map */
+.footer-grid,
+.footer-bottom {
+    position: relative;
+    z-index: 1;
 }
 
 .footer-grid {
@@ -2391,9 +2476,36 @@ a {
     z-index: 2;
 }
 
+/* Hexagonal blueprint frame around each service icon — rotates 60° on hover.
+   SVG-as-background lets us stroke a hex cheaply without a real DOM node. */
+.service-icon::before {
+    content: '';
+    position: absolute;
+    inset: -10px;
+    background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' fill='none' stroke='%23D4AF37' stroke-width='1.4' stroke-linejoin='round'><polygon points='50,4 94,28 94,72 50,96 6,72 6,28'/></svg>") center / contain no-repeat;
+    opacity: 0.45;
+    transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.4s ease;
+    pointer-events: none;
+    z-index: -1;
+}
+
+[data-theme="light"] .service-icon::before {
+    background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' fill='none' stroke='%237A5400' stroke-width='1.4' stroke-linejoin='round'><polygon points='50,4 94,28 94,72 50,96 6,72 6,28'/></svg>") center / contain no-repeat;
+    opacity: 0.55;
+}
+
 .service-card:hover .service-icon {
     background: rgba(var(--gold-rgb), 0.15);
     animation: serviceIconPulse 2s ease-in-out infinite;
+}
+
+.service-card:hover .service-icon::before {
+    transform: rotate(60deg);
+    opacity: 0.9;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .service-card:hover .service-icon::before { transform: none; }
 }
 
 @keyframes serviceIconPulse {
@@ -2769,13 +2881,12 @@ a {
    The radial centers the warmest tone behind the V+W and feathers to the page bg. */
 [data-theme="light"] .preloader {
     background:
-        radial-gradient(ellipse at center, #f5f0e0 0%, #f8f6f0 40%, #f0ede5 100%);
+        radial-gradient(ellipse at center, #f5eed8 0%, #f8f6f0 50%, #f0ede5 100%);
 }
 
 [data-theme="light"] .preloader-mark {
-    position: relative;
-    filter: drop-shadow(0 0 30px rgba(178, 115, 0, 0.20))
-            drop-shadow(0 4px 12px rgba(74, 47, 0, 0.10));
+    filter: drop-shadow(0 0 30px rgba(178, 115, 0, 0.18))
+            drop-shadow(0 4px 12px rgba(74, 47, 0, 0.08));
 }
 
 /* Soft gold radial halo behind the preloader mark — the mark should glow from
@@ -2785,12 +2896,12 @@ a {
     position: absolute;
     top: 50%;
     left: 50%;
-    width: 220px;
-    height: 220px;
+    width: 250px;
+    height: 250px;
     background: radial-gradient(circle,
         rgba(212, 175, 55, 0.18) 0%,
-        rgba(212, 175, 55, 0.06) 40%,
-        transparent 70%);
+        rgba(212, 175, 55, 0.06) 35%,
+        transparent 65%);
     transform: translate(-50%, -50%);
     z-index: -1;
     border-radius: 50%;

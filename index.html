@@ -124,7 +124,12 @@
     <!-- PRELOADER -->
     <div id="preloader" class="preloader" aria-hidden="true">
         <div class="preloader-mark">
-            <svg width="100" height="105" viewBox="-10 -10 220 230" role="img" aria-label="Vortway">
+            <!-- Light-mode brand mark — flat gold, no 3D filters, designed for cream bg -->
+            <img class="preloader-mark-img preloader-mark-light"
+                 src="vortway-mark-light.svg" alt="Vortway"
+                 width="100" height="105" loading="eager">
+            <!-- Dark-mode draw-in animated mark — inline SVG with 3D filters -->
+            <svg class="preloader-mark-svg preloader-mark-dark" width="100" height="105" viewBox="-10 -10 220 230" role="img" aria-label="Vortway">
                 <defs>
                     <linearGradient id="preGold" x1="0%" y1="0%" x2="100%" y2="100%">
                         <stop offset="0%" stop-color="#FFFDF0"/>
@@ -339,7 +344,12 @@
             <div class="hero-title-stack">
                 <!-- Animated mark behind the wordmark — large gold watermark with glow -->
                 <div class="hero-mark-bg" aria-hidden="true">
-                    <svg viewBox="-10 -10 220 230" role="img" aria-hidden="true">
+                    <!-- Light-mode brand mark — flat dark/gold mark designed for light bg -->
+                    <img class="hero-mark-img hero-mark-light"
+                         src="vortway-mark-light.svg" alt=""
+                         loading="eager" aria-hidden="true">
+                    <!-- Dark-mode draw-in mark (animated SMIL) -->
+                    <svg class="hero-mark-svg hero-mark-dark" viewBox="-10 -10 220 230" role="img" aria-hidden="true">
                         <defs>
                             <linearGradient id="heroMarkGold" x1="0%" y1="0%" x2="100%" y2="100%">
                                 <stop offset="0%" stop-color="#FFFDF0"/>
@@ -386,6 +396,37 @@
                 <button class="btn btn-primary" id="btnInitiateQuote" data-i18n="hero_btn_quote">INITIATE QUOTE</button>
                 <button class="btn btn-outline" id="btnConnect" data-i18n="hero_btn_connect">CONNECT</button>
             </div>
+
+            <!-- Freight-in-motion: 3 small gold dots travel an S-curve, staggered -->
+            <svg class="hero-route" viewBox="0 0 300 60" aria-hidden="true" focusable="false">
+                <defs>
+                    <path id="heroRoutePath"
+                          d="M 4 30 C 70 4, 140 56, 210 30 S 290 16, 296 30"
+                          fill="none"/>
+                </defs>
+                <!-- Visible faint route line -->
+                <use href="#heroRoutePath" stroke="rgba(212,175,55,0.22)"
+                     stroke-width="1" fill="none" stroke-dasharray="2 5"/>
+                <!-- Three traveling dots, staggered by 2s -->
+                <circle r="3.2" fill="#D4AF37" opacity="0.9">
+                    <animateMotion dur="6s" repeatCount="indefinite" begin="0s">
+                        <mpath href="#heroRoutePath"/>
+                    </animateMotion>
+                    <animate attributeName="opacity" values="0;0.9;0.9;0" keyTimes="0;0.15;0.85;1" dur="6s" repeatCount="indefinite"/>
+                </circle>
+                <circle r="3.2" fill="#D4AF37" opacity="0.7">
+                    <animateMotion dur="6s" repeatCount="indefinite" begin="2s">
+                        <mpath href="#heroRoutePath"/>
+                    </animateMotion>
+                    <animate attributeName="opacity" values="0;0.7;0.7;0" keyTimes="0;0.15;0.85;1" dur="6s" begin="2s" repeatCount="indefinite"/>
+                </circle>
+                <circle r="3.2" fill="#FFC300" opacity="0.55">
+                    <animateMotion dur="6s" repeatCount="indefinite" begin="4s">
+                        <mpath href="#heroRoutePath"/>
+                    </animateMotion>
+                    <animate attributeName="opacity" values="0;0.55;0.55;0" keyTimes="0;0.15;0.85;1" dur="6s" begin="4s" repeatCount="indefinite"/>
+                </circle>
+            </svg>
         </div>
 
         <div class="scroll-indicator">
@@ -475,55 +516,72 @@
             <span class="vision-orb vision-orb-3"></span>
         </div>
 
-        <!-- Blueprint freight truck — decorative SVG, drifts slowly behind the pillars.
-             Faces left (direction of travel). Strokes are theme-controlled via CSS vars. -->
-        <svg class="vision-truck" viewBox="0 0 480 200" aria-hidden="true" focusable="false">
+        <!-- Blueprint freight truck — decorative SVG that slowly drives across the
+             bottom of the section. Architectural wireframe style; strokes inherit
+             currentColor (set per theme on .vision-truck). -->
+        <svg class="vision-truck" viewBox="0 0 600 250" aria-hidden="true" focusable="false">
             <g fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
-                <!-- Ground line -->
-                <line x1="10" y1="170" x2="470" y2="170" stroke-dasharray="2 6" opacity="0.55"/>
+                <!-- Ground line — softly dashed -->
+                <line x1="0" y1="218" x2="600" y2="218" stroke-dasharray="2 7" opacity="0.55"/>
+
+                <!-- Curved route trail extending BACKWARD from the truck.
+                     stroke-dashoffset animates so it feels like the route is being
+                     drawn behind the moving cargo. -->
+                <path class="vision-truck-route"
+                      d="M 600 210 Q 540 170, 470 175 T 320 165 T 80 130 T 0 80"
+                      stroke-width="1.2" opacity="0.55"
+                      stroke-dasharray="6 9" stroke-dashoffset="0"/>
 
                 <!-- Trailer box (container body) -->
-                <rect x="40" y="60" width="260" height="100" rx="3"/>
-                <!-- Corrugation ribs on the container -->
-                <line x1="70"  y1="64" x2="70"  y2="156"/>
-                <line x1="100" y1="64" x2="100" y2="156"/>
-                <line x1="130" y1="64" x2="130" y2="156"/>
-                <line x1="160" y1="64" x2="160" y2="156"/>
-                <line x1="190" y1="64" x2="190" y2="156"/>
-                <line x1="220" y1="64" x2="220" y2="156"/>
-                <line x1="250" y1="64" x2="250" y2="156"/>
-                <line x1="280" y1="64" x2="280" y2="156"/>
+                <rect x="60" y="80" width="320" height="118" rx="3"/>
+                <!-- Door split + outer-edge ridge -->
+                <line x1="60" y1="80" x2="60" y2="198"/>
+                <line x1="378" y1="80" x2="378" y2="198"/>
+                <!-- Corrugation ribs (every 30u) -->
+                <line x1="90"  y1="84" x2="90"  y2="194"/>
+                <line x1="120" y1="84" x2="120" y2="194"/>
+                <line x1="150" y1="84" x2="150" y2="194"/>
+                <line x1="180" y1="84" x2="180" y2="194"/>
+                <line x1="210" y1="84" x2="210" y2="194"/>
+                <line x1="240" y1="84" x2="240" y2="194"/>
+                <line x1="270" y1="84" x2="270" y2="194"/>
+                <line x1="300" y1="84" x2="300" y2="194"/>
+                <line x1="330" y1="84" x2="330" y2="194"/>
+                <line x1="360" y1="84" x2="360" y2="194"/>
                 <!-- Corner castings -->
-                <rect x="40"  y="60"  width="8" height="8"/>
-                <rect x="292" y="60"  width="8" height="8"/>
-                <rect x="40"  y="152" width="8" height="8"/>
-                <rect x="292" y="152" width="8" height="8"/>
+                <rect x="60"  y="80"  width="10" height="10"/>
+                <rect x="370" y="80"  width="10" height="10"/>
+                <rect x="60"  y="188" width="10" height="10"/>
+                <rect x="370" y="188" width="10" height="10"/>
+                <!-- Container code stamp -->
+                <text x="74" y="106" font-family="monospace" font-size="9" fill="currentColor" opacity="0.8" stroke="none">VRTW · EU</text>
 
-                <!-- Tractor cab silhouette (faces left → goes left) -->
-                <path d="M 300 160 L 300 110 L 326 110 L 340 88 L 388 88 L 396 110 L 416 110 L 416 160 Z"/>
+                <!-- Tractor cab silhouette (faces right) -->
+                <path d="M 380 198 L 380 132 L 410 132 L 426 108 L 482 108 L 492 132 L 514 132 L 514 198 Z"/>
                 <!-- Windshield -->
-                <path d="M 344 96 L 384 96 L 392 108 L 332 108 Z"/>
-                <!-- Front grille line -->
-                <line x1="416" y1="126" x2="424" y2="126"/>
+                <path d="M 430 116 L 478 116 L 488 130 L 416 130 Z"/>
+                <!-- Door line -->
+                <line x1="414" y1="132" x2="414" y2="184"/>
+                <!-- Front grille -->
+                <line x1="514" y1="148" x2="524" y2="148"/>
+                <line x1="514" y1="156" x2="524" y2="156"/>
                 <!-- Headlight cluster -->
-                <rect x="416" y="132" width="6" height="10" rx="1"/>
+                <rect x="514" y="166" width="8" height="12" rx="1"/>
+                <!-- Mirror -->
+                <line x1="410" y1="120" x2="402" y2="120"/>
+                <line x1="402" y1="120" x2="402" y2="136"/>
 
-                <!-- Wheels -->
-                <circle cx="90"  cy="170" r="14"/>
-                <circle cx="90"  cy="170" r="6"/>
-                <circle cx="160" cy="170" r="14"/>
-                <circle cx="160" cy="170" r="6"/>
-                <circle cx="230" cy="170" r="14"/>
-                <circle cx="230" cy="170" r="6"/>
-                <circle cx="340" cy="170" r="14"/>
-                <circle cx="340" cy="170" r="6"/>
-                <circle cx="400" cy="170" r="14"/>
-                <circle cx="400" cy="170" r="6"/>
-
-                <!-- Motion trails behind the trailer -->
-                <line x1="20" y1="100" x2="34" y2="100" opacity="0.55"/>
-                <line x1="14" y1="120" x2="32" y2="120" opacity="0.4"/>
-                <line x1="22" y1="140" x2="36" y2="140" opacity="0.55"/>
+                <!-- Wheels — 3 on trailer (twin rear axle visual) + 2 on cab -->
+                <circle cx="110" cy="218" r="16"/>
+                <circle cx="110" cy="218" r="7"/>
+                <circle cx="180" cy="218" r="16"/>
+                <circle cx="180" cy="218" r="7"/>
+                <circle cx="250" cy="218" r="16"/>
+                <circle cx="250" cy="218" r="7"/>
+                <circle cx="430" cy="218" r="16"/>
+                <circle cx="430" cy="218" r="7"/>
+                <circle cx="500" cy="218" r="16"/>
+                <circle cx="500" cy="218" r="7"/>
             </g>
         </svg>
 
@@ -750,6 +808,34 @@
 
     <!-- 6. FOOTER -->
     <footer class="footer" role="contentinfo">
+        <!-- Subtle European route map — barely-visible logistics network behind the nav.
+             Kaunas (the HQ) pulses gently. -->
+        <svg class="footer-route-map" viewBox="0 0 1200 320" aria-hidden="true" focusable="false">
+            <g fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round">
+                <!-- Curved connections — Kaunas → Riga → Berlin → Paris → Madrid → Istanbul → Vienna -->
+                <path d="M 720 80 Q 800 60, 870 110"/>   <!-- Kaunas → Riga -->
+                <path d="M 720 80 Q 620 150, 510 180"/>  <!-- Kaunas → Berlin -->
+                <path d="M 510 180 Q 380 200, 260 230"/> <!-- Berlin → Paris -->
+                <path d="M 260 230 Q 180 260, 110 280"/> <!-- Paris → Madrid -->
+                <path d="M 720 80 Q 850 180, 950 240"/>  <!-- Kaunas → Istanbul -->
+                <path d="M 510 180 Q 580 220, 660 250"/> <!-- Berlin → Vienna -->
+            </g>
+            <!-- City dots (cx, cy) — 7 nodes -->
+            <g fill="currentColor">
+                <circle cx="870" cy="110" r="3"/>       <!-- Riga -->
+                <circle cx="510" cy="180" r="3"/>       <!-- Berlin -->
+                <circle cx="260" cy="230" r="3"/>       <!-- Paris -->
+                <circle cx="110" cy="280" r="3"/>       <!-- Madrid -->
+                <circle cx="950" cy="240" r="3"/>       <!-- Istanbul -->
+                <circle cx="660" cy="250" r="3"/>       <!-- Vienna -->
+            </g>
+            <!-- Kaunas — HQ — larger + pulsing -->
+            <g class="footer-route-hub">
+                <circle cx="720" cy="80" r="5" fill="currentColor"/>
+                <circle cx="720" cy="80" r="5" fill="none" stroke="currentColor" stroke-width="1" class="footer-route-pulse"/>
+            </g>
+        </svg>
+
         <div class="footer-grid footer-grid-3col">
             <div class="footer-col">
                 <h4 class="footer-heading">NAVIGATION</h4>
@@ -897,7 +983,7 @@
     </div>
 
     <!-- Scripts -->
-    <script src="translations.js?v=7"></script>
-    <script defer src="app.js?v=7"></script>
+    <script src="translations.js?v=8"></script>
+    <script defer src="app.js?v=8"></script>
 </body>
 </html>
