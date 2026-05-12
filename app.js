@@ -1,16 +1,18 @@
+// Desktop+pointer gate computed once. Decorative-only libs (Lenis, Vanta, Three.js, tsParticles)
+// are skipped on mobile/touch to save ~920KB of bandwidth and main-thread work.
+const VW_DESKTOP = !window.matchMedia('(max-width: 768px), (pointer: coarse)').matches;
+
 document.addEventListener('DOMContentLoaded', () => {
     // 1. Initialize Icons
-    lucide.createIcons();
+    if (window.lucide) lucide.createIcons();
 
-    // 1.0 Lenis smooth scroll — buttery momentum across the page.
-    // Skipped on reduced-motion. Exposed on window so the modal can pause it.
-    initLenisSmoothScroll();
-
-    // 1.3 Hero atmospheric fog (Vanta.FOG) — theme-aware, re-inits on toggle
-    initVantaFog();
-
-    // 1.3b Hero gold dust (tsParticles) — drifting golden specks
-    initHeroDust();
+    // 1.0 Decorative libs (desktop only): Lenis smooth scroll, Vanta.FOG hero, tsParticles gold dust.
+    // Loaded async after first paint so they NEVER block LCP. Mobile users get pure CSS fallbacks.
+    loadDecorativeLibs().then(() => {
+        initLenisSmoothScroll();
+        initVantaFog();
+        initHeroDust();
+    });
 
     // 1.3c Service Card 3D Tilt (mouse-tracked perspective)
     initServiceCardTilt();
@@ -210,7 +212,6 @@ document.addEventListener('DOMContentLoaded', () => {
     initSplitTextReveals();
     initSectionAlternatingSlide();
     initStatsFlash();
-    initLottieLazy();
 
     // 1.6 Pillar Card Spotlight Effect — rAF-throttled to cap at ~60fps
     document.querySelectorAll('.pillar-card').forEach(card => {
@@ -1051,7 +1052,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 10. Preloader (2s — lets the animated mark complete its draw cycle: 1.2s draw + 0.8s hold)
+    // 10. Preloader (1.4s — mark completes its draw cycle: 1.2s draw + 0.2s hold)
+    // Shortened from 2s to lift LCP without cutting the brand moment.
     const preloader = document.getElementById('preloader');
     if (preloader) {
         setTimeout(() => {
@@ -1064,10 +1066,43 @@ document.addEventListener('DOMContentLoaded', () => {
             };
             preloader.addEventListener('transitionend', cleanup, { once: true });
             // Safety net in case transitionend never fires (reduced-motion users)
-            setTimeout(cleanup, 1200);
-        }, 2000);
+            setTimeout(cleanup, 800);
+        }, 1400);
     }
 });
+
+/**
+ * loadDecorativeLibs — dynamically inject Lenis, Three.js, Vanta.FOG, tsParticles
+ * on desktop only. Resolves once all libs are loaded (or immediately on mobile).
+ * Failure to load any lib is non-fatal: the page already renders fine without them.
+ */
+function loadDecorativeLibs() {
+    if (!VW_DESKTOP) return Promise.resolve();
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return Promise.resolve();
+
+    const loadScript = (src) => new Promise((resolve, reject) => {
+        const s = document.createElement('script');
+        s.src = src;
+        s.onload = () => resolve();
+        s.onerror = () => reject(new Error('load failed: ' + src));
+        document.head.appendChild(s);
+    });
+
+    // Lenis CSS (tiny — ~2KB) loads in parallel with JS
+    const lenisCss = document.createElement('link');
+    lenisCss.rel = 'stylesheet';
+    lenisCss.href = 'https://unpkg.com/lenis@1.1.20/dist/lenis.css';
+    document.head.appendChild(lenisCss);
+
+    return Promise.all([
+        loadScript('https://unpkg.com/lenis@1.1.20/dist/lenis.min.js').catch(e => console.warn(e)),
+        loadScript('https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js')
+            .then(() => loadScript('https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.fog.min.js'))
+            .catch(e => console.warn('Vanta/Three failed', e)),
+        loadScript('https://cdn.jsdelivr.net/npm/@tsparticles/all@3.9.1/tsparticles.all.bundle.min.js')
+            .catch(e => console.warn('tsParticles failed', e))
+    ]);
+}
 
 /**
  * initVantaFog — atmospheric gold/dark fog backdrop for the hero.
@@ -1076,6 +1111,7 @@ document.addEventListener('DOMContentLoaded', () => {
  * on theme toggle with warm-cream colors for light mode.
  */
 function initVantaFog() {
+    if (!VW_DESKTOP) return;
     if (typeof VANTA === 'undefined' || !VANTA.FOG || typeof THREE === 'undefined') return;
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
@@ -1145,6 +1181,7 @@ function initVantaFog() {
  * Skipped under reduced-motion (CSS hides the canvas via the wrapper).
  */
 function initHeroDust() {
+    if (!VW_DESKTOP) return;
     if (typeof tsParticles === 'undefined') return;
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     if (!document.getElementById('heroParticles')) return;
@@ -1441,6 +1478,7 @@ function initServiceCardTilt() {
  * Exposes window.__vortwayLenis so the quote modal can stop/start it.
  */
 function initLenisSmoothScroll() {
+    if (!VW_DESKTOP) return;
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (reduce || typeof Lenis === 'undefined') return;
 
@@ -1615,23 +1653,3 @@ function initStatsFlash() {
     });
 }
 
-/**
- * initLottieLazy — lazy-load any <lottie-player src="..."> via IntersectionObserver.
- * Currently no Lottie elements in the page; this is forward-compatible scaffolding.
- */
-function initLottieLazy() {
-    if (typeof IntersectionObserver === 'undefined') return;
-    const players = document.querySelectorAll('lottie-player[data-src]');
-    if (!players.length) return;
-    const io = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const p = entry.target;
-                const src = p.getAttribute('data-src');
-                if (src && !p.getAttribute('src')) p.setAttribute('src', src);
-                io.unobserve(p);
-            }
-        });
-    }, { rootMargin: '200px' });
-    players.forEach(p => io.observe(p));
-}

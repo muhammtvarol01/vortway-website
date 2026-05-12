@@ -7,7 +7,9 @@ node_modules/
 package.json
 package-lock.json
 smoke-test.js
+smoke-*.png
 *.log
+email-signature.html
 
 # OS junk
 .DS_Store

@@ -1,0 +1,73 @@
+# ============================================================
+# Vortway Logistics — production .htaccess
+# Hostinger / Apache. Safe to remove any module-guarded block
+# if a module is unavailable; the IfModule guard prevents errors.
+# ============================================================
+
+# ---------- Compression (Brotli preferred, gzip fallback) ----------
+<IfModule mod_brotli.c>
+    AddOutputFilterByType BROTLI_COMPRESS text/html text/plain text/css text/javascript text/xml
+    AddOutputFilterByType BROTLI_COMPRESS application/javascript application/json application/xml
+    AddOutputFilterByType BROTLI_COMPRESS image/svg+xml font/woff font/woff2
+</IfModule>
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/plain text/css text/javascript text/xml
+    AddOutputFilterByType DEFLATE application/javascript application/json application/xml
+    AddOutputFilterByType DEFLATE image/svg+xml font/woff font/woff2
+</IfModule>
+
+# ---------- Cache headers ----------
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresDefault                          "access plus 1 month"
+    ExpiresByType text/html                 "access plus 1 hour"
+    ExpiresByType text/css                  "access plus 1 year"
+    ExpiresByType application/javascript    "access plus 1 year"
+    ExpiresByType text/javascript           "access plus 1 year"
+    ExpiresByType application/json          "access plus 1 hour"
+    ExpiresByType image/svg+xml             "access plus 1 year"
+    ExpiresByType image/png                 "access plus 1 year"
+    ExpiresByType image/jpeg                "access plus 1 year"
+    ExpiresByType image/webp                "access plus 1 year"
+    ExpiresByType image/x-icon              "access plus 1 year"
+    ExpiresByType font/woff                 "access plus 1 year"
+    ExpiresByType font/woff2                "access plus 1 year"
+    ExpiresByType application/font-woff2    "access plus 1 year"
+    ExpiresByType application/xml           "access plus 1 day"
+    ExpiresByType text/xml                  "access plus 1 day"
+</IfModule>
+
+# ---------- Cache-Control on long-lived static assets ----------
+<IfModule mod_headers.c>
+    <FilesMatch "\.(css|js|svg|png|jpg|jpeg|webp|ico|woff|woff2)$">
+        Header set Cache-Control "public, max-age=31536000, immutable"
+    </FilesMatch>
+    <FilesMatch "\.(html|htm)$">
+        Header set Cache-Control "public, max-age=3600, must-revalidate"
+    </FilesMatch>
+    <FilesMatch "\.(xml|json|txt)$">
+        Header set Cache-Control "public, max-age=86400"
+    </FilesMatch>
+</IfModule>
+
+# ---------- Force HTTPS + strip www ----------
+RewriteEngine On
+RewriteCond %{HTTPS} off
+RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+RewriteCond %{HTTP_HOST} ^www\.vortway\.lt$ [NC]
+RewriteRule ^(.*)$ https://vortway.lt/$1 [L,R=301]
+
+# ---------- Security headers ----------
+<IfModule mod_headers.c>
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-Frame-Options "SAMEORIGIN"
+    Header set Referrer-Policy "strict-origin-when-cross-origin"
+    Header set Permissions-Policy "camera=(), microphone=(), geolocation=()"
+    Header set Strict-Transport-Security "max-age=31536000; includeSubDomains" env=HTTPS
+</IfModule>
+
+# ---------- 404 ----------
+ErrorDocument 404 /404.html
+
+# ---------- Disable directory listing ----------
+Options -Indexes
