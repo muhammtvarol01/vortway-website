@@ -1,4 +1,25 @@
+# Dev/test tooling
+.claude/
+.playwright-mcp/
+CLAUDE.md
+og-image.html
 node_modules/
+package.json
+package-lock.json
+smoke-test.js
+*.log
+
+# OS junk
 .DS_Store
 Thumbs.db
-*.log
+
+# Test screenshots (keep only og-image.png)
+anim-frame-*.png
+hero-letter-reveal.png
+homepage-footer.png
+phase2-variants-gallery*.png
+privacy-bottom.png
+privacy-en-with-toggle.png
+privacy-lt-with-toggle.png
+privacy-top.png
+social-section.png
