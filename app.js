@@ -2,6 +2,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // 1. Initialize Icons
     lucide.createIcons();
 
+    // 1.0 Lenis smooth scroll — buttery momentum across the page.
+    // Skipped on reduced-motion. Exposed on window so the modal can pause it.
+    initLenisSmoothScroll();
+
     // 1.3 Hero atmospheric fog (Vanta.FOG) — theme-aware, re-inits on toggle
     initVantaFog();
 
@@ -11,11 +15,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // 1.3c Service Card 3D Tilt (mouse-tracked perspective)
     initServiceCardTilt();
 
-    // 1.3c 3D Logistics Visualization (lazy — boots on vision-section intersection)
-    initLogisticsScene();
-
     // 1.3d Cursor Dot — desktop-only gold follower
     initCursorDot();
+
+    // 1.3d2 Hero cursor glow — large gold halo that follows the mouse across the hero
+    initHeroCursorGlow();
 
     // 1.3e Magnetic Buttons — GSAP-driven pull
     initMagneticButtons();
@@ -201,6 +205,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // 1.5b Premium reveals — SplitText titles, alternating service-card slide, stats flash
+    initSplitTextReveals();
+    initSectionAlternatingSlide();
+    initStatsFlash();
+    initLottieLazy();
+
     // 1.6 Pillar Card Spotlight Effect — rAF-throttled to cap at ~60fps
     document.querySelectorAll('.pillar-card').forEach(card => {
         let rafPending = false;
@@ -247,7 +257,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (backToTop) {
         backToTop.addEventListener('click', () => {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            if (window.__vortwayLenis) {
+                window.__vortwayLenis.scrollTo(0, { duration: 1.5 });
+            } else {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
         });
     }
 
@@ -435,7 +449,7 @@ document.addEventListener('DOMContentLoaded', () => {
         startTestimonialRotation();
     }
 
-    // 4. Smooth Scrolling for Internal Links
+    // 4. Smooth Scrolling for Internal Links — defers to Lenis when present
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
             e.preventDefault();
@@ -443,9 +457,11 @@ document.addEventListener('DOMContentLoaded', () => {
             if(targetId === '#') return;
             const target = document.querySelector(targetId);
             if (target) {
-                target.scrollIntoView({
-                    behavior: 'smooth'
-                });
+                if (window.__vortwayLenis) {
+                    window.__vortwayLenis.scrollTo(target, { offset: -60, duration: 1.4 });
+                } else {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
                 if(window.innerWidth <= 640 && navLinks) {
                     navLinks.classList.remove('active');
                 }
@@ -457,9 +473,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnConnect = document.getElementById('btnConnect');
     if (btnConnect) {
         btnConnect.addEventListener('click', () => {
-            document.querySelector('#contact').scrollIntoView({
-                behavior: 'smooth'
-            });
+            const target = document.querySelector('#contact');
+            if (window.__vortwayLenis) {
+                window.__vortwayLenis.scrollTo(target, { offset: -60, duration: 1.4 });
+            } else {
+                target.scrollIntoView({ behavior: 'smooth' });
+            }
         });
     }
 
@@ -495,12 +514,14 @@ document.addEventListener('DOMContentLoaded', () => {
             // lock background scroll so scrollIntoView / page wheel can't drift the body
             document.documentElement.style.overflow = 'hidden';
             document.body.style.overflow = 'hidden';
+            if (window.__vortwayLenis) window.__vortwayLenis.stop();
         }
 
         function dismissQuoteModal() {
             quoteModal.classList.remove('active');
             document.documentElement.style.overflow = '';
             document.body.style.overflow = '';
+            if (window.__vortwayLenis) window.__vortwayLenis.start();
             resetQuoteModalState();
         }
 
@@ -1199,520 +1220,6 @@ function initThemeToggle() {
     });
 }
 
-/**
- * initLogisticsScene — Three.js cargo/truck scene under the vision pillars.
- * Lazy: boots when #vision intersects viewport. Pauses rendering when offscreen.
- * Mobile (<768px): skips models, shows grid + particles only.
- * Reduced-motion: renders one static frame, no animation loop.
- */
-function initLogisticsScene() {
-    const canvas = document.getElementById('logisticsCanvas');
-    if (!canvas || typeof THREE === 'undefined') return;
-
-    const visionEl = canvas.closest('.vision');
-    if (!visionEl) return;
-
-    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const isMobile = window.matchMedia('(max-width: 767px)').matches;
-
-    let booted = false;
-    let renderer, scene, camera, ambient, hemi, spot, fill, underGlow;
-    let containers = [], truck = null, particleSystem = null, gridHelper = null;
-    let routeCurve = null;
-    let tubeMaterial = null, particleMaterial = null;
-    let isVisible = false;
-    let rafId = null;
-    let width = visionEl.clientWidth;
-    let height = visionEl.clientHeight;
-
-    // Shared theme-aware materials. Module-scope so a theme toggle can mutate
-    // them in place and every mesh that references them updates instantly.
-    const mats = {
-        body: null,        // container body (MeshPhysicalMaterial — clearcoat for chrome)
-        dim: null,         // ribs + door ridges
-        corner: null,      // corner castings
-        truckGold: null,   // truck cab + trailer (MeshPhysicalMaterial)
-        truckDark: null,   // windshield, trailer bed
-        tire: null
-    };
-
-    // Theme-specific colour + roughness tables. Reads on boot AND on toggle.
-    const THEME = {
-        dark: {
-            body:      { color: 0xD4AF37, metalness: 0.95, roughness: 0.15, clearcoat: 1.0, clearcoatRoughness: 0.10, envMapIntensity: 1.0 },
-            dim:       { color: 0x4A2F00, metalness: 0.60, roughness: 0.40 },
-            corner:    { color: 0xB27300, metalness: 0.80, roughness: 0.35 },
-            truckGold: { color: 0xD4AF37, metalness: 0.90, roughness: 0.18, clearcoat: 0.85, clearcoatRoughness: 0.12 },
-            truckDark: { color: 0x141a17, metalness: 0.50, roughness: 0.60 },
-            tire:      { color: 0x0F0900, metalness: 0.30, roughness: 0.85 },
-            hemiSky: 0xFFC300, hemiGround: 0x080a09, hemiInt: 0.55,
-            ambient: 0.12,
-            spotColor: 0xFFFDF0, spotInt: 1.2,
-            fillColor: 0xFFC300, fillInt: 0.35,
-            underGlow: 0xD4AF37,
-            gridColor1: 0xD4AF37, gridColor2: 0x4A2F00, gridOpacity: 0.35,
-            tubeColor: 0xFFC300, particleColor: 0xFFFDF0,
-            exposure: 1.0
-        },
-        light: {
-            // Slightly darker gold reads better on cream bg; less envMap so reflections
-            // don't blow out against the warm light background.
-            body:      { color: 0xB27300, metalness: 0.92, roughness: 0.22, clearcoat: 1.0, clearcoatRoughness: 0.12, envMapIntensity: 0.7 },
-            dim:       { color: 0x4A2F00, metalness: 0.55, roughness: 0.45 },
-            corner:    { color: 0x7A5400, metalness: 0.75, roughness: 0.40 },
-            truckGold: { color: 0xB27300, metalness: 0.88, roughness: 0.22, clearcoat: 0.80, clearcoatRoughness: 0.14 },
-            truckDark: { color: 0x1a1a1a, metalness: 0.40, roughness: 0.65 },
-            tire:      { color: 0x222222, metalness: 0.20, roughness: 0.90 },
-            hemiSky: 0xfff8e0, hemiGround: 0xe0d8b8, hemiInt: 0.95,
-            ambient: 0.45,
-            spotColor: 0xfff5d8, spotInt: 1.0,
-            fillColor: 0xfff5d8, fillInt: 0.55,
-            underGlow: 0xB27300,
-            gridColor1: 0xB27300, gridColor2: 0xC9B57E, gridOpacity: 0.22,
-            tubeColor: 0xB27300, particleColor: 0x7A5400,
-            exposure: 1.15
-        }
-    };
-
-    function currentTheme() {
-        return document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
-    }
-
-    function buildMaterials() {
-        const cfg = THEME[currentTheme()];
-        mats.body      = new THREE.MeshPhysicalMaterial(cfg.body);
-        mats.dim       = new THREE.MeshStandardMaterial(cfg.dim);
-        mats.corner    = new THREE.MeshStandardMaterial(cfg.corner);
-        mats.truckGold = new THREE.MeshPhysicalMaterial(cfg.truckGold);
-        mats.truckDark = new THREE.MeshStandardMaterial(cfg.truckDark);
-        mats.tire      = new THREE.MeshStandardMaterial(cfg.tire);
-    }
-
-    function applyTheme(themeMode) {
-        if (!booted) return;
-        const cfg = THEME[themeMode === 'light' ? 'light' : 'dark'];
-
-        // Materials — Three.js Material.setValues() handles color hex values
-        // correctly by calling Color.set(hex) on the existing Color instance.
-        mats.body.setValues(cfg.body);
-        mats.dim.setValues(cfg.dim);
-        mats.corner.setValues(cfg.corner);
-        mats.truckGold.setValues(cfg.truckGold);
-        mats.truckDark.setValues(cfg.truckDark);
-        mats.tire.setValues(cfg.tire);
-        mats.body.needsUpdate = true;
-        mats.truckGold.needsUpdate = true;
-
-        // Lights
-        if (hemi)      { hemi.color.setHex(cfg.hemiSky); hemi.groundColor.setHex(cfg.hemiGround); hemi.intensity = cfg.hemiInt; }
-        if (ambient)   { ambient.intensity = cfg.ambient; }
-        if (spot)      { spot.color.setHex(cfg.spotColor); spot.intensity = cfg.spotInt; }
-        if (fill)      { fill.color.setHex(cfg.fillColor); fill.intensity = cfg.fillInt; }
-        if (underGlow) { underGlow.color.setHex(cfg.underGlow); }
-
-        // Tube + particles
-        if (tubeMaterial)     { tubeMaterial.color.setHex(cfg.tubeColor); }
-        if (particleMaterial) { particleMaterial.color.setHex(cfg.particleColor); }
-
-        // Grid — GridHelper bakes colours into vertex colors, so recreate it.
-        if (gridHelper) {
-            scene.remove(gridHelper);
-            gridHelper.geometry.dispose();
-            gridHelper.material.dispose();
-            gridHelper = new THREE.GridHelper(40, 40, cfg.gridColor1, cfg.gridColor2);
-            gridHelper.material.opacity = cfg.gridOpacity;
-            gridHelper.material.transparent = true;
-            gridHelper.position.y = -0.05;
-            scene.add(gridHelper);
-        }
-
-        // Tone-mapping exposure (subtle but reads premium in light mode)
-        if (renderer) renderer.toneMappingExposure = cfg.exposure;
-    }
-
-    const ensureSize = () => {
-        width = visionEl.clientWidth;
-        height = visionEl.clientHeight;
-        if (renderer) {
-            renderer.setSize(width, height, false);
-            camera.aspect = width / height;
-            camera.updateProjectionMatrix();
-        }
-    };
-
-    function buildContainer() {
-        const group = new THREE.Group();
-
-        // Body — 20ft container ~ 6×2.5×2.5 (scaled down for scene)
-        const body = new THREE.Mesh(new THREE.BoxGeometry(3, 1.4, 1.4), mats.body);
-        body.castShadow = true;
-        body.receiveShadow = true;
-        group.add(body);
-
-        // Door ridges on the back face
-        for (let i = -1; i <= 1; i++) {
-            const r = new THREE.Mesh(new THREE.BoxGeometry(0.04, 1.25, 0.04), mats.dim);
-            r.position.set(1.51, 0, i * 0.35);
-            group.add(r);
-        }
-
-        // Top corrugation ribs (running along width)
-        for (let i = -1.3; i <= 1.3; i += 0.32) {
-            const rib = new THREE.Mesh(new THREE.BoxGeometry(0.04, 0.04, 1.4), mats.dim);
-            rib.position.set(i, 0.72, 0);
-            group.add(rib);
-        }
-
-        // Corner castings — 8 cubes at each corner
-        const cornerGeo = new THREE.BoxGeometry(0.18, 0.18, 0.18);
-        for (let x of [-1.5, 1.5]) {
-            for (let y of [-0.7, 0.7]) {
-                for (let z of [-0.7, 0.7]) {
-                    const c = new THREE.Mesh(cornerGeo, mats.corner);
-                    c.position.set(x, y, z);
-                    group.add(c);
-                }
-            }
-        }
-
-        return group;
-    }
-
-    function buildTruck() {
-        const group = new THREE.Group();
-        const goldMat = mats.truckGold;
-        const darkMat = mats.truckDark;
-        const tireMat = mats.tire;
-
-        // Cab
-        const cab = new THREE.Mesh(new THREE.BoxGeometry(1.1, 1.1, 1.4), goldMat);
-        cab.position.set(-1.6, 0.55, 0);
-        cab.castShadow = true;
-        group.add(cab);
-
-        // Cab top (sleeper) — slight stepped roof
-        const cabTop = new THREE.Mesh(new THREE.BoxGeometry(1.0, 0.3, 1.3), goldMat);
-        cabTop.position.set(-1.7, 1.25, 0);
-        cabTop.castShadow = true;
-        group.add(cabTop);
-
-        // Windshield (dark)
-        const windshield = new THREE.Mesh(new THREE.BoxGeometry(0.05, 0.55, 1.2), darkMat);
-        windshield.position.set(-1.05, 0.75, 0);
-        group.add(windshield);
-
-        // Trailer bed
-        const trailerBed = new THREE.Mesh(new THREE.BoxGeometry(3.2, 0.2, 1.4), darkMat);
-        trailerBed.position.set(0.5, 0.4, 0);
-        trailerBed.castShadow = true;
-        group.add(trailerBed);
-
-        // Trailer container box (matches container style but smaller)
-        const trailerBox = new THREE.Mesh(new THREE.BoxGeometry(3.0, 1.2, 1.35), goldMat);
-        trailerBox.position.set(0.5, 1.1, 0);
-        trailerBox.castShadow = true;
-        group.add(trailerBox);
-
-        // Wheels — 4 sets of 2 wheels
-        const wheelGeo = new THREE.CylinderGeometry(0.22, 0.22, 0.12, 18);
-        const wheelPositions = [
-            [-1.9, 0.2, -0.65], [-1.9, 0.2, 0.65],   // front cab
-            [-1.1, 0.2, -0.65], [-1.1, 0.2, 0.65],   // rear cab
-            [ 1.4, 0.2, -0.65], [ 1.4, 0.2, 0.65],   // mid trailer
-            [ 2.0, 0.2, -0.65], [ 2.0, 0.2, 0.65]    // rear trailer
-        ];
-        wheelPositions.forEach(([x, y, z]) => {
-            const w = new THREE.Mesh(wheelGeo, tireMat);
-            w.rotation.x = Math.PI / 2;
-            w.position.set(x, y, z);
-            w.castShadow = true;
-            group.add(w);
-        });
-
-        return group;
-    }
-
-    function buildEnvironment() {
-        // Procedural equirect for env reflections — dark scene with gold horizon.
-        const c = document.createElement('canvas');
-        c.width = 256; c.height = 128;
-        const g = c.getContext('2d');
-        const grad = g.createLinearGradient(0, 0, 0, 128);
-        grad.addColorStop(0, '#1a1410');
-        grad.addColorStop(0.45, '#3a2a10');
-        grad.addColorStop(0.55, '#D4AF37');
-        grad.addColorStop(0.7, '#4A2F00');
-        grad.addColorStop(1, '#030504');
-        g.fillStyle = grad;
-        g.fillRect(0, 0, 256, 128);
-
-        const tex = new THREE.CanvasTexture(c);
-        tex.mapping = THREE.EquirectangularReflectionMapping;
-        if (typeof THREE.PMREMGenerator !== 'undefined') {
-            const pmrem = new THREE.PMREMGenerator(renderer);
-            pmrem.compileEquirectangularShader();
-            const envTex = pmrem.fromEquirectangular(tex).texture;
-            pmrem.dispose();
-            tex.dispose();
-            return envTex;
-        }
-        return tex;
-    }
-
-    function boot() {
-        if (booted) return;
-        booted = true;
-
-        const dpr = Math.min(window.devicePixelRatio || 1, isMobile ? 1.5 : 2);
-        renderer = new THREE.WebGLRenderer({
-            canvas,
-            alpha: true,
-            antialias: !isMobile,
-            powerPreference: 'high-performance'
-        });
-        renderer.setPixelRatio(dpr);
-        renderer.setSize(width, height, false);
-        renderer.setClearColor(0x000000, 0);
-        renderer.shadowMap.enabled = !isMobile;
-        renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-        renderer.outputEncoding = THREE.sRGBEncoding;
-        renderer.toneMapping = THREE.ACESFilmicToneMapping;
-        renderer.toneMappingExposure = 1.0;
-
-        scene = new THREE.Scene();
-        camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100);
-        camera.position.set(0, 6.5, 14);
-        camera.lookAt(0, 1, 0);
-
-        // Build the shared theme-aware material palette. Must happen before any
-        // mesh construction so buildContainer/buildTruck can reference mats.*.
-        buildMaterials();
-
-        const cfg = THEME[currentTheme()];
-        renderer.toneMappingExposure = cfg.exposure;
-
-        // === Lighting ===
-        // Hemisphere — sky-to-ground colour gradient
-        hemi = new THREE.HemisphereLight(cfg.hemiSky, cfg.hemiGround, cfg.hemiInt);
-        scene.add(hemi);
-
-        // Ambient — base illumination so deep shadows don't crush detail
-        ambient = new THREE.AmbientLight(0xffffff, cfg.ambient);
-        scene.add(ambient);
-
-        // Key light — dramatic spot from above-left, gold-tinted, casts shadows
-        spot = new THREE.SpotLight(cfg.spotColor, cfg.spotInt, 50, Math.PI * 0.18, 0.4, 1.5);
-        spot.position.set(8, 14, 8);
-        spot.castShadow = !isMobile;
-        if (!isMobile) {
-            spot.shadow.mapSize.set(1024, 1024);
-            spot.shadow.camera.near = 1;
-            spot.shadow.camera.far = 40;
-            spot.shadow.bias = -0.0005;       // reduce shadow acne on flat boxes
-        }
-        scene.add(spot);
-
-        // Fill — soft directional from opposite side. Substitutes for a
-        // RectAreaLight (which would need RectAreaLightUniformsLib from three's
-        // /examples folder, not present in the CDN bundle we load).
-        fill = new THREE.DirectionalLight(cfg.fillColor, cfg.fillInt);
-        fill.position.set(-9, 6, -5);
-        scene.add(fill);
-
-        underGlow = new THREE.PointLight(cfg.underGlow, 0.7, 18);
-        underGlow.position.set(0, -1.5, 0);
-        scene.add(underGlow);
-
-        // Environment for metallic reflections — drives clearcoat highlights
-        try {
-            scene.environment = buildEnvironment();
-        } catch (e) {
-            // gracefully skip — metallic surfaces will still get lit by hemi/spot
-        }
-
-        // Gold ground grid
-        gridHelper = new THREE.GridHelper(40, 40, cfg.gridColor1, cfg.gridColor2);
-        gridHelper.material.opacity = cfg.gridOpacity;
-        gridHelper.material.transparent = true;
-        gridHelper.position.y = -0.05;
-        scene.add(gridHelper);
-
-        // Dark receiver plane for shadows
-        if (!isMobile) {
-            const groundGeo = new THREE.PlaneGeometry(50, 50);
-            const groundMat = new THREE.ShadowMaterial({ opacity: 0.35 });
-            const ground = new THREE.Mesh(groundGeo, groundMat);
-            ground.rotation.x = -Math.PI / 2;
-            ground.receiveShadow = true;
-            scene.add(ground);
-        }
-
-        // Container positions — defined first so the route curve can weave
-        // through them (particles then look like flight-paths connecting cargo).
-        const containerLayout = [
-            { pos: [-5, 1.8,  -2], rotY: 0.30 },
-            { pos: [ 0, 2.2,   2], rotY: -0.50 },
-            { pos: [ 5, 1.6,  -1], rotY: 0.15 },
-            { pos: [-2, 3.0,   3], rotY: -0.20 }
-        ];
-
-        // Route curve — start off-scene west, weave through each container's
-        // ground-projection, end off-scene east. Particles flow between them.
-        const curvePoints = [
-            new THREE.Vector3(-9, 0.4,  1),
-            new THREE.Vector3(containerLayout[0].pos[0], 0.4, containerLayout[0].pos[2]),
-            new THREE.Vector3(containerLayout[3].pos[0], 0.4, containerLayout[3].pos[2]),
-            new THREE.Vector3(containerLayout[1].pos[0], 0.4, containerLayout[1].pos[2]),
-            new THREE.Vector3(containerLayout[2].pos[0], 0.4, containerLayout[2].pos[2]),
-            new THREE.Vector3( 9, 0.4, -1)
-        ];
-        routeCurve = new THREE.CatmullRomCurve3(curvePoints, false, 'catmullrom', 0.4);
-
-        // Route line — tube along the curve
-        const tubeGeo = new THREE.TubeGeometry(routeCurve, 100, 0.05, 8, false);
-        tubeMaterial = new THREE.MeshBasicMaterial({
-            color: cfg.tubeColor,
-            transparent: true,
-            opacity: 0.55
-        });
-        const tube = new THREE.Mesh(tubeGeo, tubeMaterial);
-        scene.add(tube);
-
-        // Particle trail along route
-        const particleCount = isMobile ? 60 : 140;
-        const positions = new Float32Array(particleCount * 3);
-        const offsets = new Float32Array(particleCount); // each particle's progress along curve
-        for (let i = 0; i < particleCount; i++) {
-            const t = i / particleCount;
-            const p = routeCurve.getPointAt(t);
-            positions[i * 3 + 0] = p.x;
-            positions[i * 3 + 1] = p.y + Math.random() * 0.3;
-            positions[i * 3 + 2] = p.z;
-            offsets[i] = t;
-        }
-        const pGeo = new THREE.BufferGeometry();
-        pGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-        particleMaterial = new THREE.PointsMaterial({
-            color: cfg.particleColor,
-            size: 0.09,
-            transparent: true,
-            opacity: 0.9,
-            sizeAttenuation: true,
-            blending: THREE.AdditiveBlending,
-            depthWrite: false
-        });
-        particleSystem = new THREE.Points(pGeo, particleMaterial);
-        particleSystem.userData = { offsets, count: particleCount };
-        scene.add(particleSystem);
-
-        // Containers — skip on mobile (heavy)
-        if (!isMobile) {
-            for (const { pos, rotY } of containerLayout) {
-                const c = buildContainer();
-                c.position.set(pos[0], pos[1], pos[2]);
-                c.rotation.y = rotY;
-                c.userData = {
-                    baseY: pos[1],
-                    phase: Math.random() * Math.PI * 2
-                };
-                scene.add(c);
-                containers.push(c);
-            }
-
-            // Truck — drives along the curve
-            truck = buildTruck();
-            scene.add(truck);
-            truck.userData = { t: 0 };
-        }
-
-        window.addEventListener('resize', ensureSize, { passive: true });
-        canvas.classList.add('ready');
-        if (reducedMotion) {
-            renderer.render(scene, camera);
-        } else {
-            rafId = requestAnimationFrame(animate);
-        }
-    }
-
-    function animate() {
-        rafId = null;
-        if (!isVisible) return;
-
-        const t = performance.now() * 0.001;
-
-        // Containers: gentle float (amp 0.3, ~3s period) + uniform slow Y-rotation.
-        // omega = 2π / 3 ≈ 2.094 rad/s gives a 3-second period.
-        const FLOAT_AMP = 0.3;
-        const FLOAT_OMEGA = (Math.PI * 2) / 3;
-        const ROT_SPEED = 0.002;
-        for (const c of containers) {
-            c.position.y = c.userData.baseY + Math.sin(t * FLOAT_OMEGA + c.userData.phase) * FLOAT_AMP;
-            c.rotation.y += ROT_SPEED;
-        }
-
-        // Truck: drive along curve
-        if (truck && routeCurve) {
-            truck.userData.t = (truck.userData.t + 0.0009) % 1;
-            const p = routeCurve.getPointAt(truck.userData.t);
-            const next = routeCurve.getPointAt(Math.min(truck.userData.t + 0.005, 1));
-            truck.position.set(p.x, p.y - 0.4, p.z);
-            // Face direction of travel
-            truck.lookAt(next.x, p.y - 0.4, next.z);
-        }
-
-        // Particles: shift offsets along curve
-        if (particleSystem) {
-            const { count } = particleSystem.userData;
-            const off = particleSystem.userData.offsets;
-            const arr = particleSystem.geometry.attributes.position.array;
-            for (let i = 0; i < count; i++) {
-                off[i] = (off[i] + 0.0015) % 1;
-                const p = routeCurve.getPointAt(off[i]);
-                arr[i * 3] = p.x;
-                arr[i * 3 + 1] = p.y + Math.sin(t * 2 + i) * 0.04;
-                arr[i * 3 + 2] = p.z;
-            }
-            particleSystem.geometry.attributes.position.needsUpdate = true;
-        }
-
-        // Subtle camera orbit
-        camera.position.x = Math.sin(t * 0.12) * 1.2;
-        camera.lookAt(0, 1, 0);
-
-        renderer.render(scene, camera);
-        if (!reducedMotion) rafId = requestAnimationFrame(animate);
-    }
-
-    // Lazy boot + visibility pause
-    if ('IntersectionObserver' in window) {
-        const io = new IntersectionObserver((entries) => {
-            for (const entry of entries) {
-                if (entry.isIntersecting) {
-                    if (!booted) { ensureSize(); boot(); }
-                    isVisible = true;
-                    if (!reducedMotion && rafId === null && booted) {
-                        rafId = requestAnimationFrame(animate);
-                    }
-                } else {
-                    isVisible = false;
-                }
-            }
-        }, { threshold: 0.05 });
-        io.observe(visionEl);
-    } else {
-        // No IO support — boot immediately
-        ensureSize();
-        boot();
-        isVisible = true;
-    }
-
-    // Theme reactivity — watch <html data-theme> and recolour materials/lights
-    // in place. Self-contained: doesn't depend on initThemeToggle exposing a hook.
-    if (typeof MutationObserver !== 'undefined') {
-        const mo = new MutationObserver(() => applyTheme(currentTheme()));
-        mo.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
-    }
-}
 
 /**
  * initCursorDot — desktop-only 8px gold dot that trails the cursor with a 0.15s lag.
@@ -1921,4 +1428,206 @@ function initServiceCardTilt() {
             card.style.transform = '';
         });
     });
+}
+
+/**
+ * initLenisSmoothScroll — page-wide buttery momentum scrolling.
+ * Synced with GSAP's ticker so ScrollTrigger updates land in the same frame.
+ * Skipped under prefers-reduced-motion (the browser's native scroll is used).
+ * Exposes window.__vortwayLenis so the quote modal can stop/start it.
+ */
+function initLenisSmoothScroll() {
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduce || typeof Lenis === 'undefined') return;
+
+    const lenis = new Lenis({
+        duration: 1.15,
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        smoothWheel: true,
+        wheelMultiplier: 1.0,
+        touchMultiplier: 1.4
+    });
+
+    // Hook into GSAP's ticker once both libs are present
+    const wireGsap = () => {
+        if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return false;
+        gsap.registerPlugin(ScrollTrigger);
+        lenis.on('scroll', ScrollTrigger.update);
+        gsap.ticker.add((time) => lenis.raf(time * 1000));
+        gsap.ticker.lagSmoothing(0);
+        return true;
+    };
+    if (!wireGsap()) {
+        // GSAP may load slightly later (defer order) — poll briefly
+        let tries = 0;
+        const t = setInterval(() => {
+            if (wireGsap() || ++tries > 40) clearInterval(t);
+        }, 50);
+        // Fallback: run Lenis on its own RAF until GSAP attaches
+        function fallbackTick(time) {
+            lenis.raf(time);
+            if (typeof gsap === 'undefined') requestAnimationFrame(fallbackTick);
+        }
+        requestAnimationFrame(fallbackTick);
+    }
+
+    window.__vortwayLenis = lenis;
+}
+
+/**
+ * initHeroCursorGlow — large soft gold halo that follows the cursor across the hero.
+ * Position is updated via CSS custom properties; element is fixed-positioned inside .hero.
+ * Disabled on coarse pointers and reduced-motion.
+ */
+function initHeroCursorGlow() {
+    const glow = document.getElementById('heroCursorGlow');
+    if (!glow) return;
+    if (window.matchMedia('(pointer: coarse), (prefers-reduced-motion: reduce)').matches) {
+        glow.style.display = 'none';
+        return;
+    }
+
+    const hero = document.getElementById('hero');
+    if (!hero) return;
+
+    let mx = -400, my = -400;
+    let pending = false;
+    const apply = () => {
+        glow.style.setProperty('--gx', mx + 'px');
+        glow.style.setProperty('--gy', my + 'px');
+        pending = false;
+    };
+
+    hero.addEventListener('mousemove', (e) => {
+        const rect = hero.getBoundingClientRect();
+        mx = e.clientX - rect.left;
+        my = e.clientY - rect.top;
+        if (pending) return;
+        pending = true;
+        requestAnimationFrame(apply);
+    }, { passive: true });
+
+    hero.addEventListener('mouseleave', () => {
+        mx = -400; my = -400;
+        requestAnimationFrame(apply);
+    });
+}
+
+/**
+ * initSplitTextReveals — cinematic letter-by-letter reveals on section titles.
+ * Falls back to whole-word fade if SplitText isn't available.
+ * Skipped under prefers-reduced-motion.
+ */
+function initSplitTextReveals() {
+    if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    const titles = document.querySelectorAll('.section-title');
+    if (!titles.length) return;
+
+    // Wait for webfonts so SplitText measures glyph widths correctly.
+    const ready = (document.fonts && document.fonts.ready) ? document.fonts.ready : Promise.resolve();
+    ready.then(() => splitAndAnimate(titles));
+}
+
+function splitAndAnimate(titles) {
+    titles.forEach((title) => {
+        // Skip the hero title — it already has its own per-char animation
+        if (title.classList.contains('hero-title')) return;
+
+        let chars;
+        if (typeof SplitText !== 'undefined') {
+            try {
+                const split = new SplitText(title, { type: 'chars,words' });
+                chars = split.chars;
+            } catch (_) { /* fallthrough */ }
+        }
+
+        if (!chars) {
+            // Fallback: simple fade-up reveal on the whole title
+            gsap.from(title, {
+                opacity: 0, y: 30, duration: 0.8, ease: 'power3.out',
+                scrollTrigger: { trigger: title, start: 'top 85%', toggleActions: 'play none none none' }
+            });
+            return;
+        }
+
+        gsap.set(chars, { opacity: 0, y: 30, rotateX: -40, transformOrigin: '50% 50% -20px' });
+        gsap.to(chars, {
+            opacity: 1, y: 0, rotateX: 0,
+            stagger: 0.025, duration: 0.7, ease: 'back.out(1.6)',
+            scrollTrigger: { trigger: title, start: 'top 85%', toggleActions: 'play none none none' }
+        });
+    });
+}
+
+/**
+ * initSectionAlternatingSlide — service cards slide in from alternating sides.
+ * Skipped under prefers-reduced-motion.
+ */
+function initSectionAlternatingSlide() {
+    if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    const serviceCards = gsap.utils.toArray('.service-card');
+    if (!serviceCards.length) return;
+
+    serviceCards.forEach((card, i) => {
+        const fromX = (i % 2 === 0) ? -50 : 50;
+        gsap.fromTo(card,
+            { x: fromX, opacity: 0 },
+            {
+                x: 0, opacity: 1,
+                duration: 0.9, ease: 'power3.out',
+                scrollTrigger: { trigger: card, start: 'top 85%', toggleActions: 'play none none none' }
+            }
+        );
+    });
+}
+
+/**
+ * initStatsFlash — after the stats counter finishes, fire a brief gold shimmer.
+ * The shimmer is driven by CSS animation; we just toggle a class.
+ */
+function initStatsFlash() {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const statsSection = document.getElementById('stats');
+    if (!statsSection || typeof ScrollTrigger === 'undefined') return;
+    ScrollTrigger.create({
+        trigger: '#stats',
+        start: 'top 75%',
+        once: true,
+        onEnter: () => {
+            // Delay matches the GSAP counter duration (~2s)
+            setTimeout(() => {
+                document.querySelectorAll('.stat-number').forEach((el, i) => {
+                    setTimeout(() => {
+                        el.classList.add('stat-flash');
+                        setTimeout(() => el.classList.remove('stat-flash'), 900);
+                    }, i * 120);
+                });
+            }, 2050);
+        }
+    });
+}
+
+/**
+ * initLottieLazy — lazy-load any <lottie-player src="..."> via IntersectionObserver.
+ * Currently no Lottie elements in the page; this is forward-compatible scaffolding.
+ */
+function initLottieLazy() {
+    if (typeof IntersectionObserver === 'undefined') return;
+    const players = document.querySelectorAll('lottie-player[data-src]');
+    if (!players.length) return;
+    const io = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const p = entry.target;
+                const src = p.getAttribute('data-src');
+                if (src && !p.getAttribute('src')) p.setAttribute('src', src);
+                io.unobserve(p);
+            }
+        });
+    }, { rootMargin: '200px' });
+    players.forEach(p => io.observe(p));
 }

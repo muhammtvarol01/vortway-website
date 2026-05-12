@@ -70,6 +70,33 @@
     inherits: false;
 }
 
+/* Animated conic-gradient angle for the pillar-card hover border */
+@property --pillar-angle {
+    syntax: '<angle>';
+    initial-value: 0deg;
+    inherits: false;
+}
+
+/* ========================================================================
+   LENIS SMOOTH SCROLL — required CSS hooks
+   ======================================================================== */
+html.lenis,
+html.lenis body {
+    height: auto;
+}
+.lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+    overscroll-behavior: contain;
+}
+.lenis.lenis-stopped {
+    overflow: clip;
+}
+.lenis.lenis-smooth iframe {
+    pointer-events: none;
+}
+
 html, body {
     transition: background-color 0.4s ease, color 0.4s ease;
 }
@@ -704,6 +731,41 @@ a {
     z-index: 2;
 }
 
+/* Cursor-following gold glow — large soft radial halo that trails the mouse
+   across the hero. Position is set via --gx/--gy from app.js. */
+.hero-cursor-glow {
+    position: absolute;
+    top: 0; left: 0;
+    width: 380px;
+    height: 380px;
+    pointer-events: none;
+    z-index: 2;
+    transform: translate(var(--gx, -400px), var(--gy, -400px)) translate(-50%, -50%);
+    background: radial-gradient(
+        circle,
+        rgba(var(--gold-rgb), 0.10) 0%,
+        rgba(var(--gold-rgb), 0.04) 35%,
+        transparent 70%
+    );
+    transition: transform 0.18s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.4s ease;
+    mix-blend-mode: screen;
+    will-change: transform;
+}
+
+[data-theme="light"] .hero-cursor-glow {
+    background: radial-gradient(
+        circle,
+        rgba(178, 115, 0, 0.12) 0%,
+        rgba(212, 175, 55, 0.05) 35%,
+        transparent 70%
+    );
+    mix-blend-mode: multiply;
+}
+
+@media (pointer: coarse), (prefers-reduced-motion: reduce) {
+    .hero-cursor-glow { display: none; }
+}
+
 .hero-content {
     position: relative;
     z-index: 3;
@@ -957,44 +1019,75 @@ a {
 }
 
 .pillar-card {
-    background: var(--bg-card);
-    border: 1px solid var(--border-color);
+    background: rgba(var(--surface-rgb), 0.62);
+    backdrop-filter: blur(20px) saturate(115%);
+    -webkit-backdrop-filter: blur(20px) saturate(115%);
+    border: 1px solid rgba(var(--gold-rgb), 0.08);
     padding: 50px 40px;
-    border-radius: 4px;
+    border-radius: 16px;
     text-align: center;
-    transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
-                box-shadow 0.45s ease,
-                border-color 0.45s ease,
+    transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+                box-shadow 0.55s ease,
+                border-color 0.55s ease,
                 background 0.4s ease;
     position: relative;
     overflow: hidden;
     will-change: transform;
+    --pillar-angle: 0deg;
 }
 
+/* Animated conic-gradient ring that rotates around the card on hover.
+   Sits behind the card's own background — a thin gold arc sweeps around. */
 .pillar-card::before {
     content: '';
     position: absolute;
-    top: 0; left: 0; width: 100%; height: 2px;
-    background: linear-gradient(to right, transparent, var(--gold-primary), transparent);
+    inset: -2px;
+    background: conic-gradient(
+        from var(--pillar-angle),
+        transparent 0%,
+        transparent 60%,
+        rgba(var(--gold-rgb), 0.85) 78%,
+        rgba(var(--gold-rgb), 0.35) 88%,
+        transparent 100%
+    );
+    border-radius: 18px;
+    z-index: -1;
     opacity: 0;
-    transition: opacity 0.4s;
-}
-
-.pillar-card:hover {
-    transform: translateY(-12px) scale(1.03);
-    box-shadow: var(--shadow-card-hover), 0 0 0 1px rgba(var(--gold-rgb), 0.18);
-    border-color: rgba(var(--gold-rgb), 0.28);
+    transition: opacity 0.5s ease;
+    pointer-events: none;
 }
 
 .pillar-card:hover::before {
     opacity: 1;
+    animation: pillarBorderRotate 3.2s linear infinite;
 }
 
+@keyframes pillarBorderRotate {
+    to { --pillar-angle: 360deg; }
+}
+
+.pillar-card:hover {
+    transform: translateY(-10px);
+    box-shadow:
+        0 30px 60px rgba(0, 0, 0, 0.4),
+        0 0 40px rgba(var(--gold-rgb), 0.12),
+        0 0 0 1px rgba(var(--gold-rgb), 0.22);
+    border-color: rgba(var(--gold-rgb), 0.32);
+}
+
+[data-theme="light"] .pillar-card:hover {
+    box-shadow:
+        0 30px 60px rgba(74, 47, 0, 0.18),
+        0 0 36px rgba(212, 175, 55, 0.18),
+        0 0 0 1px rgba(178, 115, 0, 0.20);
+}
+
+/* Mouse-tracked spotlight overlay (driven by --mouse-x / --mouse-y from app.js) */
 .pillar-card::after {
     content: '';
     position: absolute;
     top: 0; left: 0; width: 100%; height: 100%;
-    background: radial-gradient(600px circle at var(--mouse-x) var(--mouse-y), rgba(var(--gold-rgb), 0.08), transparent 40%);
+    background: radial-gradient(600px circle at var(--mouse-x) var(--mouse-y), rgba(var(--gold-rgb), 0.10), transparent 40%);
     opacity: 0;
     transition: opacity 0.3s;
     pointer-events: none;
@@ -1012,14 +1105,35 @@ a {
     align-items: center;
     justify-content: center;
     width: 80px; height: 80px;
-    background: rgba(var(--gold-rgb), 0.05);
+    background: radial-gradient(circle, rgba(var(--gold-rgb), 0.16) 0%, rgba(var(--gold-rgb), 0.04) 60%, transparent 80%);
     border-radius: 50%;
-    transition: box-shadow 0.45s ease, background 0.4s ease;
+    transition: box-shadow 0.45s ease, background 0.4s ease, transform 0.45s ease;
+    position: relative;
+    z-index: 2;
 }
 
 .pillar-card:hover .pillar-icon {
-    background: rgba(var(--gold-rgb), 0.12);
-    box-shadow: 0 0 24px rgba(var(--gold-rgb), 0.25);
+    background: radial-gradient(circle, rgba(var(--gold-rgb), 0.28) 0%, rgba(var(--gold-rgb), 0.08) 60%, transparent 80%);
+    animation: pillarIconPulse 2.4s ease-in-out infinite;
+}
+
+@keyframes pillarIconPulse {
+    0%, 100% {
+        box-shadow: 0 0 20px rgba(var(--gold-rgb), 0.22);
+        transform: scale(1);
+    }
+    50% {
+        box-shadow: 0 0 44px rgba(var(--gold-rgb), 0.55), 0 0 8px rgba(var(--gold-rgb), 0.4) inset;
+        transform: scale(1.05);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .pillar-card:hover .pillar-icon {
+        animation: none;
+        box-shadow: 0 0 24px rgba(var(--gold-rgb), 0.25);
+    }
+    .pillar-card:hover::before { animation: none; }
 }
 
 .pillar-title {
@@ -1107,12 +1221,35 @@ a {
     100% { background-position: 0% center; }
 }
 
+/* Gold flash shimmer fired after the count-up finishes (toggled from app.js) */
+.stat-number.stat-flash {
+    animation: statFlashShimmer 0.85s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+@keyframes statFlashShimmer {
+    0%   {
+        background-position: 0% center;
+        filter: drop-shadow(0 0 18px rgba(var(--gold-rgb), 0.45));
+    }
+    50%  {
+        background-position: 50% center;
+        filter: drop-shadow(0 0 36px rgba(var(--gold-rgb), 0.85))
+                drop-shadow(0 0 8px rgba(var(--gold-rgb), 0.55));
+        transform: scale(1.04);
+    }
+    100% {
+        background-position: 0% center;
+        filter: drop-shadow(0 0 18px rgba(var(--gold-rgb), 0.45));
+        transform: scale(1);
+    }
+}
+
 @media (prefers-reduced-motion: reduce) {
     .stats.in-view .stat-number {
         animation: none;
         background-position: 50% center;
         filter: none;
     }
+    .stat-number.stat-flash { animation: none; }
 }
 
 @media (max-width: 1024px) {
@@ -1218,31 +1355,68 @@ a {
         radial-gradient(ellipse 60% 45% at 80% 70%, rgba(178, 115, 0, 0.08), transparent 60%);
 }
 
-.logistics-canvas {
+/* Vision aurora — three slowly drifting gold orbs that replace the ugly
+   Three.js scene. Pure CSS, ~zero perf cost, theme-aware via --gold-rgb. */
+.vision-aurora {
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    inset: 0;
     pointer-events: none;
     z-index: 0;
-    opacity: 0;
-    transition: opacity 1s ease-in;
-    display: block;
+    overflow: hidden;
 }
-
-.logistics-canvas.ready {
-    opacity: 0.85;
-}
-
-[data-theme="light"] .logistics-canvas.ready {
+.vision-orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
     opacity: 0.55;
+    will-change: transform, opacity;
+    mix-blend-mode: screen;
+}
+.vision-orb-1 {
+    width: 520px; height: 520px;
+    background: radial-gradient(circle, rgba(var(--gold-rgb), 0.35) 0%, transparent 70%);
+    top: 8%; left: -8%;
+    animation: visionOrbDrift1 18s ease-in-out infinite alternate;
+}
+.vision-orb-2 {
+    width: 420px; height: 420px;
+    background: radial-gradient(circle, rgba(178, 115, 0, 0.30) 0%, transparent 70%);
+    top: 30%; right: -6%;
+    animation: visionOrbDrift2 22s ease-in-out infinite alternate;
+}
+.vision-orb-3 {
+    width: 360px; height: 360px;
+    background: radial-gradient(circle, rgba(var(--gold-rgb), 0.22) 0%, transparent 70%);
+    bottom: -10%; left: 30%;
+    animation: visionOrbDrift3 26s ease-in-out infinite alternate;
+}
+
+@keyframes visionOrbDrift1 {
+    0%   { transform: translate3d(0,     0,   0) scale(1); }
+    100% { transform: translate3d(80px, 60px, 0) scale(1.12); }
+}
+@keyframes visionOrbDrift2 {
+    0%   { transform: translate3d(0,     0,    0) scale(1.05); }
+    100% { transform: translate3d(-60px, 80px, 0) scale(0.95); }
+}
+@keyframes visionOrbDrift3 {
+    0%   { transform: translate3d(0,     0,    0) scale(0.92); }
+    100% { transform: translate3d(40px, -50px, 0) scale(1.08); }
+}
+
+[data-theme="light"] .vision-orb { mix-blend-mode: multiply; opacity: 0.38; }
+
+@media (prefers-reduced-motion: reduce) {
+    .vision-orb { animation: none; }
+}
+@media (max-width: 767px) {
+    .vision-orb { filter: blur(60px); opacity: 0.35; }
 }
 
 .vision .section-header,
 .vision .pillars-grid {
     position: relative;
-    z-index: 1;
+    z-index: 2;
 }
 
 /* TESTIMONIALS */
@@ -2537,13 +2711,14 @@ a {
 [data-theme="light"] .track-dropdown,
 [data-theme="light"] .toast,
 [data-theme="light"] .back-to-top {
-    box-shadow: 0 6px 18px rgba(180, 150, 80, 0.10);
+    box-shadow: 0 4px 20px rgba(180, 150, 80, 0.08), 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
-[data-theme="light"] .pillar-card:hover {
-    box-shadow: 0 20px 40px rgba(180, 150, 80, 0.18),
-                0 0 0 1px rgba(178, 115, 0, 0.25);
-    border-color: rgba(178, 115, 0, 0.30);
+[data-theme="light"] .pillar-card {
+    background: rgba(255, 255, 255, 0.75);
+    border-color: rgba(178, 115, 0, 0.15);
+    backdrop-filter: blur(20px) saturate(115%);
+    -webkit-backdrop-filter: blur(20px) saturate(115%);
 }
 
 [data-theme="light"] .service-card {
@@ -2602,6 +2777,55 @@ select:focus-visible,
     outline-offset: 2px;
 }
 
+/* ========================================================================
+   LIGHT MODE — premium atmosphere polish
+   Warm radial overlays in the hero, richer preloader background, and
+   warmer borders on accent surfaces. Layered on top of existing rules.
+   ======================================================================== */
+[data-theme="light"] .hero {
+    position: relative;
+}
+[data-theme="light"] .hero > .hero-content::before {
+    content: '';
+    position: absolute;
+    inset: -10% -25%;
+    background:
+        radial-gradient(ellipse at 30% 40%, rgba(212, 175, 55, 0.10) 0%, transparent 50%),
+        radial-gradient(ellipse at 70% 60%, rgba(178, 115, 0, 0.07) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: -1;
+}
+
+[data-theme="light"] .preloader {
+    background:
+        radial-gradient(ellipse at 50% 30%, #fff8e7 0%, transparent 60%),
+        radial-gradient(ellipse at 50% 100%, rgba(212, 175, 55, 0.12) 0%, transparent 65%),
+        #faf5e6;
+}
+
+/* Richer light-mode pillar-card border + warm halo on hover (layered over the
+   dark-mode rules above — these win because of [data-theme="light"] specificity) */
+[data-theme="light"] .pillar-card:hover {
+    box-shadow:
+        0 30px 60px rgba(74, 47, 0, 0.18),
+        0 0 36px rgba(212, 175, 55, 0.22),
+        0 0 0 1px rgba(178, 115, 0, 0.25);
+    border-color: rgba(178, 115, 0, 0.35);
+}
+
+[data-theme="light"] .pillar-card::before {
+    background: conic-gradient(
+        from var(--pillar-angle),
+        transparent 0%,
+        transparent 60%,
+        rgba(178, 115, 0, 0.85) 78%,
+        rgba(212, 175, 55, 0.45) 88%,
+        transparent 100%
+    );
+}
+
+/* ACCESSIBILITY — Focus Visible already declared above */
+
 /* ACCESSIBILITY — Reduced Motion */
 @media (prefers-reduced-motion: reduce) {
     *,
@@ -2610,5 +2834,10 @@ select:focus-visible,
         animation-duration: 0.01ms !important;
         animation-iteration-count: 1 !important;
         transition-duration: 0.01ms !important;
+    }
+    .vision-orb,
+    .hero-cursor-glow,
+    .pillar-card::before {
+        animation: none !important;
     }
 }
