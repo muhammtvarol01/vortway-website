@@ -5,14 +5,28 @@
 
     <url>
         <loc>https://vortway.lt/</loc>
-        <lastmod>2026-05-05</lastmod>
+        <lastmod>2026-05-12</lastmod>
         <changefreq>monthly</changefreq>
         <priority>1.0</priority>
     </url>
 
     <url>
+        <loc>https://vortway.lt/about.html</loc>
+        <lastmod>2026-05-12</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+
+    <url>
+        <loc>https://vortway.lt/services.html</loc>
+        <lastmod>2026-05-12</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+
+    <url>
         <loc>https://vortway.lt/privacy.html</loc>
-        <lastmod>2026-05-05</lastmod>
+        <lastmod>2026-05-12</lastmod>
         <changefreq>yearly</changefreq>
         <priority>0.3</priority>
         <xhtml:link rel="alternate" hreflang="en" href="https://vortway.lt/privacy.html"/>
@@ -22,7 +36,7 @@
 
     <url>
         <loc>https://vortway.lt/privacy.lt.html</loc>
-        <lastmod>2026-05-05</lastmod>
+        <lastmod>2026-05-12</lastmod>
         <changefreq>yearly</changefreq>
         <priority>0.3</priority>
         <xhtml:link rel="alternate" hreflang="en" href="https://vortway.lt/privacy.html"/>
@@ -32,7 +46,7 @@
 
     <url>
         <loc>https://vortway.lt/terms.html</loc>
-        <lastmod>2026-05-05</lastmod>
+        <lastmod>2026-05-12</lastmod>
         <changefreq>yearly</changefreq>
         <priority>0.3</priority>
     </url>
