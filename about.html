@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About | VORTWAY Logistics & Solutions</title>
+    <meta name="description" content="About Vortway — premium European freight forwarder headquartered in Kaunas, Lithuania. Our story, mission, and why partners choose us.">
+    <link rel="canonical" href="https://vortway.lt/about.html">
+
+    <!-- Social share -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Vortway Logistics & Solutions">
+    <meta property="og:title" content="About | VORTWAY Logistics & Solutions">
+    <meta property="og:description" content="Premium European freight forwarder headquartered in Kaunas, Lithuania. Our story, mission, and why partners choose us.">
+    <meta property="og:url" content="https://vortway.lt/about.html">
+    <meta property="og:image" content="https://vortway.lt/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="VORTWAY — Premium European Freight Forwarding">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="About | VORTWAY Logistics & Solutions">
+    <meta name="twitter:description" content="Premium European freight forwarder headquartered in Kaunas, Lithuania.">
+    <meta name="twitter:image" content="https://vortway.lt/og-image.png">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <script defer src="https://unpkg.com/lucide@1.14.0/dist/umd/lucide.min.js"></script>
+    <link rel="stylesheet" href="style.min.css?v=11">
+
+    <style>
+        .about-page {
+            padding: 140px var(--padding-desktop) 100px;
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        .about-hero {
+            margin-bottom: 80px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 60px;
+        }
+
+        .about-eyebrow {
+            font-family: var(--font-body);
+            font-size: 11px;
+            letter-spacing: 4px;
+            color: var(--gold-primary);
+            text-transform: uppercase;
+            margin-bottom: 20px;
+        }
+
+        .about-title {
+            font-family: var(--font-heading);
+            font-size: clamp(32px, 5vw, 54px);
+            letter-spacing: 4px;
+            background: linear-gradient(to bottom, #FBFBFD 30%, #C24E03 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 28px;
+            line-height: 1.15;
+        }
+
+        .about-tagline {
+            font-family: var(--font-body);
+            font-size: 16px;
+            line-height: 1.8;
+            color: var(--text-muted);
+            font-weight: 300;
+            max-width: 680px;
+        }
+
+        .about-section {
+            margin-bottom: 72px;
+        }
+
+        .about-section-label {
+            font-family: var(--font-body);
+            font-size: 10px;
+            letter-spacing: 4px;
+            color: var(--gold-primary);
+            text-transform: uppercase;
+            margin-bottom: 16px;
+        }
+
+        .about-section h2 {
+            font-family: var(--font-heading);
+            font-size: 22px;
+            letter-spacing: 3px;
+            color: var(--text-main);
+            margin-bottom: 20px;
+        }
+
+        .about-section p {
+            font-family: var(--font-body);
+            font-size: 14px;
+            line-height: 1.9;
+            color: var(--text-muted);
+            font-weight: 300;
+            margin-bottom: 16px;
+            max-width: 720px;
+        }
+
+        .about-section strong {
+            color: var(--text-main);
+            font-weight: 500;
+        }
+
+        /* Differentiators grid */
+        .differentiators {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+            margin-top: 32px;
+        }
+
+        .diff-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 28px 24px;
+            transition: border-color 0.3s;
+        }
+
+        .diff-card:hover { border-color: rgba(232, 93, 4, 0.3); }
+
+        .diff-icon {
+            width: 36px;
+            height: 36px;
+            color: var(--gold-primary);
+            margin-bottom: 16px;
+        }
+
+        .diff-title {
+            font-family: var(--font-heading);
+            font-size: 13px;
+            letter-spacing: 2px;
+            color: var(--gold-primary);
+            margin-bottom: 10px;
+        }
+
+        .diff-desc {
+            font-family: var(--font-body);
+            font-size: 13px;
+            line-height: 1.75;
+            color: var(--text-muted);
+            font-weight: 300;
+            margin: 0;
+        }
+
+        /* Certifications */
+        .cert-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-top: 32px;
+        }
+
+        .cert-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 28px 20px;
+            text-align: center;
+        }
+
+        .cert-badge {
+            width: 48px;
+            height: 48px;
+            border: 2px solid var(--gold-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+            color: var(--gold-primary);
+        }
+
+        .cert-name {
+            font-family: var(--font-heading);
+            font-size: 12px;
+            letter-spacing: 2px;
+            color: var(--text-main);
+            margin-bottom: 6px;
+        }
+
+        .cert-note {
+            font-family: var(--font-body);
+            font-size: 11px;
+            color: var(--text-muted);
+            letter-spacing: 1px;
+        }
+
+        /* Team */
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-top: 32px;
+        }
+
+        .team-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 28px 20px;
+            text-align: center;
+        }
+
+        .team-avatar {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(232,93,4,0.15), rgba(232,93,4,0.05));
+            border: 1px solid rgba(232,93,4,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+            color: var(--gold-dim);
+        }
+
+        .team-name {
+            font-family: var(--font-heading);
+            font-size: 13px;
+            letter-spacing: 2px;
+            color: var(--text-main);
+            margin-bottom: 6px;
+        }
+
+        .team-role {
+            font-family: var(--font-body);
+            font-size: 11px;
+            color: var(--gold-dim);
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+        .cta-strip {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-left: 2px solid var(--gold-primary);
+            padding: 32px 36px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 24px;
+            flex-wrap: wrap;
+        }
+
+        .cta-strip p {
+            font-family: var(--font-body);
+            font-size: 14px;
+            color: var(--text-muted);
+            margin: 0;
+        }
+
+        @media (max-width: 768px) {
+            .about-page { padding: 120px 20px 60px; }
+            .differentiators { grid-template-columns: 1fr; }
+            .cert-grid { grid-template-columns: repeat(2, 1fr); }
+            .team-grid { grid-template-columns: repeat(2, 1fr); }
+            .cta-strip { flex-direction: column; align-items: flex-start; }
+        }
+
+        @media (max-width: 480px) {
+            .cert-grid { grid-template-columns: 1fr; }
+            .team-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- SVG Definitions -->
+    <svg width="0" height="0" style="position:absolute;">
+        <defs>
+            <linearGradient id="globalGold" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#F26A1A"/>
+                <stop offset="35%" stop-color="#E85D04"/>
+                <stop offset="70%" stop-color="#C24E03"/>
+                <stop offset="100%" stop-color="#3A3A3C"/>
+            </linearGradient>
+            <filter id="shield3D">
+                <feDropShadow dx="0" dy="20" stdDeviation="16" flood-color="#000000" flood-opacity="1" result="shadow"/>
+                <feGaussianBlur in="SourceAlpha" stdDeviation="2.5" result="blur"/>
+                <feSpecularLighting in="blur" surfaceScale="5" specularConstant="1.8" specularExponent="40" lighting-color="#ffffff" result="specOut">
+                    <fePointLight x="0" y="-50" z="200"/>
+                </feSpecularLighting>
+                <feComposite in="specOut" in2="SourceAlpha" operator="in" result="specOut"/>
+                <feComposite in="SourceGraphic" in2="specOut" operator="arithmetic" k1="0" k2="1" k3="1" k4="0" result="litPaint"/>
+                <feMerge><feMergeNode in="shadow"/><feMergeNode in="litPaint"/></feMerge>
+            </filter>
+            <filter id="highway3D">
+                <feDropShadow dx="0" dy="8" stdDeviation="8" flood-color="#000000" flood-opacity="0.9" result="shadow"/>
+                <feGaussianBlur in="SourceAlpha" stdDeviation="2" result="blur"/>
+                <feSpecularLighting in="blur" surfaceScale="4" specularConstant="1.4" specularExponent="25" lighting-color="#ffffff" result="specOut">
+                    <fePointLight x="0" y="-50" z="200"/>
+                </feSpecularLighting>
+                <feComposite in="specOut" in2="SourceAlpha" operator="in" result="specOut"/>
+                <feComposite in="SourceGraphic" in2="specOut" operator="arithmetic" k1="0" k2="1" k3="1" k4="0" result="litPaint"/>
+                <feMerge><feMergeNode in="shadow"/><feMergeNode in="litPaint"/></feMerge>
+            </filter>
+        </defs>
+    </svg>
+
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo" style="text-decoration:none;" aria-label="Vortway Logistics & Solutions home">
+                <svg class="nav-logo-mark" viewBox="-10 -10 220 230" width="44" height="44" aria-hidden="true" focusable="false">
+                    <defs>
+                        <linearGradient id="vortway-v-gold-nav" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#FFC300"/>
+                            <stop offset="50%" stop-color="#E85D04"/>
+                            <stop offset="100%" stop-color="#C24E03"/>
+                        </linearGradient>
+                    </defs>
+                    <path d="M 20 40 L 100 180 L 180 40" fill="none" stroke="url(#vortway-v-gold-nav)" stroke-width="30" stroke-linecap="butt" stroke-linejoin="miter"/>
+                    <path d="M 20 40 L 100 180 L 180 40" fill="none" stroke="#3A3A3C" stroke-width="20" stroke-linecap="butt" stroke-linejoin="miter" opacity="0.9"/>
+                </svg>
+                <span class="nav-logo-text">VORTWAY</span>
+            </a>
+            <div class="nav-links">
+                <a href="index.html#services" class="nav-link" data-i18n="nav_services">Services</a>
+                <a href="index.html#vision" class="nav-link" data-i18n="nav_vision">Vision</a>
+                <a href="index.html#contact" class="nav-link" data-i18n="nav_contact">Contact</a>
+                <a href="about.html" class="nav-link" style="color: var(--gold-primary);" data-i18n="nav_about">About</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="about-page">
+
+        <!-- HERO -->
+        <div class="about-hero">
+            <p class="about-eyebrow" data-i18n="about_eyebrow">Kaunas, Lithuania · Est. 2024</p>
+            <h1 class="about-title" data-i18n="about_title">PRECISION LOGISTICS.<br>EUROPEAN SCALE.</h1>
+            <p class="about-tagline" data-i18n="about_tagline">
+                Vortway Logistics &amp; Solutions is a premium freight forwarding company headquartered in
+                Kaunas, Lithuania — strategically positioned at the crossroads of Eastern and Western Europe.
+                We combine <strong>years of hands-on freight forwarding expertise</strong> with the energy and
+                agility of a new-generation operator to deliver freight forwarding at an uncompromised standard.
+            </p>
+        </div>
+
+        <!-- MISSION -->
+        <div class="about-section">
+            <p class="about-section-label" data-i18n="about_mission_label">Our Mission</p>
+            <h2 data-i18n="about_mission_title">MOVE FREIGHT. BUILD TRUST. GROW TOGETHER.</h2>
+            <p data-i18n="about_mission_p1">
+                We believe logistics is not a commodity — it is a relationship. Every shipment carries
+                commercial significance, time pressure, and the trust that your supply chain will perform
+                as promised. Our mission is to honour that trust unconditionally: through transparent
+                communication, meticulous execution, and the kind of personal accountability that only a
+                partner-first organisation can offer.
+            </p>
+            <p data-i18n="about_mission_p2">
+                From our Kaunas headquarters, we coordinate freight across <strong>50+ European corridors</strong>,
+                connecting manufacturing hubs, distribution centres, and ports across the continent with
+                reliability that major logistics operators rarely match and bureaucracy rarely allows.
+            </p>
+        </div>
+
+        <!-- WHY VORTWAY -->
+        <div class="about-section">
+            <p class="about-section-label" data-i18n="about_why_label">Why Vortway</p>
+            <h2 data-i18n="about_why_title">FOUR REASONS PARTNERS CHOOSE US</h2>
+            <div class="differentiators">
+                <div class="diff-card">
+                    <i data-lucide="shield-check" class="diff-icon"></i>
+                    <div class="diff-title" data-i18n="about_diff_1_title">SEASONED EXPERTISE</div>
+                    <p class="diff-desc" data-i18n="about_diff_1_desc">Our team brings years of hands-on experience in European freight, customs regulation, and corridor management — without the overhead of legacy systems that slow decisions down.</p>
+                </div>
+                <div class="diff-card">
+                    <i data-lucide="handshake" class="diff-icon"></i>
+                    <div class="diff-title" data-i18n="about_diff_2_title">TRUST-DRIVEN PARTNERSHIPS</div>
+                    <p class="diff-desc" data-i18n="about_diff_2_desc">We treat clients as long-term strategic partners, not transaction files. Transparent pricing, proactive communication, and shared accountability define how we work.</p>
+                </div>
+                <div class="diff-card">
+                    <i data-lucide="clock" class="diff-icon"></i>
+                    <div class="diff-title" data-i18n="about_diff_3_title">UNWAVERING DEDICATION</div>
+                    <p class="diff-desc" data-i18n="about_diff_3_desc">A 99.2% on-time delivery rate is not a marketing claim — it is the result of 24/7 operational monitoring, real carrier relationships, and a refusal to over-promise.</p>
+                </div>
+                <div class="diff-card">
+                    <i data-lucide="map" class="diff-icon"></i>
+                    <div class="diff-title" data-i18n="about_diff_4_title">STRATEGIC LOCATION</div>
+                    <p class="diff-desc" data-i18n="about_diff_4_desc">Kaunas sits at Lithuania's central crossroads — where Via Baltica meets the east-west A1 motorway. Our position enables efficient Baltic-Western Europe corridors, proximity to Warsaw, Riga, and Minsk, and direct access to both EU and CIS markets.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- CERTIFICATIONS -->
+        <div class="about-section">
+            <p class="about-section-label" data-i18n="about_cred_label">Credentials</p>
+            <h2 data-i18n="about_cred_title">COMPLIANCE &amp; CERTIFICATION</h2>
+            <p data-i18n="about_cred_intro">We operate to the highest professional and regulatory standards in the European freight forwarding industry.</p>
+            <div class="cert-grid">
+                <div class="cert-card">
+                    <div class="cert-badge"><i data-lucide="award" style="width:22px;height:22px;"></i></div>
+                    <div class="cert-name">ISO 9001</div>
+                    <div class="cert-note" data-i18n="about_cert_iso_note">Quality Management — In Progress</div>
+                </div>
+                <div class="cert-card">
+                    <div class="cert-badge"><i data-lucide="file-check" style="width:22px;height:22px;"></i></div>
+                    <div class="cert-name">FIATA</div>
+                    <div class="cert-note" data-i18n="about_cert_fiata_note">International Freight Forwarders — Membership Pending</div>
+                </div>
+                <div class="cert-card">
+                    <div class="cert-badge"><i data-lucide="shield" style="width:22px;height:22px;"></i></div>
+                    <div class="cert-name" data-i18n="about_cert_cmr_name">CMR INSURED</div>
+                    <div class="cert-note" data-i18n="about_cert_cmr_note">Carrier Liability per CMR Convention 1956</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TEAM -->
+        <div class="about-section">
+            <p class="about-section-label" data-i18n="about_team_label">Our People</p>
+            <h2 data-i18n="about_team_title">THE VORTWAY TEAM</h2>
+            <p data-i18n="about_team_intro">A compact, dedicated team of logistics professionals — each bringing sector-specific expertise and a shared commitment to excellence.</p>
+            <div class="team-grid">
+                <div class="team-card">
+                    <div class="team-avatar"><i data-lucide="user" style="width:28px;height:28px;"></i></div>
+                    <div class="team-name">M. VAROL</div>
+                    <div class="team-role" data-i18n="about_team_1_role">Expedition Manager</div>
+                </div>
+                <div class="team-card">
+                    <div class="team-avatar"><i data-lucide="user" style="width:28px;height:28px;"></i></div>
+                    <div class="team-name" data-i18n="about_team_2_name">LOGISTICS OPS</div>
+                    <div class="team-role" data-i18n="about_team_2_role">Operations Coordinator</div>
+                </div>
+                <div class="team-card">
+                    <div class="team-avatar"><i data-lucide="user" style="width:28px;height:28px;"></i></div>
+                    <div class="team-name" data-i18n="about_team_3_name">CUSTOMS TEAM</div>
+                    <div class="team-role" data-i18n="about_team_3_role">Customs &amp; Compliance</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CTA -->
+        <div class="cta-strip">
+            <p data-i18n="about_cta_text">Ready to discuss your freight requirements? Our team responds within 24 hours.</p>
+            <a href="index.html#contact" class="btn btn-primary" data-i18n="about_cta_btn">INITIATE PARTNERSHIP</a>
+        </div>
+
+    </main>
+
+    <footer class="footer">
+        <div class="footer-grid">
+            <div class="footer-col">
+                <h4 class="footer-heading" data-i18n="footer_nav">NAVIGATION</h4>
+                <a href="index.html#services" class="footer-link" data-i18n="nav_services">Services</a>
+                <a href="index.html#vision" class="footer-link" data-i18n="nav_vision">Vision</a>
+                <a href="index.html#contact" class="footer-link" data-i18n="nav_contact">Contact</a>
+                <a href="about.html" class="footer-link" data-i18n="nav_about">About</a>
+            </div>
+            <div class="footer-col">
+                <h4 class="footer-heading" data-i18n="footer_legal">LEGAL</h4>
+                <a href="privacy.html" class="footer-link" data-i18n="footer_privacy">Privacy Policy</a>
+                <a href="terms.html" class="footer-link" data-i18n="footer_terms">Terms of Service</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="copyright">Copyright © 2026 Vortway Logistics &amp; Solutions</div>
+            <div class="system-status"><span class="status-dot"></span> <span data-i18n="footer_systems">ALL SYSTEMS OPERATIONAL</span></div>
+        </div>
+    </footer>
+
+    <script defer src="translations.min.js?v=11"></script>
+    <script>
+        // Sibling-page i18n: read locale from localStorage (set by index.html lang switcher)
+        // and translate elements with data-i18n. Keys containing intentional HTML (br, strong)
+        // are rendered via innerHTML; everything else via textContent.
+        const ABOUT_HTML_KEYS = new Set(['about_title', 'about_tagline', 'about_mission_p2']);
+        function translateAboutPage(lang) {
+            if (typeof translations === 'undefined' || !translations[lang]) return;
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                const value = translations[lang][key];
+                if (value === undefined) return;
+                if (ABOUT_HTML_KEYS.has(key)) {
+                    el.innerHTML = value;
+                } else {
+                    el.textContent = value;
+                }
+            });
+            document.documentElement.setAttribute('lang', lang);
+        }
+        document.addEventListener('DOMContentLoaded', () => {
+            if (window.lucide) lucide.createIcons();
+            const navbar = document.getElementById('navbar');
+            window.addEventListener('scroll', () => {
+                navbar.classList.toggle('scrolled', window.scrollY > 50);
+            });
+            let savedLang = 'en';
+            try { savedLang = localStorage.getItem('vortway-lang') || 'en'; } catch (_) {}
+            if (savedLang !== 'en') translateAboutPage(savedLang);
+        });
+    </script>
+</body>
+</html>

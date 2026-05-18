@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 — Page Not Found | VORTWAY</title>
+    <meta name="robots" content="noindex">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <script defer src="https://unpkg.com/lucide@1.14.0/dist/umd/lucide.min.js"></script>
+    <link rel="stylesheet" href="style.min.css?v=11">
+
+    <style>
+        .error-page {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        .error-glow {
+            position: absolute;
+            top: 30%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(232,93,4,0.04) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .error-code {
+            font-family: var(--font-heading);
+            font-size: clamp(80px, 15vw, 160px);
+            letter-spacing: 20px;
+            background: linear-gradient(to bottom, rgba(232,93,4,0.15) 0%, rgba(232,93,4,0.04) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1;
+            margin-bottom: 0;
+            user-select: none;
+        }
+
+        .error-logo {
+            margin-bottom: 40px;
+        }
+
+        .error-title {
+            font-family: var(--font-heading);
+            font-size: clamp(18px, 3vw, 28px);
+            letter-spacing: 6px;
+            background: linear-gradient(to bottom, #FBFBFD 40%, #C24E03 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 20px;
+        }
+
+        .error-msg {
+            font-family: var(--font-body);
+            font-size: 14px;
+            color: var(--text-muted);
+            font-weight: 300;
+            letter-spacing: 0.5px;
+            margin-bottom: 48px;
+            max-width: 400px;
+        }
+
+        .error-divider {
+            width: 40px;
+            height: 1px;
+            background: var(--gold-primary);
+            margin: 0 auto 48px;
+            opacity: 0.4;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- SVG Definitions -->
+    <svg width="0" height="0" style="position:absolute;">
+        <defs>
+            <linearGradient id="globalGold" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#F26A1A"/>
+                <stop offset="35%" stop-color="#E85D04"/>
+                <stop offset="70%" stop-color="#C24E03"/>
+                <stop offset="100%" stop-color="#3A3A3C"/>
+            </linearGradient>
+            <filter id="shield3D">
+                <feDropShadow dx="0" dy="20" stdDeviation="16" flood-color="#000000" flood-opacity="1" result="shadow"/>
+                <feGaussianBlur in="SourceAlpha" stdDeviation="2.5" result="blur"/>
+                <feSpecularLighting in="blur" surfaceScale="5" specularConstant="1.8" specularExponent="40" lighting-color="#ffffff" result="specOut">
+                    <fePointLight x="0" y="-50" z="200"/>
+                </feSpecularLighting>
+                <feComposite in="specOut" in2="SourceAlpha" operator="in" result="specOut"/>
+                <feComposite in="SourceGraphic" in2="specOut" operator="arithmetic" k1="0" k2="1" k3="1" k4="0" result="litPaint"/>
+                <feMerge><feMergeNode in="shadow"/><feMergeNode in="litPaint"/></feMerge>
+            </filter>
+            <filter id="highway3D">
+                <feDropShadow dx="0" dy="8" stdDeviation="8" flood-color="#000000" flood-opacity="0.9" result="shadow"/>
+                <feGaussianBlur in="SourceAlpha" stdDeviation="2" result="blur"/>
+                <feSpecularLighting in="blur" surfaceScale="4" specularConstant="1.4" specularExponent="25" lighting-color="#ffffff" result="specOut">
+                    <fePointLight x="0" y="-50" z="200"/>
+                </feSpecularLighting>
+                <feComposite in="specOut" in2="SourceAlpha" operator="in" result="specOut"/>
+                <feComposite in="SourceGraphic" in2="specOut" operator="arithmetic" k1="0" k2="1" k3="1" k4="0" result="litPaint"/>
+                <feMerge><feMergeNode in="shadow"/><feMergeNode in="litPaint"/></feMerge>
+            </filter>
+        </defs>
+    </svg>
+
+    <main class="error-page" role="main">
+        <div class="error-glow"></div>
+
+        <div class="error-logo">
+            <a href="index.html" aria-label="Return to Vortway homepage">
+                <img src="assets/Vortway-Official-Logo.png" width="160" height="160" alt="VORTWAY — Your Freight, Our Mission" style="display:block; height:auto;">
+            </a>
+        </div>
+
+        <div class="error-code" aria-hidden="true">404</div>
+
+        <h1 class="error-title">PAGE NOT FOUND</h1>
+        <div class="error-divider"></div>
+        <p class="error-msg">The route you're looking for doesn't exist or has been moved. Let us navigate you back.</p>
+
+        <a href="index.html" class="btn btn-primary">
+            <i data-lucide="arrow-left" style="width:16px;height:16px;margin-right:8px;vertical-align:middle;"></i>
+            RETURN TO HOMEPAGE
+        </a>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            if (window.lucide) lucide.createIcons();
+        });
+    </script>
+</body>
+</html>

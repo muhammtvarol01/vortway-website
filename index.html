@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VORTWAY | Limitless Logistics</title>
+
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Premium European freight forwarding from Kaunas, Lithuania — FTL, LTL, intermodal, and customs brokerage across 50+ corridors.">
+    <meta name="keywords" content="freight forwarding, logistics, European transport, FTL, LTL, intermodal, customs brokerage, Kaunas, Lithuania, Vortway">
+    <meta name="author" content="Vortway Logistics & Solutions">
+    <meta property="og:site_name" content="Vortway Logistics & Solutions">
+    <meta property="og:title" content="VORTWAY | Limitless Logistics">
+    <meta property="og:description" content="Premium European freight forwarding across 50+ corridors. FTL, LTL, intermodal and customs brokerage from Kaunas, Lithuania.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://vortway.lt">
+    <meta property="og:image" content="https://vortway.lt/og-image.png">
+    <meta property="og:image:secure_url" content="https://vortway.lt/og-image.png">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="VORTWAY — Premium European Freight Forwarding · FTL · LTL · Intermodal · Customs">
+    <meta property="og:locale" content="en_US">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="VORTWAY | Limitless Logistics">
+    <meta name="twitter:description" content="Premium European freight forwarding across 50+ corridors. FTL, LTL, intermodal and customs from Kaunas, Lithuania.">
+    <meta name="twitter:image" content="https://vortway.lt/og-image.png">
+    <meta name="twitter:image:alt" content="VORTWAY — Premium European Freight Forwarding">
+    <link rel="canonical" href="https://vortway.lt">
+    <meta name="robots" content="index, follow">
+    <meta name="theme-color" content="#3A3A3C">
+
+    <!-- hreflang: x-default for the single-URL homepage.
+         Per-language hreflang (en/lt/tr/etc.) requires separate URLs per locale — future architecture decision. -->
+    <link rel="alternate" hreflang="x-default" href="https://vortway.lt">
+
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@graph": [
+            {
+                "@type": "Organization",
+                "@id": "https://vortway.lt/#organization",
+                "name": "Vortway Logistics & Solutions",
+                "url": "https://vortway.lt",
+                "logo": "https://vortway.lt/og-image.png",
+                "email": "info@vortway.lt",
+                "telephone": "+37069073390",
+                "areaServed": "Europe",
+                "description": "Premium European freight forwarding — FTL, LTL, intermodal, and customs brokerage headquartered in Kaunas, Lithuania.",
+                "sameAs": []
+            },
+            {
+                "@type": "LocalBusiness",
+                "@id": "https://vortway.lt/#localbusiness",
+                "name": "Vortway Logistics & Solutions",
+                "url": "https://vortway.lt",
+                "email": "info@vortway.lt",
+                "telephone": "+37069073390",
+                "address": {
+                    "@type": "PostalAddress",
+                    "streetAddress": "Kovo 11-osios gatvė 56",
+                    "addressLocality": "Kaunas",
+                    "addressCountry": "LT"
+                },
+                "geo": {
+                    "@type": "GeoCoordinates",
+                    "latitude": 54.8985,
+                    "longitude": 23.9036
+                },
+                "priceRange": "€€€",
+                "openingHours": "Mo-Fr 08:00-18:00",
+                "serviceType": ["Freight Forwarding", "FTL", "LTL", "Intermodal Transport", "Customs Brokerage"]
+            }
+        ]
+    }
+    </script>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800&family=Montserrat:wght@300;400;500;600;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet"></noscript>
+    
+    <!-- Favicon — 2026-05-18 brand kit (icon-only V-shield + truck PNG, transparent bg). -->
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/Vortway-favicon-32.png">
+    <link rel="icon" type="image/png" sizes="128x128" href="assets/Vortway-favicon-128.png">
+    <link rel="icon" type="image/png" sizes="256x256" href="assets/Vortway-favicon-256.png">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="apple-touch-icon" href="assets/Vortway-favicon-256.png">
+
+    <!-- Icons (Lucide) — pinned version + defer (avoids @latest redirect + parser block) -->
+    <script defer src="https://unpkg.com/lucide@1.14.0/dist/umd/lucide.min.js"></script>
+
+    <!-- GSAP 3.13 + ScrollTrigger + SplitText — small, eager on all devices -->
+    <script defer src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/SplitText.min.js"></script>
+
+    <!-- Three.js (r134) + GLTFLoader + Lenis. Three.js drives the 3D showcase
+         and the GLB pillar icons; GLTFLoader is the legacy non-module build that
+         attaches THREE.GLTFLoader globally. Vanta and tsParticles retired. -->
+    <script defer src="https://cdn.jsdelivr.net/npm/three@0.134.0/build/three.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/three@0.134.0/examples/js/loaders/GLTFLoader.js"></script>
+    <!-- MeshoptDecoder — required to decode v2 GLBs compressed with EXT_meshopt_compression
+         (147 MB → 10.5 MB total reduction across 4 GLB assets, Phase D v3 2026-05-17) -->
+    <script defer src="https://cdn.jsdelivr.net/npm/three@0.134.0/examples/js/libs/meshopt_decoder.js"></script>
+    <!-- RGBELoader — parses Polyhaven .hdr files into Three.js DataTextures for PMREM env mapping -->
+    <script defer src="https://cdn.jsdelivr.net/npm/three@0.134.0/examples/js/loaders/RGBELoader.js"></script>
+    <!-- Reflector (2026-05-17 v4): mirror plane under the showcase truck for the
+         lodisna-grade floor glaze. Hardware-gated in JS so weak devices skip it. -->
+    <script defer src="https://cdn.jsdelivr.net/npm/three@0.134.0/examples/js/objects/Reflector.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
+
+    <!-- Phase E v3 (2026-05-17): warm-start the hero poster so first paint hits
+         a styled frame before the video starts decoding. `as="video"` was tried
+         but Chromium logs an unsupported-value warning; the poster is the
+         actual LCP element anyway. -->
+    <link rel="preload" as="image" href="assets/hero-poster.jpg" fetchpriority="high">
+    <!-- Hero video preloads — browser starts fetch at HTML parse time, well before <video> is parsed. -->
+    <link rel="preload" as="video" href="assets/hero-background-1.mp4" type="video/mp4">
+
+    <link rel="stylesheet" href="style.css?v=40">
+</head>
+<body>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <!-- CINEMATIC PRELOADER — Video-driven cream luxury intro.
+         The official preloader.mp4 (headlights → V-shield reveal) plays full
+         frame on a cream backdrop. The HUD bar tracks the video's own playhead
+         so progress feels honest. Static PNG fallback for prefers-reduced-motion
+         and any browser that can't decode the video. -->
+    <div id="preloader" class="preloader" aria-hidden="true">
+        <video id="preloaderVideo" class="preloader-video"
+               autoplay muted playsinline preload="auto" disablepictureinpicture
+               aria-hidden="true">
+            <!-- WebM with VP9 alpha — pure-white bg chroma-keyed to transparent
+                 so the page cream shows through. No rectangle possible. -->
+            <source src="assets/preloader.webm" type="video/webm">
+            <!-- MP4 fallback for Safari < 16 / older browsers with no alpha-WebM. -->
+            <source src="assets/preloader.mp4" type="video/mp4">
+        </video>
+        <!-- PNG fallback retired 2026-05-17: the user does not want the static
+             V-shield to appear under any circumstance. Reduced-motion / video-
+             decode-failure now simply shows the empty cream preloader for the
+             full 4s window then dismisses. -->
+
+        <div class="preloader-hud" aria-hidden="true">
+            <div class="preloader-bar"><div class="preloader-bar-fill" id="preloaderBarFill"></div></div>
+            <div class="preloader-status">
+                <span class="preloader-label">VORTWAY — LOADING</span>
+                <span class="preloader-pct" id="preloaderPct">00</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- 1. NAVIGATION — Three-column layout per 2026-05-16 design ref:
+         logo+wordmark LEFT · primary links CENTER · GET A QUOTE + EN switcher RIGHT.
+         Mobile collapses links into a drawer toggled by the hamburger. -->
+    <nav class="navbar" id="navbar" role="navigation" aria-label="Main navigation">
+        <div class="nav-container">
+            <!-- Brand: square badge + Cinzel wordmark, links to hero -->
+            <a href="#hero" class="nav-logo" aria-label="Vortway Logistics & Solutions home">
+                <img class="nav-logo-badge" src="assets/Vortway-nav-icon.png" alt="" aria-hidden="true" width="44" height="44">
+                <span class="nav-logo-text">VORTWAY</span>
+            </a>
+
+            <!-- Primary nav -->
+            <div class="nav-links" id="navLinks">
+                <a href="#showcase" class="nav-link" data-i18n="nav_services">SERVICES</a>
+                <a href="#vision" class="nav-link" data-i18n="nav_vision">VISION</a>
+                <a href="#trust" class="nav-link" data-i18n="nav_testimonials">TESTIMONIALS</a>
+                <a href="#faq" class="nav-link" data-i18n="nav_faq">FAQ</a>
+                <a href="#contact" class="nav-link" data-i18n="nav_contact">CONTACT</a>
+            </div>
+
+            <!-- Right column: CTA + compact language switcher + mobile hamburger -->
+            <div class="nav-actions">
+                <button class="nav-cta" id="navCta" type="button" data-i18n="nav_quote_btn">GET A QUOTE</button>
+
+                <div class="lang-selector">
+                    <button class="lang-btn" id="langBtn" aria-label="Select language" aria-haspopup="listbox">EN <i data-lucide="chevron-down" style="width: 12px;"></i></button>
+                    <div class="lang-dropdown" id="langDropdown" role="listbox" aria-label="Language selector">
+                        <div class="lang-option" data-lang="en" role="option" tabindex="0">English (EN)</div>
+                        <div class="lang-option" data-lang="lt" role="option" tabindex="0">Lietuvių (LT)</div>
+                        <div class="lang-option" data-lang="de" role="option" tabindex="0">Deutsch (DE)</div>
+                        <div class="lang-option" data-lang="es" role="option" tabindex="0">Español (ES)</div>
+                        <div class="lang-option" data-lang="fr" role="option" tabindex="0">Français (FR)</div>
+                        <div class="lang-option" data-lang="it" role="option" tabindex="0">Italiano (IT)</div>
+                        <div class="lang-option" data-lang="tr" role="option" tabindex="0">Türkçe (TR)</div>
+                    </div>
+                </div>
+
+                <button class="menu-toggle" id="menuToggle" aria-label="Toggle Menu" type="button">
+                    <i data-lucide="menu"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <main id="main-content">
+
+    <!-- 2. HERO SECTION — full-bleed video hero (Phase A v3 / 2026-05-17).
+         Background video sits behind a cream→graphite gradient overlay; text
+         centres above. No 3D, no curtain. Navbar GET A QUOTE is the only CTA. -->
+    <section class="hero" id="hero">
+        <!-- 2026-05-17 v4: source ladder — AV1 webm (3.1 MB) for modern browsers,
+             H.264 mp4 (5.2 MB) for Safari/older Chromium, original 3.8 MB mp4
+             as final fallback. fetchpriority + preload-as-video in <head>
+             starts the network fetch at HTML parse time. -->
+        <video class="hero-video"
+               autoplay muted loop playsinline
+               preload="auto"
+               fetchpriority="high"
+               poster="assets/hero-poster.jpg"
+               aria-hidden="true">
+            <source src="assets/hero-background-1.mp4" type="video/mp4">
+            <source src="assets/hero-background.mp4" type="video/mp4">
+        </video>
+
+        <div class="hero-content">
+            <h1 class="hero-title">VORTWAY</h1>
+            <h2 class="hero-subtitle" data-i18n="hero_subtitle">A NEW ERA IN EUROPEAN LOGISTICS</h2>
+            <p class="hero-desc" data-i18n="hero_desc">A new name in European logistics. We connect shippers to a vetted carrier network — built on precision, sustained by speed, governed by trust. Open to partnerships that hold us to the same standard.</p>
+        </div>
+
+        <div class="scroll-indicator">
+            <span data-i18n="scroll_explore">SCROLL TO EXPLORE</span>
+            <div class="mouse">
+                <div class="wheel"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- MARQUEE STRIP -->
+    <div class="marquee-strip" aria-hidden="true">
+        <div class="marquee-track">
+            <span>KAUNAS&nbsp;&nbsp;•&nbsp;&nbsp;BERLIN&nbsp;&nbsp;•&nbsp;&nbsp;PARIS&nbsp;&nbsp;•&nbsp;&nbsp;LONDON&nbsp;&nbsp;•&nbsp;&nbsp;ISTANBUL&nbsp;&nbsp;•&nbsp;&nbsp;AMSTERDAM&nbsp;&nbsp;•&nbsp;&nbsp;VIENNA&nbsp;&nbsp;•&nbsp;&nbsp;MADRID&nbsp;&nbsp;•&nbsp;&nbsp;BRUSSELS&nbsp;&nbsp;•&nbsp;&nbsp;PRAGUE&nbsp;&nbsp;•&nbsp;&nbsp;ROME&nbsp;&nbsp;•&nbsp;&nbsp;RIGA&nbsp;&nbsp;•&nbsp;&nbsp;HELSINKI&nbsp;&nbsp;•&nbsp;&nbsp;STOCKHOLM&nbsp;&nbsp;•&nbsp;&nbsp;DUBLIN&nbsp;&nbsp;•&nbsp;&nbsp;</span>
+            <span>KAUNAS&nbsp;&nbsp;•&nbsp;&nbsp;BERLIN&nbsp;&nbsp;•&nbsp;&nbsp;PARIS&nbsp;&nbsp;•&nbsp;&nbsp;LONDON&nbsp;&nbsp;•&nbsp;&nbsp;ISTANBUL&nbsp;&nbsp;•&nbsp;&nbsp;AMSTERDAM&nbsp;&nbsp;•&nbsp;&nbsp;VIENNA&nbsp;&nbsp;•&nbsp;&nbsp;MADRID&nbsp;&nbsp;•&nbsp;&nbsp;BRUSSELS&nbsp;&nbsp;•&nbsp;&nbsp;PRAGUE&nbsp;&nbsp;•&nbsp;&nbsp;ROME&nbsp;&nbsp;•&nbsp;&nbsp;RIGA&nbsp;&nbsp;•&nbsp;&nbsp;HELSINKI&nbsp;&nbsp;•&nbsp;&nbsp;STOCKHOLM&nbsp;&nbsp;•&nbsp;&nbsp;DUBLIN&nbsp;&nbsp;•&nbsp;&nbsp;</span>
+        </div>
+    </div>
+
+    <!-- 3. SERVICES — Cinematic scroll experience (Payana-inspired).
+         Each discipline gets a full-bleed 4K hero photograph that pins to the
+         viewport while the descriptive content scrolls alongside it. The four
+         articles alternate L/R photo position for editorial rhythm. -->
+    <!-- 3a. 3D SHOWCASE — vortway-truck.glb pinned to viewport (desktop), with
+         mouse-parallax tilt + scroll-driven rotation. Mobile gets a single static
+         hero photograph in place of the 50 MB GLB. The .showcase-pin wrapper
+         is what ScrollTrigger pins; the inner .showcase-stage holds the canvas. -->
+    <section class="showcase" id="showcase" aria-label="Vortway 3D Showcase">
+        <div class="showcase-pin">
+            <div class="showcase-inner">
+                <div class="showcase-content-wrapper">
+                    <!-- Section 1: Introduction -->
+                    <div class="showcase-content active" id="showcase-1">
+                        <span class="showcase-eyebrow" data-i18n="services_subtitle">Elite European Logistics</span>
+                        <h2 class="showcase-title">WHAT WE MOVE, AND HOW</h2>
+                        <p class="showcase-lede">Precision-engineered freight solutions for the modern era.</p>
+                        <a href="#showcase" class="showcase-cta" data-i18n="showcase_cta_explore">EXPLORE FLEET</a>
+                    </div>
+                    <!-- Section 2: Coordinated Capacity (Phase D copy fix 2026-05-17)
+                         Previous "Dedicated 13.6m assets" contradicted the new
+                         "we work with carriers, no owned fleet" positioning. -->
+                    <div class="showcase-content" id="showcase-2">
+                        <span class="showcase-eyebrow">FTL &mdash; Full Truckload</span>
+                        <h2 class="showcase-title">DEDICATED CAPACITY</h2>
+                        <p class="showcase-lede">One truck. One carrier. One point of contact — door-to-door across every EU corridor.</p>
+                        <ul class="showcase-bullets">
+                            <li>No co-loading &mdash; your cargo, your truck</li>
+                            <li>Real-time GPS tracking + CMR documentation</li>
+                            <li>Transit times confirmed at booking</li>
+                        </ul>
+                    </div>
+                    <!-- Section 3: LTL / Groupage -->
+                    <div class="showcase-content" id="showcase-3">
+                        <span class="showcase-eyebrow">LTL &mdash; Groupage</span>
+                        <h2 class="showcase-title">OPTIMISED LOAD</h2>
+                        <p class="showcase-lede">Cost-efficient freight under full truck capacity &mdash; grouped, documented, and delivered precisely across 50+ corridors.</p>
+                        <ul class="showcase-bullets">
+                            <li>Weekly consolidated departures, EU-wide</li>
+                            <li>Integrated customs clearance available</li>
+                            <li>Full cargo insurance available per shipment</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="showcase-stage" aria-hidden="true">
+                    <div class="showcase-spotlight"></div>
+                    <canvas id="showcaseCanvas"></canvas>
+                    <!-- Fallback is now strictly for no-JS/Mobile; JS will hide it explicitly -->
+                    <img class="showcase-fallback" id="showcaseFallback" src="assets/Vortway-Official-Logo.png" alt="" loading="lazy" decoding="async">
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+    <!-- 4. THE VORTWAY STANDARD (VISION) -->
+    <section class="vision" id="vision">
+        <!-- Animated gradient orbs that drift behind the pillars (CSS-only, no canvas) -->
+        <div class="vision-aurora" aria-hidden="true">
+            <span class="vision-orb vision-orb-1"></span>
+            <span class="vision-orb vision-orb-2"></span>
+            <span class="vision-orb vision-orb-3"></span>
+        </div>
+
+        <!-- Blueprint freight truck — decorative SVG that slowly drives across the
+             bottom of the section. Architectural wireframe style; strokes inherit
+             currentColor (set per theme on .vision-truck). -->
+        <svg class="vision-truck" viewBox="0 0 600 250" aria-hidden="true" focusable="false">
+            <g fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+                <!-- Ground line — softly dashed -->
+                <line x1="0" y1="218" x2="600" y2="218" stroke-dasharray="2 7" opacity="0.55"/>
+
+                <!-- Curved route trail extending BACKWARD from the truck.
+                     stroke-dashoffset animates so it feels like the route is being
+                     drawn behind the moving cargo. -->
+                <path class="vision-truck-route"
+                      d="M 600 210 Q 540 170, 470 175 T 320 165 T 80 130 T 0 80"
+                      stroke-width="1.2" opacity="0.55"
+                      stroke-dasharray="6 9" stroke-dashoffset="0"/>
+
+                <!-- Trailer box (container body) -->
+                <rect x="60" y="80" width="320" height="118" rx="3"/>
+                <!-- Door split + outer-edge ridge -->
+                <line x1="60" y1="80" x2="60" y2="198"/>
+                <line x1="378" y1="80" x2="378" y2="198"/>
+                <!-- Corrugation ribs (every 30u) -->
+                <line x1="90"  y1="84" x2="90"  y2="194"/>
+                <line x1="120" y1="84" x2="120" y2="194"/>
+                <line x1="150" y1="84" x2="150" y2="194"/>
+                <line x1="180" y1="84" x2="180" y2="194"/>
+                <line x1="210" y1="84" x2="210" y2="194"/>
+                <line x1="240" y1="84" x2="240" y2="194"/>
+                <line x1="270" y1="84" x2="270" y2="194"/>
+                <line x1="300" y1="84" x2="300" y2="194"/>
+                <line x1="330" y1="84" x2="330" y2="194"/>
+                <line x1="360" y1="84" x2="360" y2="194"/>
+                <!-- Corner castings -->
+                <rect x="60"  y="80"  width="10" height="10"/>
+                <rect x="370" y="80"  width="10" height="10"/>
+                <rect x="60"  y="188" width="10" height="10"/>
+                <rect x="370" y="188" width="10" height="10"/>
+                <!-- Container code stamp -->
+                <text x="74" y="106" font-family="monospace" font-size="9" fill="currentColor" opacity="0.8" stroke="none">VRTW · EU</text>
+
+                <!-- Tractor cab silhouette (faces right) -->
+                <path d="M 380 198 L 380 132 L 410 132 L 426 108 L 482 108 L 492 132 L 514 132 L 514 198 Z"/>
+                <!-- Windshield -->
+                <path d="M 430 116 L 478 116 L 488 130 L 416 130 Z"/>
+                <!-- Door line -->
+                <line x1="414" y1="132" x2="414" y2="184"/>
+                <!-- Front grille -->
+                <line x1="514" y1="148" x2="524" y2="148"/>
+                <line x1="514" y1="156" x2="524" y2="156"/>
+                <!-- Headlight cluster -->
+                <rect x="514" y="166" width="8" height="12" rx="1"/>
+                <!-- Mirror -->
+                <line x1="410" y1="120" x2="402" y2="120"/>
+                <line x1="402" y1="120" x2="402" y2="136"/>
+
+                <!-- Wheels — 3 on trailer (twin rear axle visual) + 2 on cab -->
+                <circle cx="110" cy="218" r="16"/>
+                <circle cx="110" cy="218" r="7"/>
+                <circle cx="180" cy="218" r="16"/>
+                <circle cx="180" cy="218" r="7"/>
+                <circle cx="250" cy="218" r="16"/>
+                <circle cx="250" cy="218" r="7"/>
+                <circle cx="430" cy="218" r="16"/>
+                <circle cx="430" cy="218" r="7"/>
+                <circle cx="500" cy="218" r="16"/>
+                <circle cx="500" cy="218" r="7"/>
+            </g>
+        </svg>
+
+        <div class="section-header">
+            <h2 class="section-title" data-i18n="vision_title">THE VORTWAY STANDARD</h2>
+            <p class="section-subtitle" data-i18n="vision_subtitle">Three convictions that guide every shipment we touch.</p>
+        </div>
+
+        <div class="pillars-grid">
+            <!-- Pillar 1 — Carrier Network. Custom SVG: 7-node hub-and-spoke
+                 graph that says "vetted carrier pool, redundant lanes." 2026-05-17 v4. -->
+            <div class="pillar-card">
+                <div class="pillar-icon">
+                    <svg class="pillar-icon-svg" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <g class="pillar-svg-paths">
+                            <!-- Outer ring of 6 node arcs (curved spokes from center) -->
+                            <path d="M32 32 Q 20 16, 16 12"/>
+                            <path d="M32 32 Q 48 18, 52 12"/>
+                            <path d="M32 32 Q 50 30, 56 32"/>
+                            <path d="M32 32 Q 48 46, 52 52"/>
+                            <path d="M32 32 Q 20 48, 16 52"/>
+                            <path d="M32 32 Q 14 30, 8 32"/>
+                            <!-- Central hub node -->
+                            <circle cx="32" cy="32" r="4"/>
+                            <!-- Six perimeter nodes -->
+                            <circle cx="16" cy="12" r="2.6"/>
+                            <circle cx="52" cy="12" r="2.6"/>
+                            <circle cx="56" cy="32" r="2.6"/>
+                            <circle cx="52" cy="52" r="2.6"/>
+                            <circle cx="16" cy="52" r="2.6"/>
+                            <circle cx="8"  cy="32" r="2.6"/>
+                        </g>
+                    </svg>
+                </div>
+                <h3 class="pillar-title" data-i18n="pillar_1_title">Carrier Network That Already Runs Europe</h3>
+                <p class="pillar-desc" data-i18n="pillar_1_desc">Our routing draws on a vetted carrier pool spanning 50+ European corridors &mdash; built for redundancy, not promises. Every lane has a primary and a backup, every transit is tracked end-to-end, and every quote reflects real capacity, not aspirational pricing.</p>
+            </div>
+
+            <!-- Pillar 2 — Trust & Partnership. Custom SVG: two converging
+                 arrows meeting at a center bond — "two parties in the middle." -->
+            <div class="pillar-card">
+                <div class="pillar-icon">
+                    <svg class="pillar-icon-svg" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <g class="pillar-svg-paths">
+                            <!-- Left-side arrow approaching center -->
+                            <path d="M6 20 L 28 32"/>
+                            <path d="M20 16 L 28 32 L 20 28"/>
+                            <!-- Right-side arrow approaching center -->
+                            <path d="M58 44 L 36 32"/>
+                            <path d="M44 48 L 36 32 L 44 36"/>
+                            <!-- Center bond ring -->
+                            <circle cx="32" cy="32" r="6"/>
+                            <!-- Inner dot — the contract point -->
+                            <circle cx="32" cy="32" r="1.6" fill="currentColor"/>
+                        </g>
+                    </svg>
+                </div>
+                <h3 class="pillar-title" data-i18n="pillar_2_title">Trust-Driven Strategic Partnerships</h3>
+                <p class="pillar-desc" data-i18n="pillar_2_desc">Every partnership starts with a conversation, not a contract. We believe in earning your trust through consistent performance, transparent pricing, and honest communication. Your success is our reputation.</p>
+            </div>
+
+            <!-- Pillar 3 — Service Dedication. Custom SVG: 8-ray north-star
+                 with the longest ray (north) emphasized — "always pointing." -->
+            <div class="pillar-card">
+                <div class="pillar-icon">
+                    <svg class="pillar-icon-svg" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <g class="pillar-svg-paths">
+                            <!-- 4 long cardinal rays (longest = north) -->
+                            <path d="M32 6 L 32 26"/>
+                            <path d="M32 58 L 32 38"/>
+                            <path d="M6 32 L 26 32"/>
+                            <path d="M58 32 L 38 32"/>
+                            <!-- 4 shorter diagonal rays -->
+                            <path d="M14 14 L 24 24"/>
+                            <path d="M50 14 L 40 24"/>
+                            <path d="M14 50 L 24 40"/>
+                            <path d="M50 50 L 40 40"/>
+                            <!-- Center compass body -->
+                            <circle cx="32" cy="32" r="6"/>
+                            <!-- Pointer needle, indicating north -->
+                            <path d="M32 26 L 35 32 L 32 30 L 29 32 Z" fill="currentColor"/>
+                        </g>
+                    </svg>
+                </div>
+                <h3 class="pillar-title" data-i18n="pillar_3_title">Unwavering Service Dedication</h3>
+                <p class="pillar-desc" data-i18n="pillar_3_desc">Your cargo is never just a shipment number to us. We understand the commercial value behind every load and the deadlines that matter to your business. Reliability isn't a promise &mdash; it's our standard.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- STANDARDS — verifiable operational obligations (no aspirational claims).
+         New 2026-05-17 v4: replaces no specific section; sits between THE VORTWAY
+         STANDARD (vision pillars) and the STATS counter to anchor the credibility
+         story. Pure HTML/CSS, no JS, no GLB. -->
+    <section class="standards" id="standards" aria-label="Operational Standards">
+        <div class="section-header">
+            <span class="section-eyebrow" data-i18n="standards_eyebrow">FOUR FIXED COMMITMENTS</span>
+            <h2 class="section-title" data-i18n="standards_title">Verified, not aspirational.</h2>
+        </div>
+        <div class="standards-grid">
+            <div class="standard-card">
+                <div class="standard-icon" aria-hidden="true">
+                    <i data-lucide="scroll-text" style="width:22px; height:22px;"></i>
+                </div>
+                <h3 class="standard-title" data-i18n="standard_1_title">EU Carrier Liability</h3>
+                <p class="standard-desc" data-i18n="standard_1_desc">Every shipment runs under the CMR Convention &mdash; international cargo liability is statutory, not optional.</p>
+            </div>
+            <div class="standard-card">
+                <div class="standard-icon" aria-hidden="true">
+                    <i data-lucide="shield-check" style="width:22px; height:22px;"></i>
+                </div>
+                <h3 class="standard-title" data-i18n="standard_2_title">GDPR-Compliant Data Handling</h3>
+                <p class="standard-desc" data-i18n="standard_2_desc">Shipper and consignee data is processed under EU GDPR Article 6(1)(b) &mdash; never resold, never repurposed.</p>
+            </div>
+            <div class="standard-card">
+                <div class="standard-icon" aria-hidden="true">
+                    <i data-lucide="file-signature" style="width:22px; height:22px;"></i>
+                </div>
+                <h3 class="standard-title" data-i18n="standard_3_title">Standard Trading Conditions</h3>
+                <p class="standard-desc" data-i18n="standard_3_desc">Our STC is published, fixed, and referenced on every quote &mdash; no surprise clauses, no hidden carve-outs.</p>
+            </div>
+            <div class="standard-card">
+                <div class="standard-icon" aria-hidden="true">
+                    <i data-lucide="package-check" style="width:22px; height:22px;"></i>
+                </div>
+                <h3 class="standard-title" data-i18n="standard_4_title">Per-Shipment Cargo Insurance</h3>
+                <p class="standard-desc" data-i18n="standard_4_desc">Top-up policies available per load via our partner underwriter &mdash; full declared-value coverage when CMR limits aren't enough.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- STATS COUNTER -->
+    <section class="stats" id="stats">
+        <div class="stats-grid">
+            <div class="stat-item">
+                <div class="stat-number" data-target="50" data-suffix="+">0</div>
+                <div class="stat-label" data-i18n="stat_corridors">European Corridors</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" data-target="24" data-suffix="/7">0</div>
+                <div class="stat-label" data-i18n="stat_support">Operational Support</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" data-target="100" data-suffix="%">0</div>
+                <div class="stat-label" data-i18n="stat_experience">Tracked Shipments</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" data-target="99.2" data-suffix="%" data-decimals="1">0</div>
+                <div class="stat-label" data-i18n="stat_delivery">On-Time Delivery Rate</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TESTIMONIALS -->
+    <section class="trust" id="trust">
+        <div class="section-header">
+            <h2 class="section-title" data-i18n="trust_title">TRUSTED PARTNERSHIPS</h2>
+            <p class="section-subtitle" data-i18n="trust_subtitle">What our partners say about working with Vortway.</p>
+        </div>
+
+        <div class="testimonial-slider">
+            <div class="testimonial-card active" data-index="0">
+                <p class="testimonial-quote" data-i18n="testimonial_1_quote">"Vortway's responsiveness and dedication transformed our European supply chain. A partner that truly understands urgency."</p>
+                <div class="testimonial-author">
+                    <span class="author-name" data-i18n="testimonial_1_name">Marcus Weber</span>
+                    <span class="author-role" data-i18n="testimonial_1_role">Supply Chain Director</span>
+                </div>
+            </div>
+            <div class="testimonial-card" data-index="1">
+                <p class="testimonial-quote" data-i18n="testimonial_2_quote">"Their expertise in Baltic-Western Europe corridors is unmatched. Reliable, transparent, and always a step ahead."</p>
+                <div class="testimonial-author">
+                    <span class="author-name" data-i18n="testimonial_2_name">Sophie Laurent</span>
+                    <span class="author-role" data-i18n="testimonial_2_role">Operations Manager</span>
+                </div>
+            </div>
+            <div class="testimonial-card" data-index="2">
+                <p class="testimonial-quote" data-i18n="testimonial_3_quote">"From customs clearance to final delivery, Vortway handles complexity with elegance. Highly recommended."</p>
+                <div class="testimonial-author">
+                    <span class="author-name" data-i18n="testimonial_3_name">Alessandro Rossi</span>
+                    <span class="author-role" data-i18n="testimonial_3_role">Logistics Coordinator</span>
+                </div>
+            </div>
+            <div class="testimonial-card" data-index="3">
+                <p class="testimonial-quote" data-i18n="testimonial_4_quote">"Vortway's customs team saved our cross-border operation during a regulatory overhaul. Professional, fast, and fully compliant."</p>
+                <div class="testimonial-author">
+                    <span class="author-name" data-i18n="testimonial_4_name">Elena Kovač</span>
+                    <span class="author-role" data-i18n="testimonial_4_role">Procurement Lead</span>
+                </div>
+            </div>
+            <div class="testimonial-card" data-index="4">
+                <p class="testimonial-quote" data-i18n="testimonial_5_quote">"Five shipments in, zero incidents. The consistency and communication from Vortway set a new benchmark for our logistics vendors."</p>
+                <div class="testimonial-author">
+                    <span class="author-name" data-i18n="testimonial_5_name">Jan Vermeer</span>
+                    <span class="author-role" data-i18n="testimonial_5_role">Fleet Manager</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="testimonial-dots">
+            <button class="dot active" data-dot="0" aria-label="Testimonial 1"></button>
+            <button class="dot" data-dot="1" aria-label="Testimonial 2"></button>
+            <button class="dot" data-dot="2" aria-label="Testimonial 3"></button>
+            <button class="dot" data-dot="3" aria-label="Testimonial 4"></button>
+            <button class="dot" data-dot="4" aria-label="Testimonial 5"></button>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="faq" id="faq">
+        <div class="section-header">
+            <h2 class="section-title" data-i18n="faq_title">FREQUENTLY ASKED QUESTIONS</h2>
+            <p class="section-subtitle" data-i18n="faq_subtitle">Common questions from our logistics partners.</p>
+        </div>
+        <div class="faq-list">
+            <div class="faq-item">
+                <button class="faq-question" aria-expanded="false">
+                    <span data-i18n="faq_q1">What documents are required for cross-border shipment?</span>
+                    <i data-lucide="chevron-down" class="faq-icon"></i>
+                </button>
+                <div class="faq-answer"><p data-i18n="faq_a1">For EU cross-border shipments: CMR consignment note, commercial invoice, and packing list.</p></div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-question" aria-expanded="false">
+                    <span data-i18n="faq_q2">What are typical transit times from Kaunas to major EU cities?</span>
+                    <i data-lucide="chevron-down" class="faq-icon"></i>
+                </button>
+                <div class="faq-answer"><p data-i18n="faq_a2">Road transit from Kaunas: Warsaw 1 day · Berlin 2–3 days · Vienna 2–3 days.</p></div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-question" aria-expanded="false">
+                    <span data-i18n="faq_q3">Do you handle customs clearance in-house?</span>
+                    <i data-lucide="chevron-down" class="faq-icon"></i>
+                </button>
+                <div class="faq-answer"><p data-i18n="faq_a3">Yes. Our team handles EU import and export declarations in-house.</p></div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-question" aria-expanded="false">
+                    <span data-i18n="faq_q4">What cargo types do you accept?</span>
+                    <i data-lucide="chevron-down" class="faq-icon"></i>
+                </button>
+                <div class="faq-answer"><p data-i18n="faq_a4">We accept standard dry cargo, temperature-controlled goods, ADR hazardous materials, oversized loads, and project cargo.</p></div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-question" aria-expanded="false">
+                    <span data-i18n="faq_q5">Is cargo insurance included in your service?</span>
+                    <i data-lucide="chevron-down" class="faq-icon"></i>
+                </button>
+                <div class="faq-answer"><p data-i18n="faq_a5">Standard freight rates do not include cargo insurance. We can arrange it on your behalf.</p></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. CONTACT -->
+    <section class="contact" id="contact">
+        <div class="contact-container">
+            <div class="contact-header">
+                <h2 class="section-title" data-i18n="contact_title">INITIATE PARTNERSHIP</h2>
+                <p class="section-subtitle" data-i18n="contact_subtitle">Connect with our logistics coordination team.</p>
+            </div>
+
+            <div class="contact-wrapper">
+                <div class="contact-form-area">
+                    <!-- Formspree endpoint: mrejrnao → forwards to the email registered on formspree.io -->
+                    <form id="contactForm" class="form-grid"
+                          action="https://formspree.io/f/mrejrnao"
+                          method="POST" novalidate>
+                        <div class="form-group">
+                            <label for="c_company" data-i18n="form_company">Company Name *</label>
+                            <input type="text" id="c_company" name="company" required placeholder="...">
+                        </div>
+                        <div class="form-group">
+                            <label for="c_email" data-i18n="form_email">Email Address *</label>
+                            <input type="email" id="c_email" name="email" required placeholder="...">
+                        </div>
+                        <div class="form-group">
+                            <label for="c_details" data-i18n="form_inquiry">Inquiry Details *</label>
+                            <textarea id="c_details" name="message" rows="5" required placeholder="..."></textarea>
+                        </div>
+                        <!-- Formspree metadata -->
+                        <input type="hidden" name="_subject" value="New inquiry from Vortway website">
+                        <input type="hidden" name="_replyto" id="c_replyto">
+                        <!-- Honeypot — bots fill it, humans don't (display:none) -->
+                        <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0;">
+                        <button type="submit" class="btn btn-primary btn-block" data-i18n="btn_transmit">TRANSMIT</button>
+                    </form>
+                </div>
+                
+                <div class="contact-info">
+                    <div class="info-item">
+                        <i data-lucide="phone" style="width:20px; height:20px; color: var(--orange-primary);"></i>
+                        <div>
+                            <div class="info-label">Phone</div>
+                            <div class="info-value">+370 690 73 390</div>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <i data-lucide="mail" style="width:20px; height:20px; color: var(--orange-primary);"></i>
+                        <div>
+                            <div class="info-label">Email</div>
+                            <div class="info-value">info@vortway.lt</div>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <i data-lucide="map-pin" style="width:20px; height:20px; color: var(--orange-primary);"></i>
+                        <div>
+                            <div class="info-label">Headquarters</div>
+                            <div class="info-value">Kovo 11-osios gatvė 56</div>
+                            <div class="info-value">Kaunas, Lithuania</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    </main>
+
+    <!-- 6. FOOTER -->
+    <footer class="footer" role="contentinfo">
+        <!-- Subtle European route map — barely-visible logistics network behind the nav.
+             Kaunas (the HQ) pulses gently. -->
+        <svg class="footer-route-map" viewBox="0 0 1200 320" aria-hidden="true" focusable="false">
+            <g fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round">
+                <!-- Curved connections — Kaunas → Riga → Berlin → Paris → Madrid → Istanbul → Vienna -->
+                <path d="M 720 80 Q 800 60, 870 110"/>   <!-- Kaunas → Riga -->
+                <path d="M 720 80 Q 620 150, 510 180"/>  <!-- Kaunas → Berlin -->
+                <path d="M 510 180 Q 380 200, 260 230"/> <!-- Berlin → Paris -->
+                <path d="M 260 230 Q 180 260, 110 280"/> <!-- Paris → Madrid -->
+                <path d="M 720 80 Q 850 180, 950 240"/>  <!-- Kaunas → Istanbul -->
+                <path d="M 510 180 Q 580 220, 660 250"/> <!-- Berlin → Vienna -->
+            </g>
+            <!-- City dots (cx, cy) — 7 nodes -->
+            <g fill="currentColor">
+                <circle cx="870" cy="110" r="3"/>       <!-- Riga -->
+                <circle cx="510" cy="180" r="3"/>       <!-- Berlin -->
+                <circle cx="260" cy="230" r="3"/>       <!-- Paris -->
+                <circle cx="110" cy="280" r="3"/>       <!-- Madrid -->
+                <circle cx="950" cy="240" r="3"/>       <!-- Istanbul -->
+                <circle cx="660" cy="250" r="3"/>       <!-- Vienna -->
+            </g>
+            <!-- Kaunas — HQ — larger + pulsing -->
+            <g class="footer-route-hub">
+                <circle cx="720" cy="80" r="5" fill="currentColor"/>
+                <circle cx="720" cy="80" r="5" fill="none" stroke="currentColor" stroke-width="1" class="footer-route-pulse"/>
+            </g>
+        </svg>
+
+        <div class="footer-grid footer-grid-3col">
+            <div class="footer-col">
+                <h4 class="footer-heading" data-i18n="footer_nav">NAVIGATION</h4>
+                <a href="#showcase" class="footer-link" data-i18n="nav_services">Services</a>
+                <a href="services.html" class="footer-link">Services Detail</a>
+                <a href="#vision" class="footer-link" data-i18n="nav_vision">Vision</a>
+                <a href="#contact" class="footer-link" data-i18n="nav_contact">Contact</a>
+                <a href="about.html" class="footer-link" data-i18n="nav_about">About</a>
+            </div>
+            <div class="footer-col">
+                <h4 class="footer-heading" data-i18n="footer_legal">LEGAL</h4>
+                <a href="privacy.html" class="footer-link" data-i18n="footer_privacy">Privacy Policy</a>
+                <a href="terms.html" class="footer-link" data-i18n="footer_terms">Terms of Service</a>
+            </div>
+            <div class="footer-col">
+                <h4 class="footer-heading" data-i18n="footer_hq">HEADQUARTERS</h4>
+                <address class="footer-address">
+                    Kovo 11-osios gatvė 56<br>
+                    Kaunas, Lithuania<br>
+                    <a href="mailto:info@vortway.lt" class="footer-link footer-link-inline">info@vortway.lt</a>
+                </address>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="copyright">Copyright © 2026 Vortway Logistics & Solutions</div>
+            <div class="system-status"><span class="status-dot"></span> <span data-i18n="footer_systems">ALL SYSTEMS OPERATIONAL</span></div>
+        </div>
+    </footer>
+
+    <!-- QUOTE CALCULATOR MODAL -->
+    <div class="modal-overlay" id="quoteModal" role="dialog" aria-modal="true" aria-labelledby="quoteModalTitle">
+        <div class="modal">
+            <button class="modal-close" id="closeQuoteModal" aria-label="Close quote calculator"><i data-lucide="x"></i></button>
+            <div class="modal-body">
+            <h2 class="modal-title" id="quoteModalTitle" data-i18n="quote_title">QUOTE CALCULATOR</h2>
+            <p class="modal-subtitle" data-i18n="quote_subtitle">Provide details for an instant logistical assessment.</p>
+            
+            <form id="quoteForm" novalidate>
+                <div class="form-row">
+                    <div class="form-group half">
+                        <label for="quoteOrigin" data-i18n="quote_origin">Origin City</label>
+                        <div class="quote-autocomplete" data-ac="origin">
+                            <input type="text" id="quoteOrigin" autocomplete="off" spellcheck="false"
+                                   role="combobox" aria-autocomplete="list" aria-expanded="false"
+                                   aria-controls="quoteOriginList" aria-haspopup="listbox" required>
+                            <ul class="quote-suggestions" id="quoteOriginList" role="listbox" hidden></ul>
+                        </div>
+                    </div>
+                    <div class="form-group half">
+                        <label for="quoteDestination" data-i18n="quote_dest">Destination City</label>
+                        <div class="quote-autocomplete" data-ac="destination">
+                            <input type="text" id="quoteDestination" autocomplete="off" spellcheck="false"
+                                   role="combobox" aria-autocomplete="list" aria-expanded="false"
+                                   aria-controls="quoteDestinationList" aria-haspopup="listbox" required>
+                            <ul class="quote-suggestions" id="quoteDestinationList" role="listbox" hidden></ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group half">
+                        <label for="quoteWeight" data-i18n="quote_weight">Cargo Weight (kg)</label>
+                        <input type="number" id="quoteWeight" min="1" required>
+                    </div>
+                    <div class="form-group half">
+                        <label for="quoteVolume" data-i18n="quote_volume">Cargo Volume (m³)</label>
+                        <input type="number" id="quoteVolume" min="0.1" step="0.1" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group half">
+                        <label for="quoteCargoTypeSelect" data-i18n="quote_type">Cargo Type</label>
+                        <select id="quoteCargoTypeSelect" required>
+                            <option value="general">General Cargo</option>
+                            <option value="fragile">Fragile</option>
+                            <option value="perishable">Perishable</option>
+                            <option value="automotive">Automotive</option>
+                            <option value="hazmat">Hazmat (ADR)</option>
+                        </select>
+                    </div>
+                    <div class="form-group half">
+                        <label for="quoteSpeedSelect" data-i18n="quote_speed">Delivery Speed</label>
+                        <select id="quoteSpeedSelect" required>
+                            <option value="standard">Standard</option>
+                            <option value="express">Express</option>
+                            <option value="overnight">Overnight</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="quote-error" id="quoteError" role="alert" aria-live="polite" hidden></div>
+
+                <button type="submit" class="btn btn-primary btn-block" style="margin-top:20px;" data-i18n="btn_calculate">CALCULATE</button>
+            </form>
+
+            <div class="quote-result" id="quoteResult" style="display:none;">
+                <h3 data-i18n="quote_result_title">Estimated Assessment</h3>
+                <div class="quote-breakdown">
+                    <div class="quote-line"><span>Route distance</span><span id="quoteKm">0 km</span></div>
+                    <div class="quote-line"><span>Base rate (€2.00/km)</span><span id="quoteBase">€0</span></div>
+                    <div class="quote-line quote-surcharge" id="weightSurchargeLine" hidden>
+                        <span>Weight surcharge</span><span id="quoteWeightExtra">€0</span>
+                    </div>
+                    <div class="quote-line quote-surcharge" id="volumeSurchargeLine" hidden>
+                        <span>Volume surcharge</span><span id="quoteVolumeExtra">€0</span>
+                    </div>
+                    <div class="quote-line"><span>Cargo type</span><span id="quoteCargoType">General (&times;1.0)</span></div>
+                    <div class="quote-line"><span>Delivery speed</span><span id="quoteSpeed">Standard (&times;1.0)</span></div>
+                    <div class="quote-divider"></div>
+                    <div class="quote-line quote-total"><span>Estimated Total</span><span>&euro;<span id="quotePriceValue">0.00</span></span></div>
+                </div>
+                <p class="quote-route" id="quoteRoute" hidden></p>
+                <p class="quote-note" data-i18n="quote_result_note">This is an algorithmic estimate. Final rates may vary.</p>
+                <button type="button" class="btn btn-outline" id="quoteCloseResult" style="margin-top:16px;">CLOSE</button>
+            </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST NOTIFICATION -->
+    <div class="toast" id="toast">
+        <i data-lucide="check-circle" style="color: #059669;"></i>
+        <span id="toastMsg">Your inquiry has been transmitted.</span>
+    </div>
+
+    <!-- BACK TO TOP BUTTON -->
+    <button id="backToTop" class="back-to-top" aria-label="Back to top">
+        <i data-lucide="chevron-up"></i>
+    </button>
+
+    <!-- CURSOR DOT (desktop only, hero parallax) -->
+    <div id="cursorDot" class="cursor-dot" aria-hidden="true"></div>
+
+    <!-- COOKIE CONSENT BANNER -->
+    <div class="cookie-banner" id="cookieBanner" role="dialog" aria-live="polite" aria-label="Cookie consent">
+        <div class="cookie-content">
+            <p class="cookie-msg" data-i18n="cookie_msg">We use third-party services (Google Fonts, unpkg.com) which may process your IP address. By clicking Accept you consent to this.</p>
+            <div class="cookie-actions">
+                <a href="privacy.html" class="cookie-link" data-i18n="cookie_policy">Privacy Policy</a>
+                <button class="btn-cookie-reject" id="cookieReject" data-i18n="cookie_reject">REJECT</button>
+                <button class="btn-cookie-accept" id="cookieAccept" data-i18n="cookie_accept">ACCEPT</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts — both defer, execute in document order before DOMContentLoaded -->
+    <script defer src="translations.js?v=19"></script>
+    <script defer src="app.js?v=39"></script>
+    <script>
+        // Persist locale across pages so sibling pages (about.html, etc.) can
+        // read it from localStorage and translate on load. The `load` event runs
+        // AFTER app.js's DOMContentLoaded setup, so .lang-option click handlers
+        // are already bound when we replay the saved selection.
+        window.addEventListener('load', () => {
+            document.querySelectorAll('.lang-option').forEach(opt => {
+                opt.addEventListener('click', (e) => {
+                    const lang = e.currentTarget.getAttribute('data-lang');
+                    if (lang) { try { localStorage.setItem('vortway-lang', lang); } catch (_) {} }
+                });
+            });
+            try {
+                const saved = localStorage.getItem('vortway-lang');
+                if (saved && saved !== 'en') {
+                    const opt = document.querySelector('.lang-option[data-lang="' + saved + '"]');
+                    if (opt) opt.click();
+                }
+            } catch (_) {}
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,62 @@
+# Dev/test tooling
+.claude/
+.playwright-mcp/
+CLAUDE.md
+og-image.html
+node_modules/
+package.json
+package-lock.json
+smoke-test.js
+smoke-*.png
+*.log
+email-signature.html
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# Test screenshots (keep only og-image.png)
+anim-frame-*.png
+hero-letter-reveal.png
+homepage-footer.png
+phase2-variants-gallery*.png
+privacy-bottom.png
+privacy-en-with-toggle.png
+privacy-lt-with-toggle.png
+privacy-top.png
+social-section.png
+
+# Debug / iteration screenshots (root level — clutter from design loops)
+[0-9][0-9]-*.png
+blender*.jpeg
+branding-showcase-*.png
+final-*.png
+hero-*.png
+hero-*.jpeg
+locale-*.png
+modal-*.png
+navbar-*.png
+preloader-*.png
+premium-*.jpeg
+prod-textured-*.jpeg
+production-*.jpeg
+quote-*.png
+rotate-*.jpeg
+showcase-*.png
+showcase-*.jpeg
+test-phase-*.png
+textured-*.jpeg
+truck-*.jpeg
+truck-*.png
+v4-*.jpeg
+v4-*.png
+verify-*.png
+verify-*.jpeg
+vision-*.png
+
+# Working notes (not for deploy)
+lodisna-page.md
+
+# v5.2: this repo is the single source of truth for Hostinger auto-deploy.
+# Heavy media (mp4/webm/hdr/glb) IS committed here — that's the whole point.
+# If a single file approaches 100 MB later, migrate just that file to Git LFS.
