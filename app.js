@@ -473,28 +473,52 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentLang = 'en';
 
     if (langBtn && langDropdown) {
+        // v5.2 (2026-05-19): mobile bug fix — previously the unconditional
+        // document.click handler removed .show on the SAME tap that opened
+        // the dropdown (touch bubbles to document), making it impossible
+        // to interact on mobile. Now scoped to clicks OUTSIDE both the
+        // button and the dropdown, plus an Escape handler + aria-expanded.
+        const openDropdown = () => {
+            langDropdown.classList.add('show');
+            langBtn.setAttribute('aria-expanded', 'true');
+        };
+        const closeDropdown = () => {
+            langDropdown.classList.remove('show');
+            langBtn.setAttribute('aria-expanded', 'false');
+        };
+        langBtn.setAttribute('aria-expanded', 'false');
+
         langBtn.addEventListener('click', (e) => {
             e.stopPropagation();
-            langDropdown.classList.toggle('show');
+            if (langDropdown.classList.contains('show')) closeDropdown();
+            else openDropdown();
         });
 
-        document.addEventListener('click', () => {
-            langDropdown.classList.remove('show');
+        document.addEventListener('click', (e) => {
+            if (!langDropdown.classList.contains('show')) return;
+            if (langDropdown.contains(e.target) || langBtn.contains(e.target)) return;
+            closeDropdown();
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && langDropdown.classList.contains('show')) {
+                closeDropdown();
+                langBtn.focus();
+            }
         });
 
         langOptions.forEach(option => {
             option.addEventListener('click', (e) => {
+                e.stopPropagation();
                 const lang = e.target.getAttribute('data-lang');
                 currentLang = lang;
-                
-                // Update Button text
+
                 langBtn.innerHTML = `${lang.toUpperCase()} <i data-lucide="chevron-down" style="width: 14px;"></i>`;
                 lucide.createIcons();
-                
-                // Translate Page
-                translatePage(lang);
 
-                // Close mobile nav after language selection
+                translatePage(lang);
+                closeDropdown();
+
                 if (navLinks) navLinks.classList.remove('active');
             });
         });
@@ -1223,20 +1247,25 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // 10. Cookie Consent Banner
+    // v5.2 (2026-05-19): version-gated localStorage reset. Bumping CONSENT_VERSION
+    // forces every returning visitor to see the banner once, which fixes the regression
+    // where dev-set 'cookie-consent' entries silently blocked the banner forever.
+    const CONSENT_VERSION = '2026-05-19';
     const cookieBanner = document.getElementById('cookieBanner');
     if (cookieBanner) {
+        if (localStorage.getItem('cookie-consent-version') !== CONSENT_VERSION) {
+            localStorage.removeItem('cookie-consent');
+        }
         if (!localStorage.getItem('cookie-consent')) {
             setTimeout(() => cookieBanner.classList.add('visible'), 800);
         }
-        const hideBanner = () => cookieBanner.classList.remove('visible');
-        document.getElementById('cookieAccept')?.addEventListener('click', () => {
-            localStorage.setItem('cookie-consent', 'accepted');
-            hideBanner();
-        });
-        document.getElementById('cookieReject')?.addEventListener('click', () => {
-            localStorage.setItem('cookie-consent', 'rejected');
-            hideBanner();
-        });
+        const hideBanner = (decision) => {
+            localStorage.setItem('cookie-consent', decision);
+            localStorage.setItem('cookie-consent-version', CONSENT_VERSION);
+            cookieBanner.classList.remove('visible');
+        };
+        document.getElementById('cookieAccept')?.addEventListener('click', () => hideBanner('accepted'));
+        document.getElementById('cookieReject')?.addEventListener('click', () => hideBanner('rejected'));
     }
 
     // 10. Preloader dismiss — initPreloader() (called pre-DOMContentLoaded) owns the
@@ -1299,6 +1328,18 @@ function initPreloader() {
     }
 
     // ----- Video path -----
+    // v5.2 (2026-05-19): one-shot "headlights ignite" page-flash. When the
+    // preloader video crosses 75% progress (the moment the truck's headlights
+    // activate in the V-shield reveal), <body> briefly brightens with a warm
+    // white bloom — see @keyframes preloaderFlash in style.css.
+    let headlightsFired = false;
+    function fireHeadlightFlash() {
+        if (headlightsFired || reduced) return;
+        headlightsFired = true;
+        document.body.classList.add("preloader-flash");
+        setTimeout(() => document.body.classList.remove("preloader-flash"), 700);
+    }
+
     function startVideoFlow() {
         // attempt to play; autoplay may be blocked even with muted+playsinline in rare cases
         const playPromise = video.play();
@@ -1308,7 +1349,9 @@ function initPreloader() {
 
         video.addEventListener("timeupdate", () => {
             if (!video.duration || !isFinite(video.duration)) return;
-            setProgress(video.currentTime / video.duration);
+            const p = video.currentTime / video.duration;
+            setProgress(p);
+            if (p >= 0.75) fireHeadlightFlash();
         });
         video.addEventListener("ended", dismiss, { once: true });
         video.addEventListener("error", useFallback, { once: true });
